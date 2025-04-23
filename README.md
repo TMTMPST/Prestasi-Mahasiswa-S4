@@ -50,16 +50,16 @@ Metode PROMETHEE diimplementasikan untuk menentukan mahasiswa berprestasi dengan
 
 ## Tim Pengembang
 Proyek ini dikembangkan oleh tim dari kelas TI 2F Politeknik Negeri Malang:
-1. [Nama Mahasiswa 1]
-2. [Nama Mahasiswa 2]
-3. [Nama Mahasiswa 3]
-4. [Nama Mahasiswa 4]
-5. [Nama Mahasiswa 5]
+1. DIANA RAHMAWATI
+2. FAJAR ADITYA NUGRAHA
+3. TIONUSA CATUR PAMUNGKAS
+4. VARIZKY NALDIBA RIMRA
+5. Vidi Joshubzky Saviola
 
 ## Screenshot Aplikasi
-![Dashboard](/screenshots/dashboard.png)
-![Penilaian](/screenshots/penilaian.png)
-![Hasil PROMETHEE](/screenshots/hasil-promethee.png)
+![Dashboard](/screenshots/dashboard.jpg)
+![Penilaian](/screenshots/penilaian.jpg)
+![Hasil PROMETHEE](/screenshots/hasil-promethee.jpg)
 
 ## Lisensi
 Proyek ini dilisensikan di bawah [MIT License](LICENSE)
