@@ -14,40 +14,27 @@
     <title>{{ config('app.name', 'Laravel') }}</title>
     <!-- Scripts -->
     @vite(['resources/sass/app.scss', 'resources/js/app.js'])
+    <!-- Custom Styles -->
+    @stack('styles')
 </head>
 
 <body>
-    <div class="sidebar sidebar-dark sidebar-fixed border-end" id="sidebar">
-        @include('layouts.sidebar')
-    </div>
-    
-    <div class="wrapper d-flex flex-column min-vh-100 bg-light">
-        <header class="header header-sticky mb-4">
-            <div class="container-fluid">
-                <button class="header-toggler px-md-0 me-md-3 d-md-none" type="button" onclick="coreui.Sidebar.getInstance(document.querySelector('#sidebar')).toggle()">
-                    <i class="icon icon-lg cil-menu"></i>
-                </button>
-                <button class="header-toggler px-md-0 me-md-3 d-none d-md-block" type="button" onclick="coreui.Sidebar.getInstance(document.querySelector('#sidebar')).toggle()">
-                    <i class="icon icon-lg cil-menu"></i>
-                </button>
-                @include('layouts.header')
-            </div>
-        </header>
-        
-        <div class="body flex-grow-1 px-3">
-            <div class="container-lg">
-                @yield('content')
-            </div>
-        </div>
-        
-        <footer class="footer">
-            <div>© 2025 Your Company</div>
-        </footer>
+    <div>
+        <main>
+            @yield('content')
+        </main>
     </div>
 
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- CoreUI JS -->
     <script src="https://cdn.jsdelivr.net/npm/@coreui/coreui@5.3.1/dist/js/coreui.bundle.min.js"
         integrity="sha384-8QmUFX1sl4cMveCP2+H1tyZlShMi1LeZCJJxTZeXDxOwQexlDrLQ3O9L78gwBbe"
         crossorigin="anonymous"></script>
+
+    <!-- Custom Scripts -->
+    @stack('scripts')
 </body>
 
 </html>
