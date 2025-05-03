@@ -1,41 +1,19 @@
-<div class="sidebar-header text-center">
-    <div class="sidebar-brand text-center"><b>SIMPRES</b></div>
-    <button class="btn btn-lg btn-primary me-10 sidebar-toggler d-none d-lg-block" type="button" data-coreui-toggle="unfoldable" onclick="document.querySelector('.sidebar').classList.toggle('sidebar-unfoldable')">
-    </button>
+<div class="sidebar-header">
+    <div class="sidebar-brand">CoreUI</div>
+    <button class="sidebar-toggler d-none d-lg-block" type="button" data-coreui-toggle="unfoldable"></button>
 </div>
 
 <ul class="sidebar-nav">
-    <li class="nav-title">Menu</li>
+    <li class="nav-title">Nav Title</li>
     <li class="nav-item">
         <a class="nav-link active" href="#">
-            <i class="nav-icon cil-home"></i> Beranda
+            <i class="nav-icon cil-speedometer"></i> Nav item
         </a>
     </li>
     <li class="nav-item">
         <a class="nav-link" href="#">
-            <i class="nav-icon cil-history"></i> Riwayat Prestasi
-        </a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link" href="#">
-            <i class="nav-icon cil-star"></i> Informasi Lomba 
-        
+            <i class="nav-icon cil-speedometer"></i> With badge
             <span class="badge bg-primary ms-auto">NEW</span>
-        </a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link" href="#">
-            <i class="nav-icon cil-settings"></i> Setting
-        </a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link" href="#">
-            <i class="nav-icon cil-user"></i> Dosen Pembimbing
-        </a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link" href="#">
-            <i class="nav-icon cil-chart-line"></i> Reports
         </a>
     </li>
     <li class="nav-item nav-group show">
@@ -57,17 +35,12 @@
     </li>
     <li class="nav-item mt-5">
         <a class="nav-link" href="https://coreui.io">
-            <i class="nav-icon cil-cloud-download"></i> Download CoreUI
-        </a>
+            <i class="nav-icon cil-cloud-download"></i> Download CoreUI</a>
     </li>
-</ul>
+    <li class="nav-item">
         <a class="nav-link" href="https://coreui.io/pro/">
             <i class="nav-icon cil-layers"></i> Try CoreUI
             <strong>PRO</strong>
         </a>
     </li>
 </ul>
-
-<div class="sidebar-footer text-center d-flex align-items-center justify-content-center">
-
-</div>
