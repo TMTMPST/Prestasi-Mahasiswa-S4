@@ -81,10 +81,14 @@
         </a>
     </li>
     <li class="nav-item">
-        <a class="nav-link" href="/logout">
-            <i class="nav-icon cil-account-logout"></i> Logout
-        </a>
+        <form action="{{ route('logout') }}" method="POST" style="display: inline;" onsubmit="return confirm('Anda yakin ingin logout?')">
+            @csrf
+            <button type="submit" class="nav-link btn btn-link text-start w-100" style="text-decoration: none;">
+                <i class="nav-icon cil-account-logout"></i> Logout
+            </button>
+        </form>
     </li>
+    
 </ul>
 
 

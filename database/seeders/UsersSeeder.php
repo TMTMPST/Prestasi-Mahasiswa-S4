@@ -17,9 +17,9 @@ class UsersSeeder extends Seeder
         DB::table('users')->insert([
             [
                 'name' => 'Administrator',
-                'email' => 'admin@example.com',
+                'email' => 'admin@ti.com',
                 'email_verified_at' => now(),
-                'password' => Hash::make('password123'), // Ganti password sesuai keinginan
+                'password' => Hash::make('admin123'), // Ganti password sesuai keinginan
                 'role' => 'admin',
                 'remember_token' => Str::random(10),
                 'created_at' => now(),
@@ -27,9 +27,9 @@ class UsersSeeder extends Seeder
             ],
             [
                 'name' => 'Andi Saputra',
-                'email' => 'andi@example.com',
+                'email' => 'dosen@ti.com',
                 'email_verified_at' => now(),
-                'password' => Hash::make('password123'),
+                'password' => Hash::make('dosen123'),
                 'role' => 'dosen',
                 'remember_token' => Str::random(10),
                 'created_at' => now(),
@@ -37,9 +37,9 @@ class UsersSeeder extends Seeder
             ],
             [
                 'name' => 'Budi Santoso',
-                'email' => 'budi@example.com',
+                'email' => 'budi@ti.com',
                 'email_verified_at' => now(),
-                'password' => Hash::make('password123'),
+                'password' => Hash::make('budi123'),
                 'role' => 'mahasiswa',
                 'remember_token' => Str::random(10),
                 'created_at' => now(),
