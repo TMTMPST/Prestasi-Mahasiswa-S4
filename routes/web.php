@@ -26,8 +26,17 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-// Auth default routes
-Auth::routes();
+// Authentication Routes
+Route::get('/login', function () {
+    return view('auth.auth-form');
+})->middleware('guest')->name('login');
+
+Route::post('/login', [LoginController::class, 'login']);
+Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
+
+// Registration Routes
+Route::post('/register', [RegisterController::class, 'register'])->name('register');
+
 
 // Redirect after login
 Route::get('/home', [HomeController::class, 'index'])->name('home');
