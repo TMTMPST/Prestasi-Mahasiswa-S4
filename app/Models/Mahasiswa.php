@@ -10,15 +10,20 @@ class Mahasiswa extends Model
     use HasFactory;
 
     protected $table = 'mahasiswa';
-    protected $fillable = ['user_id', 'nama', 'nim', 'prodi_id','password', 'angkatan', 'minat', 'keahlian'];
+    protected $primaryKey = 'nim';
+    public $incrementing = false; // NIM tidak auto increment
+    protected $fillable = [
+        'nim',
+        'angkatan',
+        'nama',
+        'password',
+        'prodi',
+        'level',
+    ];
 
-    public function user() {
-        return $this->belongsTo(User::class);
-    }
-
-    public function programStudi() {
-        return $this->belongsTo(ProgramStudi::class, 'prodi_id');
+    // Relasi dengan tabel Level
+    public function level()
+    {
+        return $this->belongsTo(Level::class, 'level', 'id_level');
     }
 }
-
-

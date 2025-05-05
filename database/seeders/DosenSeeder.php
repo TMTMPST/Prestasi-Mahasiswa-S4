@@ -2,34 +2,27 @@
 
 namespace Database\Seeders;
 
+use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Hash;
 
 class DosenSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     */
-    public function run(): void
+    public function run()
     {
-        // Contoh: pastikan user dengan ID 1 sudah ada sebelum menjalankan seeder ini
         DB::table('dosen')->insert([
             [
-                'user_id' => 1,
-                'nama' => 'Dr. Andi Saputra',
-                'nidn' => '1234567890',
-                'bidang_minat' => 'Kecerdasan Buatan, Data Mining',
-                'created_at' => now(),
-                'updated_at' => now(),
+                'nip' => '123456789012345',
+                'nama' => 'Endah Septa Sintiya. SPd., M.Kom',
+                'password' => Hash::make('12345'),
+                'level' => 'DOS'
             ],
             [
-                'user_id' => 2,
-                'nama' => 'Prof. Budi Santoso',
-                'nidn' => '0987654321',
-                'bidang_minat' => 'Jaringan Komputer, Keamanan Siber',
-                'created_at' => now(),
-                'updated_at' => now(),
+                'nip' => '987654321098765',
+                'nama' => 'Irsyad Arif Mashudi, S.Kom., M.Kom',
+                'password' => Hash::make('12345'),
+                'level' => 'DOS'
             ],
         ]);
     }
