@@ -10,10 +10,10 @@ class Admin extends Model
     use HasFactory;
 
     protected $table = 'admin';
-    protected $primaryKey = 'nip';
-    public $incrementing = false; // NIP tidak auto increment
+    protected $primaryKey = 'username'; // username sebagai primary key
+    public $incrementing = false; // username'; // username sebagai primary key tidak auto increment
     protected $fillable = [
-        'nip',
+        'username', // username sebagai primary key,
         'nama',
         'password',
         'level',

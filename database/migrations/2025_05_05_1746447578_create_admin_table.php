@@ -9,7 +9,7 @@ class CreateAdminTable extends Migration
     public function up()
     {
         Schema::create('admin', function (Blueprint $table) {
-            $table->string('nip', 15)->primary();
+            $table->string('username', 100)->primary();
             $table->string('nama', 100);
             $table->string('password');
             $table->char('level', 3);

@@ -13,13 +13,13 @@ class AdminSeeder extends Seeder
     {
         DB::table('admin')->insert([
             [
-                'nip' => '12345',
+                'username' => 'admin1',
                 'nama' => 'Administrator 1',
                 'level' => 'ADM',
                 'password' => Hash::make('admin123'),
             ],
             [
-                'nip' => '54321',
+                'username' => 'admin2',
                 'nama' => 'Administrator 2',
                 'level' => 'ADM',
                 'password' => Hash::make('admin123'),
