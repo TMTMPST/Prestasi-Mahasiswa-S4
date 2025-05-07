@@ -2,38 +2,31 @@
 
 namespace Database\Seeders;
 
+use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 
 class MahasiswaSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     */
-    public function run(): void
+    public function run()
     {
         DB::table('mahasiswa')->insert([
             [
-                'user_id' => 1, // Pastikan user_id yang digunakan ada pada tabel users
-                'nama' => 'Andi Saputra',
-                'nim' => '1234567890',
-                'prodi_id' => 1, // Pastikan prodi_id ada pada tabel program_studi
-                'angkatan' => 2021,
-                'minat' => 'Teknologi Informasi',
-                'keahlian' => 'IoT, Data Science',
-                'created_at' => now(),
-                'updated_at' => now(),
+                'nim' => '2341720093',
+                'angkatan' => 2023,
+                'nama' => 'Tionusa Catur Pamungkas',
+                'password' => Hash::make('12345'),
+                'prodi' => 'Teknik Informatika',
+                'level' => 'MHS'
             ],
             [
-                'user_id' => 2,
-                'nama' => 'Budi Santoso',
-                'nim' => '0987654321',
-                'prodi_id' => 2,
-                'angkatan' => 2022,
-                'minat' => 'Sistem Informasi',
-                'keahlian' => 'Jaringan Komputer',
-                'created_at' => now(),
-                'updated_at' => now(),
+                'nim' => '9876543210',
+                'angkatan' => 2023,
+                'nama' => 'Vidi Joshubzky',
+                'password' => Hash::make('12345'),
+                'prodi' => 'Teknik Informatika',
+                'level' => 'MHS'
             ],
         ]);
     }
