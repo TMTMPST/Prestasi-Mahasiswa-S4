@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('dosen.layouts.app')
 
 @section('content')
 <div class="container">
@@ -14,7 +14,7 @@
                         </div>
                     @endif
 
-                    {{ __('You are logged in!') }}
+                    {{ __('You are logged in as Dosen!') }}
                 </div>
             </div>
         </div>
