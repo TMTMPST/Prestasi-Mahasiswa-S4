@@ -10,6 +10,8 @@ use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\Auth\ResetPasswordController;
 use App\Http\Controllers\Auth\EmailVerificationController;
 use App\Http\Controllers\Auth\ConfirmPasswordController;
+use App\Http\Controllers\AuthController;
+use Illuminate\Support\Facades\Session;
 
 /*
 |--------------------------------------------------------------------------
@@ -22,24 +24,25 @@ use App\Http\Controllers\Auth\ConfirmPasswordController;
 |
 */
 
+// Show the welcome page
 Route::get('/', function () {
     return view('welcome');
 });
 
-// Authentication Routes
-Route::get('/login', function () {
-    return view('auth.auth-form');
-})->middleware('guest')->name('login');
+// Show login form
+Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
 
-Route::post('/login', [LoginController::class, 'login']);
-Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
-
-// Registration Routes
-Route::post('/register', [RegisterController::class, 'register'])->name('register');
+// Handle login form POST submission
+Route::post('/login', [AuthController::class, 'login'])->name('login.submit');
 
 
-// Redirect after login
-Route::get('/home', [HomeController::class, 'index'])->name('home');
+Route::post('/logout', function () {
+    Session::flush(); // remove all session data
+    return redirect('/login')->with('success', 'Logout successful.');
+})->name('logout');
 
-// Custom Logout Route
-Route::post('/logout', [LogoutController::class, 'logout'])->name('logout');
+// Dashboard routes
+Route::get('/admin/dashboard', fn() => view('admin.dashboard'))->middleware('checklogin')->name('admin.dashboard');
+Route::get('/mahasiswa/dashboard', fn() => view('mahasiswa.dashboard'))->middleware('checklogin')->name('mahasiswa.dashboard');
+Route::get('/dosen/dashboard', fn() => view('dosen.dashboard'))->middleware('checklogin')->name('dosen.dashboard');
+

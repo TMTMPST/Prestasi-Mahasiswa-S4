@@ -2,7 +2,7 @@
     <h1 class="mb-4">Sign Up</h1>
     <p class="text-medium-emphasis mb-4">Create your account</p>
 
-    <form method="POST" action="{{ route('register') }}">
+    {{-- <form method="POST" action="{{ route(name: 'register') }}"> --}}
         @csrf
 
         <div class="input-group mb-3">
