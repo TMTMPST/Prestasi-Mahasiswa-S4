@@ -18,32 +18,34 @@
 </head>
 
 <body>
-    <div class="sidebar sidebar-dark sidebar-fixed border-end" id="sidebar">
-        @include('dosen.layouts.sidebar')
-    </div>
-    
-    <div class="wrapper d-flex flex-column min-vh-100 bg-light">
-        <header class="header header-sticky mb-4">
-            <div class="container-fluid">
-                <button class="header-toggler px-md-0 me-md-3 d-md-none" type="button" onclick="coreui.Sidebar.getInstance(document.querySelector('#sidebar')).toggle()">
-                    <i class="icon icon-lg cil-menu"></i>
-                </button>
-                <button class="header-toggler px-md-0 me-md-3 d-none d-md-block" type="button" onclick="coreui.Sidebar.getInstance(document.querySelector('#sidebar')).toggle()">
-                    <i class="icon icon-lg cil-menu"></i>
-                </button>
-                @include('dosen.layouts.header')
-            </div>
-        </header>
-        
-        <div class="body flex-grow-1 px-3">
-            <div class="container-lg">
-                @yield('content')
-            </div>
+    <div class="d-flex min-vh-100 bg-light">
+        <div class="sidebar sidebar-dark sidebar-fixed border-end" id="sidebar">
+            @include('dosen.layouts.sidebar')
         </div>
         
-        <footer class="footer">
-            <div>© 2025 Your Company</div>
-        </footer>
+        <div class="flex-grow-1 d-flex flex-column">
+            <header class="header header-sticky mb-4">
+                <div class="container-fluid">
+                    <button class="header-toggler px-md-0 me-md-3 d-md-none" type="button" onclick="coreui.Sidebar.getInstance(document.querySelector('#sidebar')).toggle()">
+                        <i class="icon icon-lg cil-menu"></i>
+                    </button>
+                    <button class="header-toggler px-md-0 me-md-3 d-none d-md-block" type="button" onclick="coreui.Sidebar.getInstance(document.querySelector('#sidebar')).toggle()">
+                        <i class="icon icon-lg cil-menu"></i>
+                    </button>
+                    @include('dosen.layouts.header')
+                </div>
+            </header>
+            
+            <div class="body flex-grow-1 px-3">
+                <div class="container-lg">
+                    @yield('content')
+                </div>
+            </div>
+            
+            <footer class="footer mt-auto">
+                <div>© 2025 Your Company</div>
+            </footer>
+        </div>
     </div>
     @stack('scripts')
 

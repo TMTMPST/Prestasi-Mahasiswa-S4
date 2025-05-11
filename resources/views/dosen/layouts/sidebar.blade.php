@@ -14,7 +14,7 @@
     </li>
 
     <li class="nav-item">
-        <a class="nav-link" href="#">
+        <a class="nav-link" href="/dosen/Info_lomba">
             <i class="nav-icon cil-star"></i> Informasi Lomba 
             <span class="badge bg-primary ms-auto">NEW</span>
         </a>

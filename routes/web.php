@@ -46,3 +46,4 @@ Route::get('/admin/dashboard', fn() => view('admin.dashboard'))->middleware('che
 Route::get('/mahasiswa/dashboard', fn() => view('mahasiswa.dashboard'))->middleware('checklogin')->name('mahasiswa.dashboard');
 Route::get('/dosen/dashboard', fn() => view('dosen.dashboard'))->middleware('checklogin')->name('dosen.dashboard');
 
+
