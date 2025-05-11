@@ -8,7 +8,7 @@
     <li class="nav-title">Menu</li>
 
     <li class="nav-item">
-        <a class="nav-link active" href="#">
+        <a class="nav-link active" href="/dosen/dashboard">
             <i class="nav-icon cil-home"></i> Beranda
         </a>
     </li>
@@ -21,7 +21,7 @@
     </li>
 
     <li class="nav-item">
-        <a class="nav-link" href="#">
+        <a class="nav-link" href="/dosen/Dosen_pembimbing">
             <i class="nav-icon cil-user"></i> Dosen Pembimbing
         </a>
     </li>

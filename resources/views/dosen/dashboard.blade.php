@@ -72,7 +72,12 @@
                     Ranking Mahasiswa
                 </div>
                 <div class="card-body">
-                    <div class="table-responsive">
+                    <div class="table-responsive" style="max-height: 400px; overflow-y: auto; scrollbar-width: none; -ms-overflow-style: none;">
+                        <style>
+                            .table-responsive::-webkit-scrollbar {
+                                display: none;
+                            }
+                        </style>
                         <table class="table table-bordered mb-0">
                             <thead>
                                 <tr>
