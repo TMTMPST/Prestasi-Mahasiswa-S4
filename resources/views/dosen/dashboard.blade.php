@@ -24,7 +24,7 @@
     <div class="my-4"></div>
 
     {{-- Rekomendasi Lomba --}}
-    <div class="row mb-4">
+    <div class="row mb-10">
         <div class="col-12">
             <div 
                 class="d-flex flex-nowrap overflow-auto" 
@@ -39,27 +39,43 @@
                     }
                 </style>
 
-                @forelse ($lombas as $lomba)
-                    <div class="flex-shrink-0" style="min-width: 500px;">
-                        <div class="card shadow-sm">
-                            <div class="card-header">{{ $lomba->nama_lomba }}</div>
-                            <div class="card-body" style="font-size: 1rem;">
-                               <p><strong>Tingkat:</strong> {{ $lomba->tingkatRelasi->nama_tingkat ?? '-' }}</p>
-                                <p><strong>Kategori:</strong> {{ $lomba->kategoriRelasi->nama_kategori ?? '-' }}</p>
-                                <p><strong>Jenis:</strong> {{ $lomba->jenisRelasi->nama_jenis ?? '-' }}</p>
-
-                                <p><strong>Penyelenggara:</strong> {{ $lomba->penyelenggara }}</p>
-                                <p><strong>Tanggal:</strong> {{ $lomba->tgl_dibuka }} s.d. {{ $lomba->tgl_ditutup }}</p>
+                @forelse ($lombas->take(4) as $lomba)
+                    <div class="flex-shrink-0" style="min-width: 600px; max-width: 700px;">
+                        <div class="card shadow-sm h-100">
+                            <div class="card-header text-truncate">
+                                {{ $lomba->nama_lomba }}
                             </div>
+                            <div class="card-body" style="font-size: 0.95rem;">
+                                <div class="row">
+                                    <div class="col-6">
+                                        <p><strong>Tingkat:</strong> {{ $lomba->tingkatRelasi->nama_tingkat ?? '-' }}</p>
+                                        <p><strong>Kategori:</strong> {{ $lomba->kategoriRelasi->nama_kategori ?? '-' }}</p>
+                                        <p><strong>Jenis:</strong> {{ $lomba->jenisRelasi->nama_jenis ?? '-' }}</p>
+                                    </div>
+                                    <div class="col-6">
+                                        <p><strong>Penyelenggara:</strong> {{ $lomba->penyelenggara }}</p>
+                                        <p><strong>Mulai:</strong> {{ \Carbon\Carbon::parse($lomba->tanggal_mulai)->format('d M Y') }}</p>
+                                        <p><strong>Selesai:</strong> {{ \Carbon\Carbon::parse($lomba->tanggal_selesai)->format('d M Y') }}</p>
+                                    </div>
+                                </div>
+                                <div class="d-flex justify-content-between mt-3">
+                                    <a href="#" class="btn btn-primary btn-sm">Detail</a>
+                                </div>
+                            </div>
+                            
                         </div>
+                        
                     </div>
                 @empty
-                    <p class="text-muted">Tidak ada rekomendasi lomba.</p>
+                    <div class="flex-shrink-0" style="min-width: 600px;">
+                        <div class="alert alert-warning mb-0 w-100">
+                            Tidak ada informasi lomba tersedia.
+                        </div>
+                    </div>
                 @endforelse
             </div>
         </div>
     </div>
-    
     {{-- Ranking Mahasiswa --}}
     <div class="row mt-4">
         <div class="col-12">
