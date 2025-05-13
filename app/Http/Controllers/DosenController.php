@@ -79,4 +79,10 @@ class DosenController extends Controller
         // Tampilkan form untuk mengedit informasi lomba
         return view('dosen.edit_info_lomba', compact('lomba'));
     }
+    public function DosenPembimbing()
+    {
+    // Isi logika yang dibutuhkan, misalnya ambil data pembimbing
+    return view('dosen.dospem.index'); // Pastikan view ini ada
+    }
+
 }
