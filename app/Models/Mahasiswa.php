@@ -12,6 +12,9 @@ class Mahasiswa extends Model
     protected $table = 'mahasiswa';
     protected $primaryKey = 'nim';
     public $incrementing = false; // NIM tidak auto increment
+    protected $keyType = 'string'; // karena NIM biasanya berupa string
+    public $timestamps = false;
+
     protected $fillable = [
         'nim',
         'angkatan',
@@ -19,6 +22,8 @@ class Mahasiswa extends Model
         'password',
         'prodi',
         'level',
+        'prestasi_tertinggi', // tambahkan ini
+        'poin_presma',        // dan ini
     ];
 
     // Relasi dengan tabel Level
@@ -26,4 +31,10 @@ class Mahasiswa extends Model
     {
         return $this->belongsTo(Level::class, 'level', 'id_level');
     }
+
+    // Jika mahasiswa memiliki banyak prestasi, bisa tambahkan relasi seperti ini:
+    // public function prestasis()
+    // {
+    //     return $this->hasMany(Prestasi::class, 'nim', 'nim');
+    // }
 }

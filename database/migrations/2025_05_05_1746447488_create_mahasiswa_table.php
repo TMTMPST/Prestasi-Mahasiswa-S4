@@ -15,6 +15,7 @@ class CreateMahasiswaTable extends Migration
             $table->string('password');
             $table->string('prodi', 100);
             $table->char('level', 3);
+            $table->integer('poin_presma')->default(0); // Add this line
             $table->timestamps();
             $table->foreign('level')->references('id_level')->on('level');
         });

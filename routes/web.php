@@ -12,7 +12,8 @@ use App\Http\Controllers\Auth\EmailVerificationController;
 use App\Http\Controllers\Auth\ConfirmPasswordController;
 use App\Http\Controllers\AuthController;
 use Illuminate\Support\Facades\Session;
-
+use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\DosenController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -47,3 +48,5 @@ Route::get('/mahasiswa/dashboard', fn() => view('mahasiswa.dashboard'))->middlew
 Route::get('/dosen/dashboard', fn() => view('dosen.dashboard'))->middleware('checklogin')->name('dosen.dashboard');
 
 
+
+Route::get('/dosen/dashboard', [DosenController::class, 'dashboard'])->name('dosen.dashboard')->middleware(['web', 'checklogin']);

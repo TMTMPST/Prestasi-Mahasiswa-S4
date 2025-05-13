@@ -7,21 +7,23 @@
         <div class="col-md-10">
             <div class="card shadow-sm">
                 <div class="card-header">{{ __('Dashboard') }}</div>
-    
+
                 <div class="card-body">
                     @if (session('status'))
                         <div class="alert alert-success" role="alert">
                             {{ session('status') }}
                         </div>
                     @endif
-    
+
                     {{ __('You are logged in as Dosen!') }}
                 </div>
             </div>
         </div>
     </div>
-    
+
     <div class="my-4"></div>
+
+    {{-- Rekomendasi Lomba --}}
     <div class="row mb-4">
         <div class="col-12">
             <div 
@@ -36,36 +38,30 @@
                         padding-right: 16px;
                     }
                 </style>
-                <div class="flex-shrink-0" style="min-width: 500px;">
-                    <div class="card shadow-sm">
-                        <div class="card-header">Rekomendasi Lomba 1</div>
-                        <div class="card-body text-center" style="font-size: 1.5rem;">
-                            Konten Lomba 1
+
+                @forelse ($lombas as $lomba)
+                    <div class="flex-shrink-0" style="min-width: 500px;">
+                        <div class="card shadow-sm">
+                            <div class="card-header">{{ $lomba->nama_lomba }}</div>
+                            <div class="card-body" style="font-size: 1rem;">
+                               <p><strong>Tingkat:</strong> {{ $lomba->tingkatRelasi->nama_tingkat ?? '-' }}</p>
+                                <p><strong>Kategori:</strong> {{ $lomba->kategoriRelasi->nama_kategori ?? '-' }}</p>
+                                <p><strong>Jenis:</strong> {{ $lomba->jenisRelasi->nama_jenis ?? '-' }}</p>
+
+                                <p><strong>Penyelenggara:</strong> {{ $lomba->penyelenggara }}</p>
+                                <p><strong>Tanggal:</strong> {{ $lomba->tgl_dibuka }} s.d. {{ $lomba->tgl_ditutup }}</p>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="flex-shrink-0" style="min-width: 500px;">
-                    <div class="card shadow-sm">
-                        <div class="card-header">Rekomendasi Lomba 2</div>
-                        <div class="card-body text-center" style="font-size: 1.5rem;">
-                            Konten Lomba 2
-                        </div>
-                    </div>
-                </div>
-                <div class="flex-shrink-0" style="min-width: 500px;">
-                    <div class="card shadow-sm">
-                        <div class="card-header">Rekomendasi Lomba 3</div>
-                        <div class="card-body text-center" style="font-size: 1.5rem;">
-                            Konten Lomba 3
-                        </div>
-                    </div>
-                </div>
+                @empty
+                    <p class="text-muted">Tidak ada rekomendasi lomba.</p>
+                @endforelse
             </div>
         </div>
     </div>
-
-    {{-- Card Table di bawah rekomendasi lomba --}}
-    <div class="row">
+    
+    {{-- Ranking Mahasiswa --}}
+    <div class="row mt-4">
         <div class="col-12">
             <div class="card shadow-sm">
                 <div class="card-header">
@@ -90,118 +86,20 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td>1</td>
-                                    <td>Budi Santoso</td>
-                                    <td>12345678</td>
-                                    <td>Teknik Informatika</td>
-                                    <td>Juara 1 Lomba internasional - Cyber Security</td>
-                                    <td>150</td>
-                                </tr>
-                                <tr>
-                                    <td>2</td>
-                                    <td>Siti Aminah</td>
-                                    <td>87654321</td>
-                                    <td>Sistem Informasi</td>
-                                    <td>Juara 2 Lomba Internasional - FrontEnd Dev</td>
-                                    <td>120</td>
-                                </tr>
-                                <tr>
-                                    <td>3</td>
-                                    <td>Andi Wijaya</td>
-                                    <td>11223344</td>
-                                    <td>Teknik Elektro</td>
-                                    <td>Juara 3 Lomba Internasional - Fullstack Dev</td>
-                                    <td>100</td>
-                                </tr>
-                                <tr>
-                                    <td>4</td>
-                                    <td>Rina Marlina</td>
-                                    <td>22334455</td>
-                                    <td>Teknik Mesin</td>
-                                    <td>Juara Harapan 1 Lomba Nasional - Robotik</td>
-                                    <td>90</td>
-                                </tr>
-                                <tr>
-                                    <td>5</td>
-                                    <td>Agus Pratama</td>
-                                    <td>33445566</td>
-                                    <td>Teknik Sipil</td>
-                                    <td>Juara 1 Lomba Nasional - Konstruksi</td>
-                                    <td>85</td>
-                                </tr>
-                                <tr>
-                                    <td>6</td>
-                                    <td>Dewi Lestari</td>
-                                    <td>44556677</td>
-                                    <td>Arsitektur</td>
-                                    <td>Juara 2 Lomba Nasional - Desain Bangunan</td>
-                                    <td>80</td>
-                                </tr>
-                                <tr>
-                                    <td>7</td>
-                                    <td>Fajar Nugroho</td>
-                                    <td>55667788</td>
-                                    <td>Teknik Kimia</td>
-                                    <td>Juara 3 Lomba Nasional - Kimia Terapan</td>
-                                    <td>75</td>
-                                </tr>
-                                <tr>
-                                    <td>8</td>
-                                    <td>Lina Sari</td>
-                                    <td>66778899</td>
-                                    <td>Manajemen</td>
-                                    <td>Juara 1 Lomba Regional - Bisnis Plan</td>
-                                    <td>70</td>
-                                </tr>
-                                <tr>
-                                    <td>9</td>
-                                    <td>Rizky Ramadhan</td>
-                                    <td>77889900</td>
-                                    <td>Akuntansi</td>
-                                    <td>Juara 2 Lomba Regional - Audit</td>
-                                    <td>65</td>
-                                </tr>
-                                <tr>
-                                    <td>10</td>
-                                    <td>Salsa Bilqis</td>
-                                    <td>88990011</td>
-                                    <td>Ilmu Komunikasi</td>
-                                    <td>Juara 3 Lomba Regional - Public Speaking</td>
-                                    <td>60</td>
-                                </tr>
-                                <tr>
-                                    <td>11</td>
-                                    <td>Yoga Prasetyo</td>
-                                    <td>99001122</td>
-                                    <td>Teknik Industri</td>
-                                    <td>Juara Harapan 1 Lomba Nasional - Inovasi Produk</td>
-                                    <td>55</td>
-                                </tr>
-                                <tr>
-                                    <td>12</td>
-                                    <td>Putri Ayu</td>
-                                    <td>10111213</td>
-                                    <td>Teknik Lingkungan</td>
-                                    <td>Juara 1 Lomba Nasional - Lingkungan Hidup</td>
-                                    <td>50</td>
-                                </tr>
-                                <tr>
-                                    <td>13</td>
-                                    <td>Bayu Saputra</td>
-                                    <td>12131415</td>
-                                    <td>Teknik Informatika</td>
-                                    <td>Juara 2 Lomba Nasional - UI/UX Design</td>
-                                    <td>45</td>
-                                </tr>
-                                <tr>
-                                    <td>14</td>
-                                    <td>Melati Kusuma</td>
-                                    <td>13141516</td>
-                                    <td>Sistem Informasi</td>
-                                    <td>Juara 3 Lomba Nasional - Data Science</td>
-                                    <td>40</td>
-                                </tr>
+                                @forelse ($mahasiswa as $index => $mhs)
+                                    <tr>
+                                        <td>{{ $index + 1 }}</td>
+                                        <td>{{ $mhs->nama }}</td>
+                                        <td>{{ $mhs->nim }}</td>
+                                        <td>{{ $mhs->prodi }}</td>
+                                        <td>{{ $mhs->prestasi_tertinggi }}</td>
+                                        <td>{{ $mhs->poin_presma }}</td>
+                                    </tr>
+                                @empty
+                                    <tr>
+                                        <td colspan="6" class="text-center">Belum ada data mahasiswa</td>
+                                    </tr>
+                                @endforelse
                             </tbody>
                         </table>
                     </div>
@@ -209,6 +107,5 @@
             </div>
         </div>
     </div>
-
 </div>
 @endsection
