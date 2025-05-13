@@ -14,7 +14,7 @@
     </li>
 
     <li class="nav-item">
-        <a class="nav-link" href="/dosen/Info_lomba">
+        <a class="nav-link" href="/dosen/Lomba/index">
             <i class="nav-icon cil-star"></i> Informasi Lomba 
             <span class="badge bg-primary ms-auto">NEW</span>
         </a>
@@ -60,15 +60,6 @@
         <a class="nav-link" href="https://coreui.io/pro/">
             <i class="nav-icon cil-layers"></i> ga diajak presentasi
         </a>
-    </li>
-
-    <li class="nav-item">
-        <form action="{{ route('logout') }}" method="POST" style="display: inline;" onsubmit="return confirm('Anda yakin ingin logout?')">
-            @csrf
-            <button type="submit" class="nav-link btn btn-link text-start w-100" style="text-decoration: none;">
-                <i class="nav-icon cil-account-logout"></i> Logout
-            </button>
-        </form>
     </li>
 </ul>
 

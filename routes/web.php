@@ -45,8 +45,15 @@ Route::post('/logout', function () {
 // Dashboard routes
 Route::get('/admin/dashboard', fn() => view('admin.dashboard'))->middleware('checklogin')->name('admin.dashboard');
 Route::get('/mahasiswa/dashboard', fn() => view('mahasiswa.dashboard'))->middleware('checklogin')->name('mahasiswa.dashboard');
-Route::get('/dosen/dashboard', fn() => view('dosen.dashboard'))->middleware('checklogin')->name('dosen.dashboard');
 
 
 
-Route::get('/dosen/dashboard', [DosenController::class, 'dashboard'])->name('dosen.dashboard')->middleware(['web', 'checklogin']);
+//Dosen routes
+
+    // Dosen routes
+    Route::middleware(['web', 'checklogin'])->group(function () {
+        Route::get('/dosen/dashboard', [DosenController::class, 'dashboard'])->name('dosen.dashboard');
+        Route::get('/dosen/Lomba/index', [DosenController::class, 'infoLomba'])->name('dosen.lomba.index');
+        Route::get('/dosen/Lomba/{id}/detail', [DosenController::class, 'showLomba'])->name('dosen.lomba.show');
+        Route::get('/dosen/Lomba/{id}/daftar', [DosenController::class, 'daftarLomba'])->name('dosen.lomba.daftar');
+    });
