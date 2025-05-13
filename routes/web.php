@@ -56,4 +56,6 @@ Route::get('/mahasiswa/dashboard', fn() => view('mahasiswa.dashboard'))->middlew
         Route::get('/dosen/Lomba/index', [DosenController::class, 'infoLomba'])->name('dosen.lomba.index');
         Route::get('/dosen/Lomba/{id}/detail', [DosenController::class, 'showLomba'])->name('dosen.lomba.show');
         Route::get('/dosen/Lomba/{id}/daftar', [DosenController::class, 'daftarLomba'])->name('dosen.lomba.daftar');
+
+        Route::get('/dosen/DosPem/index', [DosenController::class, 'DosenPembimbing'])->name('dosen.DosPem.index');
     });

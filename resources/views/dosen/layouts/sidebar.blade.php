@@ -3,7 +3,6 @@
     <button class="btn btn-lg btn-primary me-10 sidebar-toggler d-none d-lg-block" type="button" data-coreui-toggle="unfoldable" onclick="document.querySelector('.sidebar').classList.toggle('sidebar-unfoldable')">
     </button>
 </div>
-
 <ul class="sidebar-nav">
     <li class="nav-title">Menu</li>
 
@@ -21,7 +20,7 @@
     </li>
 
     <li class="nav-item">
-        <a class="nav-link" href="/dosen/Dosen_pembimbing">
+        <a class="nav-link" href="/dosen/DosPem/index">
             <i class="nav-icon cil-user"></i> Dosen Pembimbing
         </a>
     </li>
