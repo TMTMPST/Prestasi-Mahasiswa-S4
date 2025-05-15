@@ -23,6 +23,30 @@
 
     <div class="my-4"></div>
 
+    {{-- Rekomendasi Lomba (PROMETHEE) --}}
+    {{-- <div class="row mb-4">
+        <div class="col-12">
+            <h2>Rekomendasi Lomba Mahasiswa (PROMETHEE)</h2>
+            <table class="table table-bordered table-striped">
+                <thead>
+                    <tr>
+                        <th>Rank</th>
+                        <th>Lomba</th>
+                        <th>Net Flow</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach ($netFlows as $i => $l)
+                    <tr>
+                        <td>{{ $i + 1 }}</td>
+                        <td>{{ $l['lomba'] }}</td>
+                        <td>{{ number_format($l['phi'], 4) }}</td>
+                    </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
+    </div> --}}
     {{-- Rekomendasi Lomba --}}
     <div class="row mb-10">
         <div class="col-12">

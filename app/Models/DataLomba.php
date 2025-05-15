@@ -7,7 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 use App\Models\Tingkat;
 use App\Models\Kategori;
 use App\Models\Jenis;
-
+use App\Models\alternatif;
+use App\Models\Kriteria;
 class DataLomba extends Model
 {
     use HasFactory;
@@ -41,5 +42,10 @@ class DataLomba extends Model
     public function jenisRelasi()
     {
         return $this->belongsTo(Jenis::class, 'jenis', 'id_jenis');
+    }
+
+    public function nilaiKriteria()
+    {
+        return $this->hasMany(alternatif::class, 'id_lomba', 'id_lomba');
     }
 }
