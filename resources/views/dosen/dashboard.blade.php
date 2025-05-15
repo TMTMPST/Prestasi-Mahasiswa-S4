@@ -1,4 +1,4 @@
-@extends('dosen.layouts.app')
+@extends('layouts.app')
 
 @section('content')
 <div class="container">
@@ -61,12 +61,9 @@
                                 <div class="d-flex justify-content-between mt-3">
                                     <a href="#" class="btn btn-primary btn-sm">Detail</a>
                                     <a href="https://docs.google.com/forms/d/19H28i0qObFYdjkMxXbRN_eOjimVQlGO1L6rKW6-sqXc/edit" target="_blank" class="btn btn-success btn-sm">Daftar</a>
-
                                 </div>
                             </div>
-                            
                         </div>
-                        
                     </div>
                 @empty
                     <div class="flex-shrink-0" style="min-width: 600px;">

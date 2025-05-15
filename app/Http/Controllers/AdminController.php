@@ -6,11 +6,11 @@ use Illuminate\Http\Request;
 use App\Models\DataLomba;
 use App\Models\Mahasiswa;
 use App\Http\Controllers\DosenController;
+use App\Http\Controllers\MahasiswaController;
+use App\Http\Controllers\AuthController;
 
 
-
-
-class MahasiswaController extends Controller
+class AdminController extends Controller
 {
     public function dashboard()
     {
@@ -21,6 +21,6 @@ class MahasiswaController extends Controller
         $mahasiswa = Mahasiswa::orderByDesc('poin_presma')->get();
 
         // Kirim data ke view dashboard dosen
-        return view('mahasiswa.dashboard', compact('lombas', 'mahasiswa'));
+        return view('admin.dashboard', compact('lombas', 'mahasiswa'));
     }
 }

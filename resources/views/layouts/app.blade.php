@@ -20,19 +20,19 @@
 <body>
     <div class="d-flex min-vh-100 bg-light">
         <div class="sidebar sidebar-dark sidebar-fixed border-end" id="sidebar">
-            @include('dosen.layouts.sidebar')
+            @include('layouts.sidebar')
         </div>
         
         <div class="flex-grow-1 d-flex flex-column">
             <header class="header header-sticky mb-4">
                 <div class="container-fluid">
                     <button class="header-toggler px-md-0 me-md-3 d-md-none" type="button" onclick="coreui.Sidebar.getInstance(document.querySelector('#sidebar')).toggle()">
-                        <i class="icon icon-lg cil-menu"></i>
+                        <i class="cil-menu icon icon-lg"></i>
                     </button>
                     <button class="header-toggler px-md-0 me-md-3 d-none d-md-block" type="button" onclick="coreui.Sidebar.getInstance(document.querySelector('#sidebar')).toggle()">
-                        <i class="icon icon-lg cil-menu"></i>
+                        <i class="cil-menu icon icon-lg"></i>
                     </button>
-                    @include('dosen.layouts.header')
+                    @include('layouts.header')
                 </div>
             </header>
             
