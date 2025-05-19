@@ -44,10 +44,6 @@
     .table thead th {
         background-color: #2c3e50;
         color: #fff;
-        /* Tambahan sticky header */
-        position: sticky;
-        top: 0;
-        z-index: 2;
     }
     .badge.bg-primary {
         background-color: #953c37 !important;
@@ -67,7 +63,7 @@
 <div class="container py-4">
     {{-- Dashboard Card --}}
     <div class="row justify-content-center mb-4">
-        <div class="col-md-10">
+        <div class="col-md-12">
             <div class="card dashboard-card shadow-sm">
                 <div class="card-header bg-maroon text-white d-flex align-items-center">
                     <i class="bi bi-speedometer2 me-2"></i> Dashboard
@@ -80,7 +76,9 @@
                         </div>
                     @endif
                     <span class="fs-5 text-maroon">
-                        <i class="bi bi-person-badge me-2"></i>Anda login sebagai Dosen!
+                        <div class="d-flex justify-content-center align-items-center">
+                            <i class="bi bi-person-badge me-2"></i>Anda login sebagai Dosen !!!
+                        </div>
                     </span>
                 </div>
             </div>
@@ -185,3 +183,4 @@
     </div>
 </div>
 @endsection
+
