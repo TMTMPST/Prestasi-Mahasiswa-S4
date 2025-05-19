@@ -17,9 +17,10 @@ class MahasiswaSeeder extends Seeder
                 'angkatan' => 2023,
                 'nama' => 'Diana Rahmawati',
                 'password' => Hash::make('12345'),
-                'prodi' => 'Teknik Informatika',
+                'prodi' => 'Sistem Informasi Bisnis', // diubah
                 'level' => 'MHS',
-                'poin_presma' => 10
+                'poin_presma' => 10,
+                'prestasi_tertinggi' => 'Juara 1 Lomba Coding Nasional'
             ],
             [
                 'nim' => '2341720093',
@@ -28,7 +29,8 @@ class MahasiswaSeeder extends Seeder
                 'password' => Hash::make('12345'),
                 'prodi' => 'Teknik Informatika',
                 'level' => 'MHS',
-                'poin_presma' => 10
+                'poin_presma' => 10,
+                'prestasi_tertinggi' => 'Finalis Hackathon Regional'
             ],
             [
                 'nim' => '2341720243',
@@ -37,16 +39,18 @@ class MahasiswaSeeder extends Seeder
                 'password' => Hash::make('12345'),
                 'prodi' => 'Teknik Informatika',
                 'level' => 'MHS',
-                'poin_presma' => 8
+                'poin_presma' => 8,
+                'prestasi_tertinggi' => 'Juara 2 UI/UX Competition'
             ],
             [
                 'nim' => '2341720112',
                 'angkatan' => 2023,
                 'nama' => 'Vidi Joshubzky Saviola',
                 'password' => Hash::make('12345'),
-                'prodi' => 'Teknik Informatika',
+                'prodi' => 'Sistem Informasi Bisnis', // diubah
                 'level' => 'MHS',
-                'poin_presma' => 7
+                'poin_presma' => 7,
+                'prestasi_tertinggi' => 'Peserta Seminar Nasional'
             ],
             [
                 'nim' => '2341720155',
@@ -55,7 +59,8 @@ class MahasiswaSeeder extends Seeder
                 'password' => Hash::make('12345'),
                 'prodi' => 'Teknik Informatika',
                 'level' => 'MHS',
-                'poin_presma' => 9
+                'poin_presma' => 9,
+                'prestasi_tertinggi' => 'Juara 3 Lomba Robotik'
             ],
             [
                 'nim' => '2341720188',
@@ -64,16 +69,18 @@ class MahasiswaSeeder extends Seeder
                 'password' => Hash::make('12345'),
                 'prodi' => 'Teknik Informatika',
                 'level' => 'MHS',
-                'poin_presma' => 6
+                'poin_presma' => 6,
+                'prestasi_tertinggi' => 'Peserta Workshop AI'
             ],
             [
                 'nim' => '2341720201',
                 'angkatan' => 2023,
                 'nama' => 'Andi Pratama',
                 'password' => Hash::make('12345'),
-                'prodi' => 'Teknik Informatika',
+                'prodi' => 'Sistem Informasi Bisnis', // diubah
                 'level' => 'MHS',
-                'poin_presma' => 5
+                'poin_presma' => 5,
+                'prestasi_tertinggi' => 'Peserta Lomba Web Design'
             ],
             [
                 'nim' => '2341720222',
@@ -82,7 +89,8 @@ class MahasiswaSeeder extends Seeder
                 'password' => Hash::make('12345'),
                 'prodi' => 'Teknik Informatika',
                 'level' => 'MHS',
-                'poin_presma' => 8
+                'poin_presma' => 8,
+                'prestasi_tertinggi' => 'Juara Harapan Lomba IT'
             ],
             [
                 'nim' => '2341720255',
@@ -91,17 +99,20 @@ class MahasiswaSeeder extends Seeder
                 'password' => Hash::make('12345'),
                 'prodi' => 'Teknik Informatika',
                 'level' => 'MHS',
-                'poin_presma' => 7
+                'poin_presma' => 7,
+                'prestasi_tertinggi' => 'Peserta Seminar Internasional'
             ],
             [
                 'nim' => '2341720277',
                 'angkatan' => 2023,
                 'nama' => 'Dewi Lestari',
                 'password' => Hash::make('12345'),
-                'prodi' => 'Teknik Informatika',
+                'prodi' => 'Sistem Informasi Bisnis', // diubah
                 'level' => 'MHS',
-                'poin_presma' => 6
+                'poin_presma' => 6,
+                'prestasi_tertinggi' => 'Peserta Lomba Poster'
             ],
+            // ... sisanya tetap
             [
                 'nim' => '2341720301',
                 'angkatan' => 2023,
@@ -109,7 +120,8 @@ class MahasiswaSeeder extends Seeder
                 'password' => Hash::make('12345'),
                 'prodi' => 'Teknik Informatika',
                 'level' => 'MHS',
-                'poin_presma' => 9
+                'poin_presma' => 9,
+                'prestasi_tertinggi' => 'Juara 1 Lomba Startup'
             ],
             [
                 'nim' => '2341720312',
@@ -118,7 +130,8 @@ class MahasiswaSeeder extends Seeder
                 'password' => Hash::make('12345'),
                 'prodi' => 'Teknik Informatika',
                 'level' => 'MHS',
-                'poin_presma' => 8
+                'poin_presma' => 8,
+                'prestasi_tertinggi' => 'Juara 2 Lomba Animasi'
             ],
             [
                 'nim' => '2341720323',
@@ -127,7 +140,8 @@ class MahasiswaSeeder extends Seeder
                 'password' => Hash::make('12345'),
                 'prodi' => 'Teknik Informatika',
                 'level' => 'MHS',
-                'poin_presma' => 7
+                'poin_presma' => 7,
+                'prestasi_tertinggi' => 'Peserta Lomba Esai'
             ],
             [
                 'nim' => '2341720334',
@@ -136,7 +150,8 @@ class MahasiswaSeeder extends Seeder
                 'password' => Hash::make('12345'),
                 'prodi' => 'Teknik Informatika',
                 'level' => 'MHS',
-                'poin_presma' => 6
+                'poin_presma' => 6,
+                'prestasi_tertinggi' => 'Peserta Lomba Infografis'
             ],
             [
                 'nim' => '2341720345',
@@ -145,7 +160,8 @@ class MahasiswaSeeder extends Seeder
                 'password' => Hash::make('12345'),
                 'prodi' => 'Teknik Informatika',
                 'level' => 'MHS',
-                'poin_presma' => 5
+                'poin_presma' => 5,
+                'prestasi_tertinggi' => 'Peserta Lomba Poster'
             ],
             [
                 'nim' => '2341720356',
@@ -154,7 +170,8 @@ class MahasiswaSeeder extends Seeder
                 'password' => Hash::make('12345'),
                 'prodi' => 'Teknik Informatika',
                 'level' => 'MHS',
-                'poin_presma' => 9
+                'poin_presma' => 9,
+                'prestasi_tertinggi' => 'Juara 2 Lomba IT'
             ],
             [
                 'nim' => '2341720367',
@@ -163,7 +180,8 @@ class MahasiswaSeeder extends Seeder
                 'password' => Hash::make('12345'),
                 'prodi' => 'Teknik Informatika',
                 'level' => 'MHS',
-                'poin_presma' => 8
+                'poin_presma' => 8,
+                'prestasi_tertinggi' => 'Juara Harapan Lomba Coding'
             ],
             [
                 'nim' => '2341720378',
@@ -172,7 +190,8 @@ class MahasiswaSeeder extends Seeder
                 'password' => Hash::make('12345'),
                 'prodi' => 'Teknik Informatika',
                 'level' => 'MHS',
-                'poin_presma' => 7
+                'poin_presma' => 7,
+                'prestasi_tertinggi' => 'Peserta Lomba Startup'
             ],
             [
                 'nim' => '2341720389',
@@ -181,7 +200,8 @@ class MahasiswaSeeder extends Seeder
                 'password' => Hash::make('12345'),
                 'prodi' => 'Teknik Informatika',
                 'level' => 'MHS',
-                'poin_presma' => 6
+                'poin_presma' => 6,
+                'prestasi_tertinggi' => 'Peserta Lomba UI/UX'
             ],
             [
                 'nim' => '2341720390',
@@ -190,7 +210,8 @@ class MahasiswaSeeder extends Seeder
                 'password' => Hash::make('12345'),
                 'prodi' => 'Teknik Informatika',
                 'level' => 'MHS',
-                'poin_presma' => 5
+                'poin_presma' => 5,
+                'prestasi_tertinggi' => 'Peserta Lomba Animasi'
             ],
             [
                 'nim' => '2341720401',
@@ -199,7 +220,8 @@ class MahasiswaSeeder extends Seeder
                 'password' => Hash::make('12345'),
                 'prodi' => 'Teknik Informatika',
                 'level' => 'MHS',
-                'poin_presma' => 9
+                'poin_presma' => 9,
+                'prestasi_tertinggi' => 'Juara 1 Lomba IT'
             ],
             [
                 'nim' => '2341720412',
@@ -208,7 +230,8 @@ class MahasiswaSeeder extends Seeder
                 'password' => Hash::make('12345'),
                 'prodi' => 'Teknik Informatika',
                 'level' => 'MHS',
-                'poin_presma' => 8
+                'poin_presma' => 8,
+                'prestasi_tertinggi' => 'Juara 2 Lomba Startup'
             ],
             [
                 'nim' => '2341720423',
@@ -217,7 +240,8 @@ class MahasiswaSeeder extends Seeder
                 'password' => Hash::make('12345'),
                 'prodi' => 'Teknik Informatika',
                 'level' => 'MHS',
-                'poin_presma' => 7
+                'poin_presma' => 7,
+                'prestasi_tertinggi' => 'Peserta Lomba Coding'
             ],
             [
                 'nim' => '2341720434',
@@ -226,7 +250,8 @@ class MahasiswaSeeder extends Seeder
                 'password' => Hash::make('12345'),
                 'prodi' => 'Teknik Informatika',
                 'level' => 'MHS',
-                'poin_presma' => 6
+                'poin_presma' => 6,
+                'prestasi_tertinggi' => 'Peserta Lomba IT'
             ],
             [
                 'nim' => '2341720445',
@@ -235,7 +260,8 @@ class MahasiswaSeeder extends Seeder
                 'password' => Hash::make('12345'),
                 'prodi' => 'Teknik Informatika',
                 'level' => 'MHS',
-                'poin_presma' => 5
+                'poin_presma' => 5,
+                'prestasi_tertinggi' => 'Peserta Lomba Startup'
             ],
             [
                 'nim' => '2341720456',
@@ -244,7 +270,8 @@ class MahasiswaSeeder extends Seeder
                 'password' => Hash::make('12345'),
                 'prodi' => 'Teknik Informatika',
                 'level' => 'MHS',
-                'poin_presma' => 9
+                'poin_presma' => 9,
+                'prestasi_tertinggi' => 'Juara 1 Lomba Poster'
             ],
         ]);
     }
