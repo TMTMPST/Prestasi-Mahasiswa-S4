@@ -11,11 +11,25 @@
     <li class="nav-title">Menu</li>
 
     {{-- Common menu items for all users --}}
-    <li class="nav-item">
-        <a class="nav-link {{ request()->is('*/dashboard') ? 'active' : '' }}" href="/dashboard">
-            <i class="nav-icon cil-home"></i> Beranda
-        </a>
-    </li>
+    @if (session('level') == 'DSN') 
+        <li class="nav-item">
+            <a class="nav-link {{ request()->is('dosen/dashboard') ? 'active' : '' }}" href="/dosen/dashboard">
+                <i class="nav-icon cil-home"></i> Beranda
+            </a>
+        </li>
+    @elseif (session('level') == 'MHS')
+        <li class="nav-item">
+            <a class="nav-link {{ request()->is('mahasiswa/dashboard') ? 'active' : '' }}" href="/mahasiswa/dashboard">
+                <i class="nav-icon cil-home"></i> Beranda
+            </a>
+        </li>
+    @else
+        <li class="nav-item">
+            <a class="nav-link {{ request()->is('admin/dashboard') ? 'active' : '' }}" href="/admin/dashboard">
+                <i class="nav-icon cil-home"></i> Beranda
+            </a>
+        </li>
+    @endif
 
     <li class="nav-item">
         <a class="nav-link" href="/Lomba/index">
@@ -56,19 +70,13 @@
     {{-- Student Menu Items --}}
     @if (session('level') == 'DSN')
         <li class="nav-item">
-            <a class="nav-link" href="/prestasi-mahasiswa">
+            <a class="nav-link" href="/Presma/index">
                 <i class="nav-icon cil-list"></i> Prestasi Mahasiswa
             </a>
         </li>
 
         <li class="nav-item">
-            <a class="nav-link" href="/riwayat-prestasi">
-                <i class="nav-icon cil-history"></i> Riwayat Prestasi
-            </a>
-        </li>
-
-        <li class="nav-item">
-            <a class="nav-link" href="/bimbingan">
+            <a class="nav-link" href="/Bimbingan/index">
                 <i class="nav-icon cil-user"></i> Bimbingan
             </a>
         </li>

@@ -58,9 +58,15 @@
                                         <p><strong>Selesai:</strong> {{ \Carbon\Carbon::parse($lomba->tanggal_selesai)->format('d M Y') }}</p>
                                     </div>
                                 </div>
-                                <div class="d-flex justify-content-between mt-3">
-                                    <a href="#" class="btn btn-primary btn-sm">Detail</a>
-                                    <a href="https://docs.google.com/forms/d/19H28i0qObFYdjkMxXbRN_eOjimVQlGO1L6rKW6-sqXc/edit" target="_blank" class="btn btn-success btn-sm">Daftar</a>
+                                <div class="mt-4" style="position: absolute; bottom: 6px; left: 0; right: 0;">
+                                    <div class="card border-0 bg-light">
+                                        <div class="card-body p-2">
+                                            <div class="d-flex justify-content-between">
+                                                <a href="#" class="btn btn-primary btn-sm">Detail</a>
+                                                <a href="https://docs.google.com/forms/d/19H28i0qObFYdjkMxXbRN_eOjimVQlGO1L6rKW6-sqXc/edit" target="_blank" class="btn btn-success btn-sm">Daftar</a>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>

@@ -20,13 +20,14 @@ class DosenController extends Controller
         return view('dosen.dashboard', compact('lombas', 'mahasiswa'));
     }
 
+    // LOMBA
     public function infoLomba()
     {   
-    // Ambil semua data lomba dengan relasi jika diperlukan
-    $lombas = DataLomba::with(['tingkatRelasi', 'kategoriRelasi', 'jenisRelasi'])->get();
+        // Ambil semua data lomba dengan relasi jika diperlukan
+        $lombas = DataLomba::with(['tingkatRelasi', 'kategoriRelasi', 'jenisRelasi'])->get();
 
-    // Tampilkan halaman informasi lomba
-    return view('dosen.lomba.index', compact('lombas'));
+        // Tampilkan halaman informasi lomba
+        return view('dosen.lomba.index', compact('lombas'));
     }
 
     public function CreateInfoLomba()
@@ -79,10 +80,29 @@ class DosenController extends Controller
         // Tampilkan form untuk mengedit informasi lomba
         return view('dosen.edit_info_lomba', compact('lomba'));
     }
-    public function DosenPembimbing()
-    {
-    // Isi logika yang dibutuhkan, misalnya ambil data pembimbing
-    return view('dosen.dospem.index'); // Pastikan view ini ada
-    }
 
+    public function showLomba($id)
+    {
+        // Ambil detail lomba berdasarkan ID beserta relasinya
+        $lomba = DataLomba::with(['tingkatRelasi', 'kategoriRelasi', 'jenisRelasi'])->findOrFail($id);
+
+        // Tampilkan view detail lomba
+        return view('dosen.lomba.show', compact('lomba'));
+    }
+    // LOMBA
+
+    public function Presma()
+{
+    // Ambil semua data mahasiswa, urutkan berdasarkan poin tertinggi
+    $mahasiswa = Mahasiswa::orderByDesc('poin_presma')->get();
+
+    // Tampilkan view presma (pastikan view 'dosen.presma.index' ada)
+    return view('dosen.presma.index', compact('mahasiswa'));
+}
+
+    public function Bimbingan()
+    {
+        return view('dosen.bimbingan.index');
+    }
+    
 }

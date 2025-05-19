@@ -50,14 +50,11 @@ Route::get('/admin/dashboard', [AdminController::class, 'dashboard'])->middlewar
 Route::get('/dosen/dashboard', [DosenController::class, 'dashboard'])->middleware('checklogin')->name('dosen.dashboard');
 
 
-//Dosen routes
 
     // Dosen routes
-    // Route::middleware(['web', 'checklogin'])->group(function () {
-    //     Route::get('/dosen/dashboard', [DosenController::class, 'dashboard'])->name('dosen.dashboard');
-    //     Route::get('/dosen/Lomba/index', [DosenController::class, 'infoLomba'])->name('dosen.lomba.index');
-    //     Route::get('/dosen/Lomba/{id}/detail', [DosenController::class, 'showLomba'])->name('dosen.lomba.show');
-    //     Route::get('/dosen/Lomba/{id}/daftar', [DosenController::class, 'daftarLomba'])->name('dosen.lomba.daftar');
+        Route::get('/Lomba/index', [DosenController::class, 'infoLomba'])->name('dosen.lomba.index');
+        Route::get('/Lomba/{id}/detail', [DosenController::class, 'showLomba'])->name('dosen.lomba.show');
+        Route::get('/Lomba/{id}/daftar', [DosenController::class, 'daftarLomba'])->name('dosen.lomba.daftar');
 
-    //     Route::get('/dosen/DosPem/index', [DosenController::class, 'DosenPembimbing'])->name('dosen.DosPem.index');
-    // });
+        Route::get('Presma/index', [DosenController::class, 'Presma'])->name('dosen.presma.index');
+        Route::get('Bimbingan/index', [DosenController::class, 'Bimbingan'])->name('dosen.bimbingan.index');
