@@ -3,7 +3,7 @@
 @section('content')
 <style>
     .custom-header {
-        background: #953c37;
+        background: #ef4a24;
         color: #fff;
         font-weight: bold;
         letter-spacing: 1px;
@@ -18,7 +18,7 @@
         box-shadow: 0 8px 24px #2c3e5026;
     }
     .custom-btn-primary {
-        background: #953c37;
+        background: #ef4a24;
         border: none;
     }
     .custom-btn-primary:hover {
@@ -29,7 +29,7 @@
         border: none;
     }
     .custom-btn-success:hover {
-        background: #953c37;
+        background: #ef4a24;
     }
     .custom-title {
         color: #2c3e50;
@@ -78,4 +78,3 @@
     </div>
 </div>
 @endsection
-
