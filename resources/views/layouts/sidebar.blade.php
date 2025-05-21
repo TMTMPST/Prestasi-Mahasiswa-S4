@@ -61,7 +61,7 @@
         </li>
 
         <li class="nav-item">
-            <a class="nav-link" href="/manajemen-presma">
+            <a class="nav-link" href="/Presma/index">
                 <i class="nav-icon cil-settings"></i> Manajemen Presma
             </a>
         </li>
