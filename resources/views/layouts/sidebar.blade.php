@@ -85,19 +85,19 @@
     {{-- Lecturer Menu Items --}}
     @if (session('level') == 'MHS')
         <li class="nav-item">
-            <a class="nav-link" href="/prestasi-mahasiswa">
+            <a class="nav-link" href="/prestasi/index">
                 <i class="nav-icon cil-list"></i> Prestasi Mahasiswa
             </a>
         </li>
 
         <li class="nav-item">
-            <a class="nav-link" href="/bimbingan-dosen">
+            <a class="nav-link" href="/bimbingan/index">
                 <i class="nav-icon cil-user"></i> Bimbingan Mahasiswa
             </a>
         </li>
 
         <li class="nav-item">
-            <a class="nav-link" href="/verifikasi-prestasi">
+            <a class="nav-link" href="/verifikasi/index">
                 <i class="nav-icon cil-check"></i> Verifikasi Prestasi
             </a>
         </li>

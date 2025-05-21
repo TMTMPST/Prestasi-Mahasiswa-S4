@@ -58,3 +58,17 @@ Route::get('/dosen/dashboard', [DosenController::class, 'dashboard'])->middlewar
 
         Route::get('Presma/index', [DosenController::class, 'Presma'])->name('dosen.presma.index');
         Route::get('Bimbingan/index', [DosenController::class, 'Bimbingan'])->name('dosen.bimbingan.index');
+
+
+        
+    // Mahasiswa Routes
+        // prestasi
+        Route::get('/prestasi/index', [MahasiswaController::class, 'prestasi'])->name('mahasiswa.prestasi.index');
+        Route::get('/prestasi/tambah_prestasi', [MahasiswaController::class, 'create_prestasi'])->name('mahasiswa.prestasi.tambah_prestasi');
+
+        // bimbingan
+        Route::get('/bimbingan/index', [MahasiswaController::class, 'bimbingan'])->name('mahasiswa.bimbingan.index');
+        Route::get('/bimbingan/tambah_bimbingan', [MahasiswaController::class, 'create_bimbingan'])->name('mahasiswa.bimbingan.tambah_bimbingan');
+
+        // Verifikasi
+        Route::get('/verifikasi/index', [MahasiswaController::class, 'verifikasi'])->name('mahasiswa.verifikasi.index');
