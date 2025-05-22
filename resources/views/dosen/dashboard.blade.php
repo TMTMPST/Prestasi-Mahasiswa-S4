@@ -122,6 +122,40 @@
         </div>
     </div>
 
+    {{-- Filter Jenis Lomba --}}
+    @php
+        $jenisList = [
+            ['id_jenis' => 1, 'nama_jenis' => 'Website'],
+            ['id_jenis' => 2, 'nama_jenis' => 'Mobile App'],
+            ['id_jenis' => 3, 'nama_jenis' => 'Game'],
+            ['id_jenis' => 4, 'nama_jenis' => 'Desktop App'],
+            ['id_jenis' => 5, 'nama_jenis' => 'IoT'],
+        ];
+        $selectedJenis = request('jenis');
+    @endphp
+    <div class="row mb-3">
+        <div class="col-12">
+            <form method="GET" action="{{ url()->current() }}">
+                <div class="d-flex align-items-center gap-2">
+                    <label for="jenis" class="fw-bold text-maroon mb-0">
+                        <i class="bi bi-funnel me-1"></i>Filter Jenis Lomba:
+                    </label>
+                    <select name="jenis" id="jenis" class="form-select w-auto" onchange="this.form.submit()">
+                        <option value="">Semua Jenis</option>
+                        @foreach($jenisList as $jenis)
+                            <option value="{{ $jenis['id_jenis'] }}" {{ $selectedJenis == $jenis['id_jenis'] ? 'selected' : '' }}>
+                                {{ $jenis['nama_jenis'] }}
+                            </option>
+                        @endforeach
+                    </select>
+                    @if($selectedJenis)
+                        <a href="{{ url()->current() }}" class="btn btn-outline-secondary btn-sm ms-2">Reset</a>
+                    @endif
+                </div>
+            </form>
+        </div>
+    </div>
+
     {{-- Rekomendasi Lomba --}}
     <div class="row mb-4">
         <div class="col-12">
@@ -129,7 +163,12 @@
                 <i class="bi bi-trophy me-2"></i>Rekomendasi Lomba
             </h5>
             <div class="d-flex flex-nowrap overflow-auto" style="gap: 1.5rem; padding-bottom: 8px;">
-                @forelse ($lombas->take(4) as $lomba)
+                @php
+                    $filteredLombas = $selectedJenis
+                        ? $lombas->where('id_jenis', $selectedJenis)
+                        : $lombas;
+                @endphp
+                @forelse ($filteredLombas->take(4) as $lomba)
                     <div class="flex-shrink-0" style="min-width: 350px; max-width: 400px;">
                         <div class="card lomba-card border-0 h-100">
                             <div class="card-header bg-navy text-white text-truncate">
@@ -241,5 +280,3 @@
     </div>
 </div>
 @endsection
-
-

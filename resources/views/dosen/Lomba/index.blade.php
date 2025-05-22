@@ -39,10 +39,13 @@
 </style>
 <div class="container py-4">
     <h4 class="mb-4 custom-title">Informasi Lomba</h4>
+    <a href="{{ route('lomba.create') }}" class="btn btn-success mb-3">+ Tambah Lomba</a>
 
     <div class="row row-cols-1 row-cols-md-3 g-4">
+        
         @forelse ($lombas as $lomba)
             <div class="col">
+                
                 <div class="card shadow-sm h-100 custom-card">
                     <div class="card-header custom-header">
                         {{ $lomba->nama_lomba }}

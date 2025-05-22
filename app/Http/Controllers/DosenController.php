@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\DataLomba;
 use App\Models\Mahasiswa;
+use App\Models\Tingkat;
+use App\Models\Kategori;
+use App\Models\Jenis;
 
 class DosenController extends Controller
 {
@@ -22,19 +25,20 @@ class DosenController extends Controller
 
     // LOMBA
     public function infoLomba()
-    {   
-        // Ambil semua data lomba dengan relasi jika diperlukan
-        $lombas = DataLomba::with(['tingkatRelasi', 'kategoriRelasi', 'jenisRelasi'])->get();
+{   
+    $lombas = DataLomba::with(['tingkatRelasi', 'kategoriRelasi', 'jenisRelasi'])->get();
 
-        // Tampilkan halaman informasi lomba
-        return view('dosen.lomba.index', compact('lombas'));
-    }
+    return view('dosen.lomba.index', compact('lombas'));
+}
 
     public function CreateInfoLomba()
-    {
-        // Tampilkan form untuk menambahkan informasi lomba
-        return view('dosen.create_info_lomba');
-    }   
+{
+    $tingkats = Tingkat::all();
+    $kategoris = Kategori::all();
+    $jeniss = Jenis::all();
+
+    return view('dosen.lomba.create', compact('tingkats', 'kategoris', 'jeniss'));
+}   
 
     public function DeleteInfoLomba($id)
     {
@@ -49,36 +53,29 @@ class DosenController extends Controller
     public function storeInfoLomba(Request $request)
     {
         // Validasi data yang diterima dari form
-        $request->validate([
+            $request->validate([
             'nama_lomba' => 'required|string|max:255',
             'tingkat' => 'required|exists:tingkats,id',
             'kategori' => 'required|exists:kategoris,id',
             'jenis' => 'required|exists:jenis_lombas,id',
+            'penyelenggara' => 'required|string|max:255',
             'tanggal_mulai' => 'required|date',
             'tanggal_selesai' => 'required|date|after_or_equal:tanggal_mulai',
         ]);
 
-        // Simpan informasi lomba baru ke database
-        DataLomba::create([
+            DataLomba::create([
             'nama_lomba' => $request->input('nama_lomba'),
             'tingkat_id' => $request->input('tingkat'),
             'kategori_id' => $request->input('kategori'),
             'jenis_id' => $request->input('jenis'),
+            'penyelenggara' => $request->input('penyelenggara'),
             'tanggal_mulai' => $request->input('tanggal_mulai'),
             'tanggal_selesai' => $request->input('tanggal_selesai'),
         ]);
 
+
         // Redirect ke halaman dashboard dosen dengan pesan sukses
         return redirect()->route('dosen.dashboard')->with('success', 'Informasi lomba berhasil ditambahkan.');
-    }
-
-    public function editInfoLomba($id)
-    {
-        // Ambil informasi lomba berdasarkan ID
-        $lomba = DataLomba::findOrFail($id);
-
-        // Tampilkan form untuk mengedit informasi lomba
-        return view('dosen.edit_info_lomba', compact('lomba'));
     }
 
     public function showLomba($id)

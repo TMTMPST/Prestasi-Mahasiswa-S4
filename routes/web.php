@@ -53,8 +53,11 @@ Route::get('/dosen/dashboard', [DosenController::class, 'dashboard'])->middlewar
 
     // Dosen routes
         Route::get('/Lomba/index', [DosenController::class, 'infoLomba'])->name('dosen.lomba.index');
+        Route::get('/lomba', [DosenController::class, 'infoLomba'])->name('lomba.index');
         Route::get('/Lomba/{id}/detail', [DosenController::class, 'showLomba'])->name('dosen.lomba.show');
         Route::get('/Lomba/{id}/daftar', [DosenController::class, 'daftarLomba'])->name('dosen.lomba.daftar');
+        Route::get('/Lomba/create', [DosenController::class, 'CreateInfoLomba'])->name('lomba.create');
+        Route::post('/Lomba/store', [DosenController::class, 'storeInfoLomba'])->name('lomba.store');
 
         Route::get('Presma/index', [DosenController::class, 'Presma'])->name('dosen.presma.index');
         Route::get('Bimbingan/index', [DosenController::class, 'Bimbingan'])->name('dosen.bimbingan.index');
