@@ -39,7 +39,7 @@
 </style>
 <div class="container py-4">
     <h4 class="mb-4 custom-title">Informasi Lomba</h4>
-    <a href="{{ route('lomba.create') }}" class="btn btn-success mb-3">+ Tambah Lomba</a>
+    <a href="{{ route('lomba.create') }}" class="btn custom-btn-primary mb-3 text-white">+ Tambah Lomba</a>
 
     <div class="row row-cols-1 row-cols-md-3 g-4">
         
