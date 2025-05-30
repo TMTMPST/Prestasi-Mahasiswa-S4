@@ -49,7 +49,10 @@ Route::get('/mahasiswa/dashboard', [MahasiswaController::class, 'dashboard'])->m
 Route::get('/admin/dashboard', [AdminController::class, 'dashboard'])->middleware('checklogin')->name('admin.dashboard');
 Route::get('/dosen/dashboard', [DosenController::class, 'dashboard'])->middleware('checklogin')->name('dosen.dashboard');
 
-
+    // Admin routes
+        Route::get('/manajemen-user', [AdminController::class, 'showPengguna'])->name('admin.pengguna.index');
+        Route::get('/manajemen-user/tambah', [AdminController::class, 'createPengguna'])->name('admin.pengguna.create');
+        Route::post('/manajemen-user/store', [AdminController::class, 'storePengguna']);
 
     // Dosen routes
         Route::get('/Lomba/index', [DosenController::class, 'infoLomba'])->name('dosen.lomba.index');
