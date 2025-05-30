@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Dosen;
 
 class Mahasiswa extends Model
 {
@@ -21,6 +22,7 @@ class Mahasiswa extends Model
         'nama',
         'password',
         'prodi',
+        'dosen_nip',
         'level',
         'prestasi_tertinggi', // tambahkan ini
         'poin_presma',        // dan ini
@@ -32,6 +34,10 @@ class Mahasiswa extends Model
         return $this->belongsTo(Level::class, 'level', 'id_level');
     }
 
+    public function dosen()
+{
+    return $this->belongsTo(Dosen::class, 'dosen_nip', 'nip');
+}
     // Jika mahasiswa memiliki banyak prestasi, bisa tambahkan relasi seperti ini:
     // public function prestasis()
     // {

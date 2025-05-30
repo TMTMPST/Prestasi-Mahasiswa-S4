@@ -8,6 +8,8 @@ use App\Models\Mahasiswa;
 use App\Models\Tingkat;
 use App\Models\Kategori;
 use App\Models\Jenis;
+use App\Models\Dosen;
+use Illuminate\Support\Facades\Auth;
 
 class DosenController extends Controller
 {
@@ -40,43 +42,35 @@ class DosenController extends Controller
     return view('dosen.lomba.create', compact('tingkats', 'kategoris', 'jeniss'));
 }   
 
-    public function DeleteInfoLomba($id)
-    {
-        // Hapus informasi lomba berdasarkan ID
-        $lomba = DataLomba::findOrFail($id);
-        $lomba->delete();
+    
 
-        // Redirect ke halaman dashboard dosen dengan pesan sukses
-        return redirect()->route('dosen.dashboard')->with('success', 'Informasi lomba berhasil dihapus.');
-    }
+public function storeInfoLomba(Request $request)
+{
+    $request->validate([
+        'nama_lomba' => 'required|string|max:255',
+        'tingkat' => 'required|exists:tingkats,id',
+        'kategori' => 'required|exists:kategoris,id',
+        'jenis' => 'required|exists:jenis_lombas,id',
+        'penyelenggara' => 'required|string|max:255',
+        'tanggal_mulai' => 'required|date',
+        'tanggal_selesai' => 'required|date|after_or_equal:tanggal_mulai',
+    ]);
 
-    public function storeInfoLomba(Request $request)
-    {
-        // Validasi data yang diterima dari form
-            $request->validate([
-            'nama_lomba' => 'required|string|max:255',
-            'tingkat' => 'required|exists:tingkats,id',
-            'kategori' => 'required|exists:kategoris,id',
-            'jenis' => 'required|exists:jenis_lombas,id',
-            'penyelenggara' => 'required|string|max:255',
-            'tanggal_mulai' => 'required|date',
-            'tanggal_selesai' => 'required|date|after_or_equal:tanggal_mulai',
-        ]);
+    DataLomba::create([
+        'nama_lomba' => $request->input('nama_lomba'),
+        'tingkat_id' => $request->input('tingkat'),
+        'kategori_id' => $request->input('kategori'),
+        'jenis_id' => $request->input('jenis'),
+        'penyelenggara' => $request->input('penyelenggara'),
+        'tanggal_mulai' => $request->input('tanggal_mulai'),
+        'tanggal_selesai' => $request->input('tanggal_selesai'),
+        'status' => 'menunggu', // Status default menunggu verifikasi
+        'dosen_id' => Auth::id(), // Mengambil ID user yang login sebagai dosen
+    ]);
 
-            DataLomba::create([
-            'nama_lomba' => $request->input('nama_lomba'),
-            'tingkat_id' => $request->input('tingkat'),
-            'kategori_id' => $request->input('kategori'),
-            'jenis_id' => $request->input('jenis'),
-            'penyelenggara' => $request->input('penyelenggara'),
-            'tanggal_mulai' => $request->input('tanggal_mulai'),
-            'tanggal_selesai' => $request->input('tanggal_selesai'),
-        ]);
+    return redirect()->route('dosen.dashboard')->with('success', 'Informasi lomba berhasil dikirim ke admin untuk diverifikasi.');
+}
 
-
-        // Redirect ke halaman dashboard dosen dengan pesan sukses
-        return redirect()->route('dosen.dashboard')->with('success', 'Informasi lomba berhasil ditambahkan.');
-    }
 
     public function showLomba($id)
     {
@@ -96,10 +90,25 @@ class DosenController extends Controller
     // Tampilkan view presma (pastikan view 'dosen.presma.index' ada)
     return view('dosen.presma.index', compact('mahasiswa'));
 }
+// di Dosen.php
+public function mahasiswas()
+{
+    return $this->hasMany(Mahasiswa::class, 'dosen_nip', 'nip');
+}
 
     public function Bimbingan()
-    {
-        return view('dosen.bimbingan.index');
+{
+    $dosen = session('user');
+    if (!$dosen || session('level') !== 'DSN') {
+        return redirect()->route('login')->with('error', 'Silakan login sebagai dosen.');
     }
-    
+    $mahasiswa = \App\Models\Mahasiswa::where('dosen_nip', $dosen->nip)->get();
+
+    return view('dosen.Bimbingan.index', compact('mahasiswa'));
+}
+public function showPrestasiMhs($nim)
+{
+    $mahasiswa = Mahasiswa::with('prestasis')->where('nim', $nim)->firstOrFail();
+    return view('dosen.Bimbingan.prestasi', compact('mahasiswa'));
+}    
 }

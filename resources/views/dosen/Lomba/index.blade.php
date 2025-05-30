@@ -39,7 +39,10 @@
 </style>
 <div class="container py-4">
     <h4 class="mb-4 custom-title">Informasi Lomba</h4>
-    <a href="{{ route('lomba.create') }}" class="btn custom-btn-primary mb-3 text-white">+ Tambah Lomba</a>
+    <div class="d-flex justify-content-end mb-3">
+    <button type="button" class="btn custom-btn-primary text-white" data-coreui-toggle="modal" data-coreui-target="#modalTambahLomba">
+    + Tambah Lomba
+</button>    </div>
 
     <div class="row row-cols-1 row-cols-md-3 g-4">
         
@@ -80,4 +83,36 @@
         @endforelse
     </div>
 </div>
+<!-- Modal Tambah Lomba -->
+<div class="modal fade" id="modalTambahLomba" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-body" id="modalTambahLombaContent">
+        <!-- Konten form akan dimuat lewat AJAX -->
+        <div class="text-center py-5">
+            <div class="spinner-border text-primary" role="status"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const modal = document.getElementById('modalTambahLomba');
+
+    modal.addEventListener('show.coreui.modal', function () {
+        // Load form create via AJAX
+        fetch("{{ route('lomba.create') }}")
+            .then(response => response.text())
+            .then(html => {
+                document.getElementById('modalTambahLombaContent').innerHTML = html;
+            })
+            .catch(error => {
+                document.getElementById('modalTambahLombaContent').innerHTML = '<div class="alert alert-danger">Gagal memuat form.</div>';
+                console.error(error);
+            });
+    });
+});
+</script>
+
 @endsection

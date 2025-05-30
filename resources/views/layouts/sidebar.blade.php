@@ -67,7 +67,8 @@
         </li>
     @endif
 
-    {{-- Student Menu Items --}}
+        {{-- Lecturer Menu Items --}}
+
     @if (session('level') == 'DSN')
         <li class="nav-item">
             <a class="nav-link" href="/Presma/index">
@@ -81,8 +82,7 @@
             </a>
         </li>
     @endif
-
-    {{-- Lecturer Menu Items --}}
+{{-- Student Menu Items --}}
     @if (session('level') == 'MHS')
         <li class="nav-item">
             <a class="nav-link" href="/prestasi/index">

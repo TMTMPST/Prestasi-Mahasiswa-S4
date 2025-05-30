@@ -60,8 +60,11 @@ Route::get('/dosen/dashboard', [DosenController::class, 'dashboard'])->middlewar
         Route::post('/Lomba/store', [DosenController::class, 'storeInfoLomba'])->name('lomba.store');
 
         Route::get('/Presma/index', [DosenController::class, 'Presma'])->name('dosen.presma.index');
+        
         Route::get('Bimbingan/index', [DosenController::class, 'Bimbingan'])->name('dosen.bimbingan.index');
-
+        Route::get('/dosen/bimbingan/{nim}/prestasi', [DosenController::class, 'showPrestasiMhs'])->name('dosen.bimbingan.prestasi');
+        Route::get('/dosen/bimbingan', [DosenController::class, 'Bimbingan'])->name('dosen.bimbingan');
+        
 
         
     // Mahasiswa Routes
