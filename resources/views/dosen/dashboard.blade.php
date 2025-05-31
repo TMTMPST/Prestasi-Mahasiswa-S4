@@ -4,29 +4,40 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 
 <style>
-    body { background: #f7f8fa; }
-    .bg-maroon { background-color: #ef4a24 !important; }
-    .bg-navy { background-color: #2c3e50 !important; }
-    .text-maroon { color: #ef4a24 !important; }
-    .text-navy { color: #2c3e50 !important; }
+    :root {
+        --primary: #9a3324;
+        --secondary: #0c1e47;
+        --accent1: #f26430;
+        --accent2: #f7b71d;
+        --accent3: #f9a11b;
+        --light: #ffffff;
+        --dark: #212529;
+        --gray: #6c757d;
+        --light-gray: #f8f9fa;
+    }
+    body { background: var(--light-gray); }
+    .bg-maroon { background-color: var(--primary) !important; }
+    .bg-navy { background-color: var(--secondary) !important; }
+    .text-maroon { color: var(--primary) !important; }
+    .text-navy { color: var(--secondary) !important; }
     .dashboard-card {
-        border-left: 6px solid #ef4a24;
+        border-left: 6px solid var(--primary);
         border-radius: 18px;
-        box-shadow: 0 4px 24px rgba(44,62,80,0.07);
+        box-shadow: 0 4px 24px rgba(12,30,71,0.07);
     }
     .lomba-card {
-        border-top: 4px solid #ef4a24;
+        border-top: 4px solid var(--accent1);
         border-radius: 18px;
         transition: transform 0.15s, box-shadow 0.15s;
-        box-shadow: 0 2px 12px rgba(44,62,80,0.08);
+        box-shadow: 0 2px 12px rgba(12,30,71,0.08);
     }
     .lomba-card:hover {
         transform: translateY(-6px) scale(1.03);
-        box-shadow: 0 8px 32px rgba(44,62,80,0.13);
+        box-shadow: 0 8px 32px rgba(12,30,71,0.13);
     }
     .ranking-header {
-        background: linear-gradient(90deg, #ef4a24 80%);
-        color: #fff;
+        background: linear-gradient(90deg, var(--primary) 100%);
+        color: var(--light);
         border-radius: 18px 18px 0 0;
     }
     .card-header {
@@ -36,37 +47,37 @@
         letter-spacing: 0.5px;
     }
     .btn-maroon {
-        background-color: #ef4a24;
-        color: #fff;
+        background-color: var(--primary);
+        color: var(--light);
         border: none;
         border-radius: 8px;
         transition: background 0.2s;
         font-weight: 500;
     }
     .btn-maroon:hover, .btn-maroon:focus {
-        background-color: #2c3e50;
-        color: #fff;
+        background-color: var(--secondary);
+        color: var(--light);
     }
     .btn-outline-maroon {
-        border: 1.5px solid #ef4a24;
-        color: #ef4a24;
-        background: #fff;
+        border: 1.5px solid var(--primary);
+        color: var(--primary);
+        background: var(--light);
         border-radius: 8px;
         font-weight: 500;
         transition: background 0.2s, color 0.2s;
     }
     .btn-outline-maroon:hover, .btn-outline-maroon:focus {
-        background: #ef4a24;
-        color: #fff;
+        background: var(--primary);
+        color: var(--light);
     }
     .table thead th {
-        background-color: #2c3e50;
-        color: #fff;
+        background-color: var(--secondary);
+        color: var(--light);
         font-size: 1rem;
         letter-spacing: 0.5px;
     }
     .badge.bg-primary {
-        background-color: #ef4a24 !important;
+        background-color: var(--secondary) !important;
         font-weight: 500;
         border-radius: 8px;
         padding: 0.5em 1em;
@@ -76,8 +87,8 @@
         width: 30px;
         height: 30px;
         border-radius: 50%;
-        background-color: #2c3e50;
-        color: #fff;
+        background-color: var(--secondary);
+        color: var(--light);
         text-align: center;
         line-height: 30px;
         font-size: 1.2rem;
@@ -86,7 +97,7 @@
         transition: background 0.15s;
     }
     .table tbody tr:hover {
-        background: #f3f3f3;
+        background: var(--light-gray);
     }
     .d-flex.flex-nowrap.overflow-auto::-webkit-scrollbar,
     .table-responsive::-webkit-scrollbar {
@@ -122,107 +133,72 @@
         </div>
     </div>
 
-    {{-- Filter Jenis Lomba --}}
-    @php
-        $jenisList = [
-            ['id_jenis' => 1, 'nama_jenis' => 'Website'],
-            ['id_jenis' => 2, 'nama_jenis' => 'Mobile App'],
-            ['id_jenis' => 3, 'nama_jenis' => 'Game'],
-            ['id_jenis' => 4, 'nama_jenis' => 'Desktop App'],
-            ['id_jenis' => 5, 'nama_jenis' => 'IoT'],
-        ];
-        $selectedJenis = request('jenis');
-    @endphp
-    <div class="row mb-3">
-        <div class="col-12">
-            <form method="GET" action="{{ url()->current() }}">
-                <div class="d-flex align-items-center gap-2">
-                    <label for="jenis" class="fw-bold text-maroon mb-0">
-                        <i class="bi bi-funnel me-1"></i>Filter Jenis Lomba:
-                    </label>
-                    <select name="jenis" id="jenis" class="form-select w-auto" onchange="this.form.submit()">
-                        <option value="">Semua Jenis</option>
-                        @foreach($jenisList as $jenis)
-                            <option value="{{ $jenis['id_jenis'] }}" {{ $selectedJenis == $jenis['id_jenis'] ? 'selected' : '' }}>
-                                {{ $jenis['nama_jenis'] }}
-                            </option>
-                        @endforeach
-                    </select>
-                    @if($selectedJenis)
-                        <a href="{{ url()->current() }}" class="btn btn-outline-secondary btn-sm ms-2">Reset</a>
-                    @endif
-                </div>
-            </form>
-        </div>
-    </div>
-
     {{-- Rekomendasi Lomba --}}
     <div class="row mb-4">
         <div class="col-12">
-            <h5 class="mb-3 fw-bold text-maroon">
-                <i class="bi bi-trophy me-2"></i>Rekomendasi Lomba
-            </h5>
-            <div class="d-flex flex-nowrap overflow-auto" style="gap: 1.5rem; padding-bottom: 8px;">
-                @php
-                    $filteredLombas = $selectedJenis
-                        ? $lombas->where('id_jenis', $selectedJenis)
-                        : $lombas;
-                @endphp
-                @forelse ($filteredLombas->take(4) as $lomba)
-                    <div class="flex-shrink-0" style="min-width: 350px; max-width: 400px;">
-                        <div class="card lomba-card border-0 h-100">
-                            <div class="card-header bg-navy text-white text-truncate">
-                                <i class="bi bi-award me-2"></i>{{ $lomba->nama_lomba }}
-                            </div>
-                            <div class="card-body" style="font-size: 0.97rem;">
-                                <div class="row">
-                                    <div class="col-6">
-                                        <p class="mb-2">
-                                            <strong class="text-maroon">Tingkat:</strong>
-                                            {{ $lomba->tingkatRelasi->nama_tingkat ?? '-' }}
-                                        </p>
-                                        <p class="mb-2">
-                                            <strong class="text-maroon">Kategori:</strong>
-                                            {{ $lomba->kategoriRelasi->nama_kategori ?? '-' }}
-                                        </p>
-                                        <p class="mb-0">
-                                            <strong class="text-maroon">Jenis:</strong>
-                                            {{ $lomba->jenisRelasi->nama_jenis ?? '-' }}
-                                        </p>
+            <div class="card dashboard-card shadow-sm">
+                <div class="card-header bg-maroon text-white d-flex align-items-center">
+                    <i class="bi bi-trophy me-2"></i>Rekomendasi Lomba
+                </div>
+                <div class="card-body">
+                    <div class="d-flex flex-nowrap overflow-auto" style="gap: 1.5rem; padding-bottom: 8px;">
+                        @forelse ($lombas->take(4) as $lomba)
+                            <div class="flex-shrink-0" style="min-width: 350px; max-width: 400px;">
+                                <div class="card lomba-card border-0 h-100 mb-0">
+                                    <div class="card-header bg-navy text-white text-truncate">
+                                        <i class="bi bi-award me-2"></i>{{ $lomba->nama_lomba }}
                                     </div>
-                                    <div class="col-6">
-                                        <p class="mb-2">
-                                            <strong class="text-maroon">Penyelenggara:</strong>
-                                            {{ $lomba->penyelenggara }}
-                                        </p>
-                                        <p class="mb-2">
-                                            <strong class="text-maroon">Mulai:</strong>
-                                            {{ \Carbon\Carbon::parse($lomba->tanggal_mulai)->format('d M Y') }}
-                                        </p>
-                                        <p class="mb-0">
-                                            <strong class="text-maroon">Selesai:</strong>
-                                            {{ \Carbon\Carbon::parse($lomba->tanggal_selesai)->format('d M Y') }}
-                                        </p>
+                                    <div class="card-body" style="font-size: 0.97rem;">
+                                        <div class="row">
+                                            <div class="col-6">
+                                                <p class="mb-2">
+                                                    <strong class="text-maroon">Tingkat:</strong>
+                                                    {{ $lomba->tingkatRelasi->nama_tingkat ?? '-' }}
+                                                </p>
+                                                <p class="mb-2">
+                                                    <strong class="text-maroon">Kategori:</strong>
+                                                    {{ $lomba->kategoriRelasi->nama_kategori ?? '-' }}
+                                                </p>
+                                                <p class="mb-0">
+                                                    <strong class="text-maroon">Jenis:</strong>
+                                                    {{ $lomba->jenisRelasi->nama_jenis ?? '-' }}
+                                                </p>
+                                            </div>
+                                            <div class="col-6">
+                                                <p class="mb-2">
+                                                    <strong class="text-maroon">Penyelenggara:</strong>
+                                                    {{ $lomba->penyelenggara }}
+                                                </p>
+                                                <p class="mb-2">
+                                                    <strong class="text-maroon">Mulai:</strong>
+                                                    {{ \Carbon\Carbon::parse($lomba->tanggal_mulai)->format('d M Y') }}
+                                                </p>
+                                                <p class="mb-0">
+                                                    <strong class="text-maroon">Selesai:</strong>
+                                                    {{ \Carbon\Carbon::parse($lomba->tanggal_selesai)->format('d M Y') }}
+                                                </p>
+                                            </div>
+                                        </div>
+                                        <div class="mt-4 d-flex justify-content-between">
+                                            <a href="#" class="btn btn-outline-maroon btn-sm px-3">
+                                                <i class="bi bi-info-circle"></i> Detail
+                                            </a>
+                                            <a href="#" class="btn btn-maroon btn-sm px-3">
+                                                <i class="bi bi-pencil-square"></i> Daftar
+                                            </a>
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="mt-4 d-flex justify-content-between">
-                                    <a href="#" class="btn btn-outline-maroon btn-sm px-3">
-                                        <i class="bi bi-info-circle"></i> Detail
-                                    </a>
-                                    <a href="https://docs.google.com/forms/d/19H28i0qObFYdjkMxXbRN_eOjimVQlGO1L6rKW6-sqXc/edit" target="_blank" class="btn btn-maroon btn-sm px-3">
-                                        <i class="bi bi-pencil-square"></i> Daftar
-                                    </a>
+                            </div>
+                        @empty
+                            <div class="flex-shrink-0" style="min-width: 350px;">
+                                <div class="alert alert-warning mb-0 w-100">
+                                    <i class="bi bi-exclamation-triangle me-2"></i>Tidak ada informasi lomba tersedia.
                                 </div>
                             </div>
-                        </div>
+                        @endforelse
                     </div>
-                @empty
-                    <div class="flex-shrink-0" style="min-width: 350px;">
-                        <div class="alert alert-warning mb-0 w-100">
-                            <i class="bi bi-exclamation-triangle me-2"></i>Tidak ada informasi lomba tersedia.
-                        </div>
-                    </div>
-                @endforelse
+                </div>
             </div>
         </div>
     </div>
@@ -248,7 +224,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @forelse ($mahasiswa as $index => $mhs)
+                                @forelse ($mahasiswa->take(5) as $index => $mhs)
                                     <tr>
                                         <td>{{ $index + 1 }}</td>
                                         <td>

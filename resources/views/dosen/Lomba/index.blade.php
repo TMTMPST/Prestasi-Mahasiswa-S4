@@ -2,9 +2,20 @@
 
 @section('content')
 <style>
+    :root {
+        --primary: #9a3324;
+        --secondary: #0c1e47;
+        --accent1: #f26430;
+        --accent2: #f7b71d;
+        --accent3: #f9a11b;
+        --light: #ffffff;
+        --dark: #212529;
+        --gray: #6c757d;
+        --light-gray: #f8f9fa;
+    }
     .custom-header {
-        background: #ef4a24;
-        color: #fff;
+        background: var(--primary);
+        color: var(--light);
         font-weight: bold;
         letter-spacing: 1px;
     }
@@ -12,29 +23,45 @@
         border: none;
         border-radius: 1rem;
         transition: transform 0.2s, box-shadow 0.2s;
+        background: var(--light);
     }
     .custom-card:hover {
         transform: translateY(-5px) scale(1.02);
-        box-shadow: 0 8px 24px #2c3e5026;
+        box-shadow: 0 8px 24px var(--secondary)26;
     }
     .custom-btn-primary {
-        background: #ef4a24;
+        background: var(--primary);
         border: none;
+        color: var(--light);
     }
     .custom-btn-primary:hover {
-        background: #2c3e50;
+        background: var(--secondary);
+        color: var(--light);
     }
     .custom-btn-success {
-        background: #2c3e50;
+        background: var(--secondary);
         border: none;
+        color: var(--light);
     }
     .custom-btn-success:hover {
-        background: #ef4a24;
+        background: var(--accent1);
+        color: var(--light);
     }
     .custom-title {
-        color: #2c3e50;
+        color: var(--secondary);
         font-weight: bold;
         letter-spacing: 1px;
+    }
+    .card.border-0.bg-light {
+        background: var(--light-gray) !important;
+    }
+    .alert-warning {
+        background: var(--accent2);
+        color: var(--dark);
+        border: none;
+    }
+    .spinner-border.text-primary {
+        color: var(--primary) !important;
     }
 </style>
 <div class="container py-4">
