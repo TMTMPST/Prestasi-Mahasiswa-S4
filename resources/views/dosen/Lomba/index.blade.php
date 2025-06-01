@@ -3,57 +3,68 @@
 @section('content')
 <style>
     :root {
-        --primary: #9a3324;
-        --secondary: #0c1e47;
-        --accent1: #f26430;
-        --accent2: #f7b71d;
-        --accent3: #f9a11b;
+        --primary: #0c1e47;         /* Biru tua utama (bg utama welcome) */
+        --secondary: #f7b71d;       /* Kuning emas (aksen utama welcome) */
+        --gray: #f26430;         /* Oranye (aksen tombol/ikon) */
+        --accent2: #f9a11b;         /* Oranye muda */
+        --accent3: #e6e6e6;         /* Abu terang (background) */
         --light: #ffffff;
         --dark: #212529;
         --gray: #6c757d;
         --light-gray: #f8f9fa;
     }
+    body { background: var(--accent3); }
     .custom-header {
         background: var(--primary);
         color: var(--light);
         font-weight: bold;
         letter-spacing: 1px;
+        border-radius: 18px 18px 0 0;
     }
     .custom-card {
         border: none;
-        border-radius: 1rem;
+        border-radius: 18px;
         transition: transform 0.2s, box-shadow 0.2s;
         background: var(--light);
+        box-shadow: 0 2px 12px rgba(12,30,71,0.08);
+        border-top: 4px solid var(--gray);
     }
     .custom-card:hover {
-        transform: translateY(-5px) scale(1.02);
-        box-shadow: 0 8px 24px var(--secondary)26;
+        transform: translateY(-6px) scale(1.03);
+        box-shadow: 0 8px 32px rgba(12,30,71,0.13);
     }
     .custom-btn-primary {
-        background: var(--primary);
-        border: none;
-        color: var(--light);
-    }
-    .custom-btn-primary:hover {
         background: var(--secondary);
+        border: none;
+        color: var(--primary);
+        border-radius: 8px;
+        font-weight: 500;
+        transition: background 0.2s, color 0.2s;
+    }
+    .custom-btn-primary:hover, .custom-btn-primary:focus {
+        background: var(--primary);
         color: var(--light);
     }
     .custom-btn-success {
-        background: var(--secondary);
+        background: var(--primary);
         border: none;
         color: var(--light);
+        border-radius: 8px;
+        font-weight: 500;
+        transition: background 0.2s, color 0.2s;
     }
-    .custom-btn-success:hover {
-        background: var(--accent1);
+    .custom-btn-success:hover, .custom-btn-success:focus {
+        background: var(--gray);
         color: var(--light);
     }
     .custom-title {
-        color: var(--secondary);
+        color: var(--primary);
         font-weight: bold;
         letter-spacing: 1px;
     }
     .card.border-0.bg-light {
         background: var(--light-gray) !important;
+        border-radius: 12px;
     }
     .alert-warning {
         background: var(--accent2);
@@ -92,8 +103,8 @@
                             <div class="card border-0 bg-light">
                                 <div class="card-body p-2">
                                     <div class="d-flex justify-content-between">
-                                        <a href="#" class="btn custom-btn-primary btn-sm text-white">Detail</a>
-                                        <a href="https://docs.google.com/forms/d/19H28i0qObFYdjkMxXbRN_eOjimVQlGO1L6rKW6-sqXc/edit" target="_blank" class="btn custom-btn-success btn-sm text-white">Daftar</a>
+                                        <a href="#" class="btn custom-btn-primary btn-sm">Detail</a>
+                                        <a href="https://docs.google.com/forms/d/19H28i0qObFYdjkMxXbRN_eOjimVQlGO1L6rKW6-sqXc/edit" target="_blank" class="btn custom-btn-success btn-sm">Daftar</a>
                                     </div>
                                 </div>
                             </div>

@@ -13,7 +13,7 @@ class Dosen extends Authenticatable
     public $incrementing = false;
 
     protected $fillable = [
-        'nip', 'nama', 'email', 'password', 'level',
+        'nip', 'nama', 'email', 'password', 'level', 'bidangMinat',
     ];
 
     protected $hidden = [

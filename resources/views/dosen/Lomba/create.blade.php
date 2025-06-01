@@ -1,15 +1,16 @@
 <style>
     :root {
-        --primary: #9a3324;
-        --secondary: #0c1e47;
-        --accent1: #f26430;
-        --accent2: #f7b71d;
-        --accent3: #f9a11b;
+        --primary: #0c1e47;         /* Biru tua utama (bg utama welcome) */
+        --secondary: #f7b71d;       /* Kuning emas (aksen utama welcome) */
+        --accent1: #f26430;         /* Oranye (aksen tombol/ikon) */
+        --accent2: #f9a11b;         /* Oranye muda */
+        --accent3: #e6e6e6;         /* Abu terang (background) */
         --light: #ffffff;
         --dark: #212529;
         --gray: #6c757d;
         --light-gray: #f8f9fa;
     }
+    body { background: var(--accent3); }
     .custom-bg-primary {
         background-color: var(--primary) !important;
         color: var(--light) !important;
@@ -17,18 +18,20 @@
     .custom-btn-primary {
         background-color: var(--primary) !important;
         border: none !important;
-        color: var(--light) !important;
+        color: var(--secondary) !important;
         font-weight: 600;
         transition: box-shadow 0.2s;
-        box-shadow: 0 2px 8px rgba(154,51,36,0.15);
+        box-shadow: 0 2px 8px rgba(12,30,71,0.15);
     }
     .custom-btn-primary:hover {
-        box-shadow: 0 4px 16px rgba(154,51,36,0.25);
+        box-shadow: 0 4px 16px rgba(12,30,71,0.25);
         opacity: 0.95;
+        background-color: var(--secondary) !important;
+        color: var(--primary) !important;
     }
     .custom-btn-secondary {
         background-color: var(--secondary) !important;
-        color: var(--light) !important;
+        color: var(--primary) !important;
         font-weight: 600;
         border: none;
     }
@@ -38,10 +41,10 @@
     }
     .custom-form-control:focus {
         border-color: var(--accent1);
-        box-shadow: 0 0 0 0.2rem rgba(241,90,41,.15);
+        box-shadow: 0 0 0 0.2rem rgba(242,100,48,.15);
     }
     .custom-label {
-        color: var(--secondary);
+        color: var(--primary);
         font-weight: 500;
     }
     .form-control.custom-form-control, .form-select.custom-form-control {
@@ -52,7 +55,7 @@
     }
     .form-control.custom-form-control:focus, .form-select.custom-form-control:focus {
         border-color: var(--accent1);
-        box-shadow: 0 0 0 0.2rem rgba(241,90,41,.15);
+        box-shadow: 0 0 0 0.2rem rgba(242,100,48,.15);
         background-color: var(--light);
     }
     /* File input styling */
@@ -64,7 +67,7 @@
     }
     input[type="file"].custom-form-control::file-selector-button {
         background: var(--primary);
-        color: var(--light);
+        color: var(--secondary);
         border: none;
         padding: 0.5em 1em;
         border-radius: 4px;
@@ -74,6 +77,7 @@
     }
     input[type="file"].custom-form-control::file-selector-button:hover {
         background: var(--accent1);
+        color: var(--light);
     }
 </style>
 
@@ -82,7 +86,6 @@
     <div class="modal-header custom-bg-primary text-center">
         <h5 class="modal-title w-100">Tambah Lomba</h5>
     </div>
-
 
     <div class="modal-body">
         <div class="mb-3">
@@ -150,7 +153,6 @@
     </div>
 </form>
 
-
 <script>
 document.addEventListener('submit', function (e) {
     if (e.target && e.target.id === 'formTambahLomba') {
@@ -182,6 +184,3 @@ document.addEventListener('submit', function (e) {
     }
 });
 </script>
-
-
-

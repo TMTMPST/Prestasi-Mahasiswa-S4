@@ -5,23 +5,23 @@
 
 <style>
     :root {
-        --primary: #9a3324;
-        --secondary: #0c1e47;
-        --accent1: #f26430;
-        --accent2: #f7b71d;
-        --accent3: #f9a11b;
+        --primary: #0c1e47;         /* Biru tua utama (bg utama welcome) */
+        --secondary: #f7b71d;       /* Kuning emas (aksen utama welcome) */
+        --accent1: #f26430;         /* Oranye (aksen tombol/ikon) */
+        --accent2: #f9a11b;         /* Oranye muda */
+        --accent3: #e6e6e6;         /* Abu terang (background) */
         --light: #ffffff;
         --dark: #212529;
         --gray: #6c757d;
         --light-gray: #f8f9fa;
     }
-    body { background: var(--light-gray); }
+    body { background: var(--accent3); }
     .bg-maroon { background-color: var(--primary) !important; }
     .bg-navy { background-color: var(--secondary) !important; }
     .text-maroon { color: var(--primary) !important; }
     .text-navy { color: var(--secondary) !important; }
     .dashboard-card {
-        border-left: 6px solid var(--primary);
+        border-left: 6px solid var(--secondary);
         border-radius: 18px;
         box-shadow: 0 4px 24px rgba(12,30,71,0.07);
     }
@@ -47,37 +47,38 @@
         letter-spacing: 0.5px;
     }
     .btn-maroon {
-        background-color: var(--primary);
-        color: var(--light);
+        background-color: var(--secondary);
+        color: var(--primary);
         border: none;
         border-radius: 8px;
         transition: background 0.2s;
         font-weight: 500;
     }
     .btn-maroon:hover, .btn-maroon:focus {
-        background-color: var(--secondary);
+        background-color: var(--primary);
         color: var(--light);
     }
     .btn-outline-maroon {
-        border: 1.5px solid var(--primary);
-        color: var(--primary);
+        border: 1.5px solid var(--secondary);
+        color: var(--secondary);
         background: var(--light);
         border-radius: 8px;
         font-weight: 500;
         transition: background 0.2s, color 0.2s;
     }
     .btn-outline-maroon:hover, .btn-outline-maroon:focus {
-        background: var(--primary);
-        color: var(--light);
+        background: var(--secondary);
+        color: var(--primary);
     }
     .table thead th {
-        background-color: var(--secondary);
+        background-color: var(--primary);
         color: var(--light);
         font-size: 1rem;
         letter-spacing: 0.5px;
     }
     .badge.bg-primary {
         background-color: var(--secondary) !important;
+        color: var(--primary) !important;
         font-weight: 500;
         border-radius: 8px;
         padding: 0.5em 1em;
@@ -87,7 +88,7 @@
         width: 30px;
         height: 30px;
         border-radius: 50%;
-        background-color: var(--secondary);
+        background-color: var(--primary);
         color: var(--light);
         text-align: center;
         line-height: 30px;
@@ -144,42 +145,44 @@
                     <div class="d-flex flex-nowrap overflow-auto" style="gap: 1.5rem; padding-bottom: 8px;">
                         @forelse ($lombas->take(4) as $lomba)
                             <div class="flex-shrink-0" style="min-width: 350px; max-width: 400px;">
-                                <div class="card lomba-card border-0 h-100 mb-0">
+                                <div class="card lomba-card border-0 h-100 mb-0 d-flex flex-column">
                                     <div class="card-header bg-navy text-white text-truncate">
                                         <i class="bi bi-award me-2"></i>{{ $lomba->nama_lomba }}
                                     </div>
-                                    <div class="card-body" style="font-size: 0.97rem;">
-                                        <div class="row">
-                                            <div class="col-6">
-                                                <p class="mb-2">
-                                                    <strong class="text-maroon">Tingkat:</strong>
-                                                    {{ $lomba->tingkatRelasi->nama_tingkat ?? '-' }}
-                                                </p>
-                                                <p class="mb-2">
-                                                    <strong class="text-maroon">Kategori:</strong>
-                                                    {{ $lomba->kategoriRelasi->nama_kategori ?? '-' }}
-                                                </p>
-                                                <p class="mb-0">
-                                                    <strong class="text-maroon">Jenis:</strong>
-                                                    {{ $lomba->jenisRelasi->nama_jenis ?? '-' }}
-                                                </p>
-                                            </div>
-                                            <div class="col-6">
-                                                <p class="mb-2">
-                                                    <strong class="text-maroon">Penyelenggara:</strong>
-                                                    {{ $lomba->penyelenggara }}
-                                                </p>
-                                                <p class="mb-2">
-                                                    <strong class="text-maroon">Mulai:</strong>
-                                                    {{ \Carbon\Carbon::parse($lomba->tanggal_mulai)->format('d M Y') }}
-                                                </p>
-                                                <p class="mb-0">
-                                                    <strong class="text-maroon">Selesai:</strong>
-                                                    {{ \Carbon\Carbon::parse($lomba->tanggal_selesai)->format('d M Y') }}
-                                                </p>
+                                    <div class="card-body d-flex flex-column justify-content-between" style="font-size: 0.97rem; flex: 1 1 auto;">
+                                        <div>
+                                            <div class="row">
+                                                <div class="col-6">
+                                                    <p class="mb-2">
+                                                        <strong class="text-maroon">Tingkat:</strong>
+                                                        {{ $lomba->tingkatRelasi->nama_tingkat ?? '-' }}
+                                                    </p>
+                                                    <p class="mb-2">
+                                                        <strong class="text-maroon">Kategori:</strong>
+                                                        {{ $lomba->kategoriRelasi->nama_kategori ?? '-' }}
+                                                    </p>
+                                                    <p class="mb-0">
+                                                        <strong class="text-maroon">Jenis:</strong>
+                                                        {{ $lomba->jenisRelasi->nama_jenis ?? '-' }}
+                                                    </p>
+                                                </div>
+                                                <div class="col-6">
+                                                    <p class="mb-2">
+                                                        <strong class="text-maroon">Penyelenggara:</strong>
+                                                        {{ $lomba->penyelenggara }}
+                                                    </p>
+                                                    <p class="mb-2">
+                                                        <strong class="text-maroon">Mulai:</strong>
+                                                        {{ \Carbon\Carbon::parse($lomba->tanggal_mulai)->format('d M Y') }}
+                                                    </p>
+                                                    <p class="mb-0">
+                                                        <strong class="text-maroon">Selesai:</strong>
+                                                        {{ \Carbon\Carbon::parse($lomba->tanggal_selesai)->format('d M Y') }}
+                                                    </p>
+                                                </div>
                                             </div>
                                         </div>
-                                        <div class="mt-4 d-flex justify-content-between">
+                                        <div class="mt-4 d-flex justify-content-between align-items-end" style="min-height: 38px;">
                                             <a href="#" class="btn btn-outline-maroon btn-sm px-3">
                                                 <i class="bi bi-info-circle"></i> Detail
                                             </a>
