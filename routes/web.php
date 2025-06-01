@@ -71,8 +71,9 @@ Route::get('/dosen/dashboard', [DosenController::class, 'dashboard'])->middlewar
         Route::get('/dosen/bimbingan/{nim}/prestasi', [DosenController::class, 'showPrestasiMhs'])->name('dosen.bimbingan.prestasi');
         Route::get('/dosen/bimbingan', [DosenController::class, 'Bimbingan'])->name('dosen.bimbingan');
         
-
-        
+        Route::get('/dosen/profile', [DosenController::class, 'profile'])->name('dosen.profile.index');
+Route::put('/dosen/profile/update/{nip}', [DosenController::class, 'updateProfileAction'])->name('dosen.profile.update');        
+Route::get('/dosen/profile/update_profile/{nip}', [DosenController::class, 'showUpdateProfile'])->name('dosen.profile.update_profile');
     // Mahasiswa Routes
         // prestasi
         Route::get('/prestasi/index', [MahasiswaController::class, 'prestasi'])->name('mahasiswa.prestasi.index');

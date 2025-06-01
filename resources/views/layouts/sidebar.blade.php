@@ -1,23 +1,35 @@
 <div class="sidebar-header text-center">
-    <div class="sidebar-brand text-center"><b>SIMPRES</b></div>
+    <div class="sidebar-brand text-center">
+        <b>SIMPRES</b>
+        @if($authUser)
+            <div class="small mt-1">
+                {{ $authUser->nama ?? '-' }}<br>
+                <span class="text-muted" style="font-size: 0.8em;">
+                    @if($authLevel == 'ADM') Admin
+                    @elseif($authLevel == 'DSN') Dosen
+                    @elseif($authLevel == 'MHS') Mahasiswa
+                    @endif
+                </span>
+            </div>
+        @endif
+    </div>
     <button class="btn btn-lg btn-primary me-10 sidebar-toggler d-none d-lg-block" type="button"
         data-coreui-toggle="unfoldable"
         onclick="document.querySelector('.sidebar').classList.toggle('sidebar-unfoldable')">
     </button>
 </div>
 
-
 <ul class="sidebar-nav">
     <li class="nav-title">Menu</li>
 
     {{-- Common menu items for all users --}}
-    @if (session('level') == 'DSN') 
+    @if ($authLevel == 'DSN') 
         <li class="nav-item">
             <a class="nav-link {{ request()->is('dosen/dashboard') ? 'active' : '' }}" href="/dosen/dashboard">
                 <i class="nav-icon cil-home"></i> Beranda
             </a>
         </li>
-    @elseif (session('level') == 'MHS')
+    @elseif ($authLevel == 'MHS')
         <li class="nav-item">
             <a class="nav-link {{ request()->is('mahasiswa/dashboard') ? 'active' : '' }}" href="/mahasiswa/dashboard">
                 <i class="nav-icon cil-home"></i> Beranda
@@ -41,7 +53,7 @@
     </li>
 
     {{-- Administrator Menu Items --}}
-    @if (session('level') == 'ADM')
+    @if ($authLevel == 'ADM')
         <li class="nav-item">
             <a class="nav-link" href="/manajemen-user">
                 <i class="nav-icon cil-people"></i> Manajemen Pengguna
@@ -67,9 +79,8 @@
         </li>
     @endif
 
-        {{-- Lecturer Menu Items --}}
-
-    @if (session('level') == 'DSN')
+    {{-- Lecturer Menu Items --}}
+    @if ($authLevel == 'DSN')
         <li class="nav-item">
             <a class="nav-link" href="/Presma/index">
                 <i class="nav-icon cil-list"></i> Prestasi Mahasiswa
@@ -82,8 +93,9 @@
             </a>
         </li>
     @endif
-{{-- Student Menu Items --}}
-    @if (session('level') == 'MHS')
+
+    {{-- Student Menu Items --}}
+    @if ($authLevel == 'MHS')
         <li class="nav-item">
             <a class="nav-link" href="/prestasi/index">
                 <i class="nav-icon cil-list"></i> Prestasi Mahasiswa

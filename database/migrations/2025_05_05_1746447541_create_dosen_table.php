@@ -9,13 +9,15 @@ class CreateDosenTable extends Migration
     public function up()
     {
         Schema::create('dosen', function (Blueprint $table) {
-            $table->string('nip', 15)->primary();
-            $table->string('nama', 100);
-            $table->string('password');
-            $table->char('level', 3);
-            $table->timestamps();
-            $table->foreign('level')->references('id_level')->on('level');
-        });
+        $table->string('nip', 15)->primary();
+        $table->string('nama', 100);
+        $table->string('email', 100)->nullable(); // tambahkan kolom email
+        $table->string('password');
+        $table->char('level', 3);
+        $table->string('bidangMinat', 100)->nullable(); // tambahkan kolom bidangMinat
+        $table->timestamps();
+        $table->foreign('level')->references('id_level')->on('level');
+    });
     }
 
     public function down()

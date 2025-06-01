@@ -110,5 +110,26 @@ public function showPrestasiMhs($nim)
 {
     $mahasiswa = Mahasiswa::with('prestasis')->where('nim', $nim)->firstOrFail();
     return view('dosen.Bimbingan.prestasi', compact('mahasiswa'));
-}    
+}
+
+public function profile()
+{
+    // $dosen = session('user');
+    // Jika ingin ambil dari model:
+    $dosen = Dosen::where('nip', session('user')->nip)->first();
+    return view('dosen.Profile.index', compact('dosen'));
+}
+
+public function showUpdateProfile($nip)
+{
+    $dosen = \App\Models\Dosen::where('nip', $nip)->firstOrFail();
+    return view('dosen.Profile.update_profile', compact('dosen'));
+}
+
+public function updateProfileAction(Request $request, $nip)
+{
+    $dosen = Dosen::where('nip', $nip)->firstOrFail();
+    $dosen->update($request->only(['nama', 'email', 'bidangMinat']));
+    return redirect()->route('dosen.profile.index')->with('success', 'Profil berhasil diperbarui.');
+}
 }
