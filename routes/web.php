@@ -52,7 +52,10 @@ Route::get('/dosen/dashboard', [DosenController::class, 'dashboard'])->middlewar
     // Admin routes
         Route::get('/manajemen-user', [AdminController::class, 'showPengguna'])->name('admin.pengguna.index');
         Route::get('/manajemen-user/tambah', [AdminController::class, 'createPengguna'])->name('admin.pengguna.create');
-        Route::post('/manajemen-user/store', [AdminController::class, 'storePengguna']);
+        Route::post('/manajemen-user/store', [AdminController::class, 'storePengguna'])->name('admin.pengguna.store');
+        Route::get('/manajemen-user/edit/{id}', [AdminController::class, 'editPengguna'])->name('admin.pengguna.edit');
+        Route::put('/manajemen-user/update/{id}', [AdminController::class, 'updatePengguna'])->name('admin.pengguna.update');
+        Route::delete('/manajemen-user/delete/{id}', [AdminController::class, 'deletePengguna'])->name('admin.pengguna.delete');
 
     // Dosen routes
         Route::get('/Lomba/index', [DosenController::class, 'infoLomba'])->name('dosen.lomba.index');

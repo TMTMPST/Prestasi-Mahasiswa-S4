@@ -23,8 +23,8 @@
                 <!-- NIM / NIP / Username -->
                 <div class="mb-3">
                     <label for="nim_nip_username" class="form-label">NIM / NIP / Username</label>
-                    <input class="form-control" type="text" id="nim_nip_username" name="nim_nip_username" placeholder="Default input"
-                        aria-label="default input example">
+                    <input class="form-control" type="text" id="nim_nip_username" name="nim_nip_username"
+                        placeholder="Default input" aria-label="default input example">
                 </div>
 
                 <!-- Nama -->
@@ -45,21 +45,31 @@
                 <!-- Angkatan (Hidden by Default) -->
                 <div class="mb-3" id="angkatanField" style="display: none;">
                     <label for="angkatan" class="form-label">Angkatan</label>
-                    <input class="form-control" type="number" id="angkatan" name="angkatan" placeholder="Masukkan Angkatan"
-                        aria-label="default input example">
+                    <input class="form-control" type="number" id="angkatan" name="angkatan"
+                        placeholder="Masukkan Angkatan" aria-label="default input example">
                 </div>
 
                 <!-- Program Studi (Hidden by Default) -->
                 <div class="mb-3" id="prodiField" style="display: none;">
                     <label for="program_studi" class="form-label">Program Studi</label>
-                    <input class="form-control" type="text" id="prodi" name="prodi" placeholder="Masukkan Program Studi"
-                        aria-label="default input example">
+                    <input class="form-control" type="text" id="prodi" name="prodi"
+                        placeholder="Masukkan Program Studi" aria-label="default input example">
                 </div>
 
                 <!-- Back Button -->
                 <a href="/manajemen-user" class="btn btn-secondary">Kembali</a>
                 <!-- Submit Button -->
                 <button type="submit" class="btn btn-success">Simpan</button>
+                @if ($errors->any())
+                    <div class="alert alert-danger">
+                        <ul>
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                @endif
+
             </form>
         </div>
     </div>
