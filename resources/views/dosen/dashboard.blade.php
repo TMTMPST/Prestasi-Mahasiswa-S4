@@ -227,7 +227,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @forelse ($mahasiswa->take(5) as $index => $mhs)
+                                @forelse ($mahasiswa->take(6) as $index => $mhs)
                                     <tr>
                                         <td>{{ $index + 1 }}</td>
                                         <td>
