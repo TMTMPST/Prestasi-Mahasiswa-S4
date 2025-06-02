@@ -13,7 +13,7 @@ class LevelSeeder extends Seeder
         DB::table('level')->insert([
             ['id_level' => 'ADM', 'keterangan' => 'Administrator'],
             ['id_level' => 'MHS', 'keterangan' => 'Mahasiswa'],
-            ['id_level' => 'DOS', 'keterangan' => 'Dosen'],
+            ['id_level' => 'DSN', 'keterangan' => 'Dosen'],
         ]);
     }
 }

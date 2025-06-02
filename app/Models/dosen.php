@@ -2,26 +2,33 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Foundation\Auth\User as Authenticatable;
 
-class Dosen extends Model
+class Dosen extends Authenticatable
 {
-    use HasFactory;
+    protected $guard = 'dosen';
 
     protected $table = 'dosen';
     protected $primaryKey = 'nip';
-    public $incrementing = false; // NIP tidak auto increment
+    public $incrementing = false;
+
     protected $fillable = [
-        'nip',
-        'nama',
+        'nip', 'nama', 'email', 'password', 'level', 'bidangMinat',
+    ];
+
+    protected $hidden = [
         'password',
-        'level',
     ];
 
     // Relasi dengan tabel Level
     public function level()
     {
         return $this->belongsTo(Level::class, 'level', 'id_level');
+    }
+
+    // Relasi dengan tabel Mahasiswa
+    public function mahasiswas()
+    {
+        return $this->hasMany(Mahasiswa::class, 'dosen_nip', 'nip');
     }
 }

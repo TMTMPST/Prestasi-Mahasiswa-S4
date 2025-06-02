@@ -15,6 +15,30 @@
     <!-- Scripts -->
     @vite(['resources/sass/app.scss', 'resources/js/app.js'])
     @stack('styles')
+    
+    <style>
+        /* Minimal fix for responsive sidebar content */
+        .content-wrapper {
+            transition: margin-left 0.15s ease-in-out;
+        }
+        
+        /* When sidebar is expanded (default CoreUI width is 256px) */
+        .sidebar:not(.sidebar-unfoldable) ~ .content-wrapper {
+            margin-left: 256px;
+        }
+        
+        /* When sidebar is collapsed (CoreUI collapsed width is 56px) */
+        .sidebar.sidebar-unfoldable ~ .content-wrapper {
+            margin-left: 56px;
+        }
+        
+        /* Mobile responsiveness */
+        @media (max-width: 991.98px) {
+            .content-wrapper {
+                margin-left: 0 !important;
+            }
+        }
+    </style>
 </head>
 
 <body>
@@ -23,13 +47,11 @@
             @include('layouts.sidebar')
         </div>
         
-        <div class="flex-grow-1 d-flex flex-column">
+        <div class="flex-grow-1 d-flex flex-column content-wrapper">
             <header class="header header-sticky mb-4">
                 <div class="container-fluid">
-                    <button class="header-toggler px-md-0 me-md-3 d-md-none" type="button" onclick="coreui.Sidebar.getInstance(document.querySelector('#sidebar')).toggle()">
-                        <i class="cil-menu icon icon-lg"></i>
-                    </button>
-                    <button class="header-toggler px-md-0 me-md-3 d-none d-md-block" type="button" onclick="coreui.Sidebar.getInstance(document.querySelector('#sidebar')).toggle()">
+                    <button class="header-toggler px-md-0 me-md-3 d-md-none" type="button" 
+                            onclick="coreui.Sidebar.getInstance(document.querySelector('#sidebar')).toggle()">
                         <i class="cil-menu icon icon-lg"></i>
                     </button>
                     @include('layouts.header')
@@ -47,11 +69,17 @@
             </footer>
         </div>
     </div>
+    
     @stack('scripts')
 
     <script src="https://cdn.jsdelivr.net/npm/@coreui/coreui@5.3.1/dist/js/coreui.bundle.min.js"
         integrity="sha384-8QmUFX1sl4cMveCP2+H1tyZlShMi1LeZCJJxTZeXDxOwQexlDrLQ3O9L78gwBbe"
         crossorigin="anonymous"></script>
+    
+    <script>
+        // Keep your existing sidebar toggle functionality
+        // Just ensure the content adjusts properly with CSS
+    </script>
 </body>
 
 </html>

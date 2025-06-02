@@ -19,15 +19,15 @@ class DataLomba extends Model
     public $timestamps = false;
 
     protected $fillable = [
-        'nama_lomba',
-        'tgl_dibuka',          
-        'tgl_ditutup',
-        'tingkat',
-        'kategori',
-        'jenis',
-        'penyelenggara',
-        'alamat',
-    ];
+    'nama_lomba',
+    'tingkat_id',
+    'kategori_id',
+    'jenis_id',
+    'penyelenggara',
+    'tanggal_mulai',
+    'tanggal_selesai'
+];
+
 
     public function tingkatRelasi()
     {

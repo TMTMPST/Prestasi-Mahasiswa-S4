@@ -11,13 +11,14 @@ class CreateMahasiswaTable extends Migration
         Schema::create('mahasiswa', function (Blueprint $table) {
             $table->string('nim', 15)->primary();
             $table->integer('angkatan');
-            $table->string('nama', 100);
+            $table->string('nama');
             $table->string('password');
-            $table->string('prodi', 100);
-            $table->char('level', 3);
-            $table->integer('poin_presma')->default(0); // Add this line
+            $table->string('prodi');
+            $table->string('dosen_nip', 20)->nullable(); // nullable karena beberapa data tidak ada dosen_nip
+            $table->string('level')->default('MHS');
+            $table->integer('poin_presma')->default(0);
+            $table->string('prestasi_tertinggi')->nullable();
             $table->timestamps();
-            $table->foreign('level')->references('id_level')->on('level');
         });
     }
 
