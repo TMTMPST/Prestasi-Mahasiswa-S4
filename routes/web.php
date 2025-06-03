@@ -46,6 +46,10 @@ Route::get('/admin/dashboard', [AdminController::class, 'dashboard'])->middlewar
 Route::get('/dosen/dashboard', [DosenController::class, 'dashboard'])->middleware('checklogin')->name('dosen.dashboard');
 
     // Admin routes
+        Route::get('/admin/profile', [AdminController::class, 'profile'])->name('admin.profile.index');
+        Route::put('/admin/profile/update/{id}', [AdminController::class, 'updateProfile'])->name('admin.profile.update');
+        Route::get('/admin/profile/update_profile/{id}', [AdminController::class, 'showUpdateProfile'])->name('admin.profile.update_profile');
+
         // Manajemen Pengguna
         Route::group(['prefix' => 'manajemen-user'], function () {
             Route::get('/', [AdminController::class, 'showPengguna'])->name('admin.pengguna.index');

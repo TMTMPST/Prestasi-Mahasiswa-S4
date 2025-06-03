@@ -29,6 +29,46 @@ class AdminController extends Controller
         return view('admin.dashboard', compact('lombas', 'mahasiswa'));
     }
 
+    public function profile()
+    {
+        // $dosen = session('user');
+        // Jika ingin ambil dari model:
+        $admin = Admin::where('username', session('user')->username)->first();
+        return view('admin.Profile.index', compact('admin'));
+    }
+
+    public function showUpdateProfile($id)
+    {
+        // Ambil data admin berdasarkan ID
+        $admin = Admin::findOrFail($id);
+        return view('admin.Profile.updateProfile', compact('admin'));
+    }
+    public function updateProfile(Request $request, $id)
+    {
+        // Validasi input
+        $request->validate([
+            'nama' => 'required|string|max:255',
+            'username' => 'required|string|max:50|unique:admin,username,' . $id . ',username',
+            'password' => 'nullable|string|min:8',
+        ]);
+
+        // Ambil data admin berdasarkan ID
+        $admin = Admin::findOrFail($id);
+
+        // Update data admin
+        $admin->nama = $request->input('nama');
+        $admin->username = $request->input('username');
+
+        if ($request->filled('password')) {
+            $admin->password = Hash::make($request->input('password'));
+        }
+
+        $admin->save();
+
+        // Redirect ke halaman profile dengan pesan sukses
+        return redirect()->route('admin.profile.index')->with('success', 'Profile berhasil diperbarui.');
+    }
+
     /**
      * Menampilkan daftar pengguna (mahasiswa, dosen, admin)
      *
@@ -251,7 +291,7 @@ class AdminController extends Controller
         // Tampilkan halaman edit lomba
         return view('admin.Lomba.editLomba', compact('lomba', 'tingkats', 'kategoris', 'jeniss'));
     }
-    
+
     public function updateLomba(Request $request, $id)
     {
         // Validasi input
@@ -283,7 +323,7 @@ class AdminController extends Controller
         // Redirect ke halaman lomba dengan pesan sukses
         return redirect()->route('admin.lomba.index')->with('success', 'Lomba berhasil dihapus.');
     }
-    
+
     // Menampilkan daftar Verifikasi
     public function showVerifikasi()
     {

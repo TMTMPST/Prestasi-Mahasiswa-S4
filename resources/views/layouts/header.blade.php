@@ -132,6 +132,10 @@
                     <a class="dropdown-item" href="{{ route('mahasiswa.profile.index') }}">
                         <i class="bi bi-person-gear"></i>Edit Profile
                     </a>
+                @elseif($authLevel == 'ADM')
+                    <a class="dropdown-item" href="{{ route('admin.profile.index') }}">
+                        <i class="bi bi-person-gear"></i>Edit Profile
+                    </a>
                 @else
                     <a class="dropdown-item" href="#">
                         <i class="bi bi-person-gear"></i>Edit Profile
