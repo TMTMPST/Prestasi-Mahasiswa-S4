@@ -18,6 +18,7 @@ class DatabaseSeeder extends Seeder
             JenisSeeder::class,
             DataLombaSeeder::class,
             DataPrestasiSeeder::class,
+            BimbinganSeeder::class,
         ]);
     }
 }

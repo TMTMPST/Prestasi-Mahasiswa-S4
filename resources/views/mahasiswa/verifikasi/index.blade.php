@@ -19,9 +19,28 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td colspan="7" class="text-center">Data belum tersedia</td>
-                    </tr>
+                    @forelse ($prestasi as $index => $pres)
+                        <tr>
+                            <td>{{ $index + 1 }}</td>
+                            <td>{{ $pres->peringkat }}</td>
+                            <td>{{ $pres->dataLomba->nama_lomba }}</td>
+                            <td>{{ $pres->verifikasi }}</td>
+                            <td>
+                                <form action="{{ route('mahasiswa.destroy', $pres->id) }}" method="POST" onsubmit="return confirm('Apakah kamu yakin ingin menghapus data ini?');" style="display: inline;">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn-sm btn-danger">
+                                    Hapus
+                                    </button>
+                                </form>
+                                
+                            </td>
+                        </tr>
+                    @empty
+                        <tr>
+                            <td colspan="8" class="text-center">Belum ada data mahasiswa</td>
+                        </tr>
+                    @endforelse
                 </tbody>
             </table>
         </div>
