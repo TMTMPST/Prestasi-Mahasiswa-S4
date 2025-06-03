@@ -80,7 +80,8 @@
     <div class="d-flex justify-content-end mb-3">
     <button type="button" class="btn custom-btn-primary text-white" data-coreui-toggle="modal" data-coreui-target="#modalTambahLomba">
     + Tambah Lomba
-</button>    </div>
+</button>    
+</div>
 
     <div class="row row-cols-1 row-cols-md-3 g-4">
         
@@ -102,9 +103,8 @@
                         <div class="mt-4">
                             <div class="card border-0 bg-light">
                                 <div class="card-body p-2">
-                                    <div class="d-flex justify-content-between">
-                                        <a href="#" class="btn custom-btn-primary btn-sm">Detail</a>
-                                        <a href="https://docs.google.com/forms/d/19H28i0qObFYdjkMxXbRN_eOjimVQlGO1L6rKW6-sqXc/edit" target="_blank" class="btn custom-btn-success btn-sm">Daftar</a>
+                                    <div class="d-flex justify-content-center">
+                                        <a href="https://docs.google.com/forms/d/19H28i0qObFYdjkMxXbRN_eOjimVQlGO1L6rKW6-sqXc/edit" target="_blank" class="btn custom-btn-success btn-sm w-100">Daftar</a>
                                     </div>
                                 </div>
                             </div>
@@ -121,6 +121,7 @@
         @endforelse
     </div>
 </div>
+
 <!-- Modal Tambah Lomba -->
 <div class="modal fade" id="modalTambahLomba" tabindex="-1" aria-hidden="true">
   <div class="modal-dialog modal-lg">
