@@ -1,59 +1,53 @@
 <div>
-    <h1 class="mb-4">Login</h1>
-    <p class="text-medium-emphasis mb-4">Sign in to your account</p>
+    <div class="auth-side login-side">
+        <div class="auth-content">
+            <h2 class="auth-title">Login</h2>
 
-    <form method="POST" action="{{ route('login.submit') }}">
-        @csrf
+            <form method="POST" action="{{ route('login.submit') }}">
+                @csrf
+                <div class="form-floating">
+                    <input class="form-control @error('login') is-invalid @enderror" type="text" name="login_id"
+                        placeholder="NIM/Username" value="{{ old('login_id') }}" required autofocus>
+                    <label for="loginUsername">NIM/Username</label>
+                    @error('login')
+                        <span class="invalid-feedback" role="alert">
+                            <strong>{{ $message }}</strong>
+                        </span>
+                    @enderror
+                </div>
 
-        <div class="input-group mb-3">
-            <span class="input-group-text">
-                <i class="cil-user"></i>
-            </span>
-            <input class="form-control @error('login') is-invalid @enderror" type="text" name="login_id"
-                placeholder="Username / NIP / NIM" value="{{ old('login_id') }}" required autofocus>
-            @error('login')
-                <span class="invalid-feedback" role="alert">
-                    <strong>{{ $message }}</strong>
-                </span>
-            @enderror
-        </div>
+                <div class="form-floating">
+                    <input class="form-control @error('password') is-invalid @enderror" type="password" name="password"
+                        placeholder="Password" required autocomplete="current-password">
+                    <label for="loginPassword">Password</label>
+                    @error('password')
+                        <span class="invalid-feedback" role="alert">
+                            <strong>{{ $message }}</strong>
+                        </span>
+                    @enderror
+                </div>
 
-        <div class="input-group mb-4">
-            <span class="input-group-text">
-                <i class="cil-lock-locked"></i>
-            </span>
-            <input class="form-control @error('password') is-invalid @enderror" type="password" name="password"
-                placeholder="Password" required autocomplete="current-password">
-            @error('password')
-                <span class="invalid-feedback" role="alert">
-                    <strong>{{ $message }}</strong>
-                </span>
-            @enderror
-        </div>
-
-        <div class="d-flex justify-content-between mb-4">
-            <div class="form-check">
-                <input class="form-check-input" type="checkbox" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}>
-                <label class="form-check-label" for="remember">
-                    Remember me
-                </label>
-            </div>
+                <div class="form-check mb-3">
+                    <input class="form-check-input" type="checkbox" id="rememberMe">
+                    <label class="form-check-label" for="rememberMe">
+                        Ingat saya
+                    </label>
+                </div>
+                <button type="submit" class="btn btn-auth">Login</button>
+            </form>
             @if (Route::has('password.request'))
                 <a href="{{ route('password.request') }}" class="text-decoration-none">
                     Forgot password?
                 </a>
             @endif
+            <div class="auth-footer">
+                <p>Lupa password? <a href="#">Reset disini</a></p>
+                <p>Belum punya akun? <a class="toggle-auth">Daftar sekarang</a></p>
+            </div>
         </div>
-
-        <button type="submit" class="btn btn-primary w-100 mb-3">
-            Login
-        </button>
-
-        <div class="text-center">
-            <span>Don't have an account? </span>
-            <a href="#" class="text-decoration-none" id="signupLink">
-                Sign up
-            </a>
+        <div class="auth-image">
+            <h2>Selamat Datang Kembali!</h2>
+            <p>Masuk ke akun Anda untuk mengakses portal prestasi mahasiswa POLINEMA.</p>
         </div>
-    </form>
+    </div>
 </div>

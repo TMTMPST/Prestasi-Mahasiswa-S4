@@ -45,4 +45,26 @@ class AuthController extends Controller
 
         return redirect()->back()->withErrors(['login' => 'Login ID or password is incorrect']);
     }
+
+    public function register(Request $request)
+    {
+        $request->validate([
+            'nim' => 'required|unique:mahasiswa,nim',
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|unique:mahasiswa,email',
+            'password' => 'required|min:6',
+        ]);
+
+        // Insert new mahasiswa
+        DB::table('mahasiswa')->insert([
+            'nim' => $request->nim,
+            'nama' => $request->name,
+            'email' => $request->email,
+            'password' => Hash::make($request->password),
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+
+        return redirect()->route('login')->with('success', 'Registrasi berhasil! Silakan login.');
+    }
 }
