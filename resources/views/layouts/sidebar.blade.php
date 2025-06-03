@@ -13,10 +13,6 @@
             </div>
         @endif
     </div>
-    <button class="btn btn-lg btn-primary me-10 sidebar-toggler d-none d-lg-block" type="button"
-        data-coreui-toggle="unfoldable"
-        onclick="document.querySelector('.sidebar').classList.toggle('sidebar-unfoldable')">
-    </button>
 </div>
 
 <ul class="sidebar-nav">

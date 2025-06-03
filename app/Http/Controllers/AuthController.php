@@ -22,7 +22,15 @@ class AuthController extends Controller
         // Check admin by username
         $admin = DB::table('admin')->where('username', $input['login_id'])->first();
         if ($admin && Hash::check($input['password'], $admin->password)) {
-            Session::put('user', $admin);
+            // Convert to object with all properties
+            $adminUser = (object) [
+                'id' => $admin->id ?? null,
+                'username' => $admin->username,
+                'nama' => $admin->nama ?? $admin->username,
+                'email' => $admin->email ?? null,
+                'photo' => $admin->photo ?? null
+            ];
+            Session::put('user', $adminUser);
             Session::put('level', 'ADM');
             return redirect()->route('admin.dashboard');
         }
@@ -30,7 +38,15 @@ class AuthController extends Controller
         // Check dosen by NIP
         $dosen = DB::table('dosen')->where('nip', $input['login_id'])->first();
         if ($dosen && Hash::check($input['password'], $dosen->password)) {
-            Session::put('user', $dosen);
+            // Convert to object with all properties
+            $dosenUser = (object) [
+                'id' => $dosen->id ?? null,
+                'nip' => $dosen->nip,
+                'nama' => $dosen->nama,
+                'email' => $dosen->email ?? null,
+                'photo' => $dosen->photo ?? null
+            ];
+            Session::put('user', $dosenUser);
             Session::put('level', 'DSN');
             return redirect()->route('dosen.dashboard');
         }
@@ -38,7 +54,16 @@ class AuthController extends Controller
         // Check mahasiswa by NIM
         $mahasiswa = DB::table('mahasiswa')->where('nim', $input['login_id'])->first();
         if ($mahasiswa && Hash::check($input['password'], $mahasiswa->password)) {
-            Session::put('user', $mahasiswa);
+            // Convert to object with all properties
+            $mahasiswaUser = (object) [
+                'id' => $mahasiswa->id ?? null,
+                'nim' => $mahasiswa->nim,
+                'nama' => $mahasiswa->nama,
+                'email' => $mahasiswa->email ?? null,
+                'photo' => $mahasiswa->photo ?? null,
+                'prodi' => $mahasiswa->prodi ?? null
+            ];
+            Session::put('user', $mahasiswaUser);
             Session::put('level', 'MHS');
             return redirect()->route('mahasiswa.dashboard');
         }

@@ -28,12 +28,31 @@
     .lomba-card {
         border-top: 4px solid var(--accent1);
         border-radius: 18px;
-        transition: transform 0.15s, box-shadow 0.15s;
+        transition: all 0.3s ease;
         box-shadow: 0 2px 12px rgba(12,30,71,0.08);
+        position: relative;
+        overflow: hidden;
+    }
+    .lomba-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+        transition: left 0.5s;
     }
     .lomba-card:hover {
-        transform: translateY(-6px) scale(1.03);
-        box-shadow: 0 8px 32px rgba(12,30,71,0.13);
+        transform: translateY(-8px);
+        box-shadow: 0 12px 40px rgba(12,30,71,0.15);
+        border-top-color: var(--secondary);
+    }
+    .lomba-card:hover::before {
+        left: 100%;
+    }
+    .lomba-card:hover .card-header {
+        background: linear-gradient(135deg, var(--accent1), var(--secondary)) !important;
     }
     .ranking-header {
         background: linear-gradient(90deg, var(--primary) 100%);

@@ -14,6 +14,7 @@
     <title>{{ config('app.name', 'Laravel') }}</title>
     <!-- Scripts -->
     @vite(['resources/sass/app.scss', 'resources/js/app.js'])
+    @vite('resources/css/welcome.css')
     @stack('styles')
     
     <style>
@@ -37,6 +38,18 @@
             .content-wrapper {
                 margin-left: 0 !important;
             }
+        }
+
+        /* Ensure CSS variables are available */
+        :root {
+            --primary: #9a3324;
+            --secondary: #0c1e47;
+            --accent1: #f26430;
+            --accent2: #f7b71d;
+            --light: #ffffff;
+            --dark: #212529;
+            --gray: #6c757d;
+            --light-gray: #f8f9fa;
         }
     </style>
 </head>
