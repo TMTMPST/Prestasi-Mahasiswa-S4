@@ -102,7 +102,7 @@ public function mahasiswas()
     if (!$dosen || session('level') !== 'DSN') {
         return redirect()->route('login')->with('error', 'Silakan login sebagai dosen.');
     }
-    $mahasiswa = \App\Models\Mahasiswa::where('dosen_nip', $dosen->nip)->get();
+    $mahasiswa = Mahasiswa::where('dosen_nip', $dosen->nip)->get();
 
     return view('dosen.Bimbingan.index', compact('mahasiswa'));
 }
@@ -122,7 +122,7 @@ public function profile()
 
 public function showUpdateProfile($nip)
 {
-    $dosen = \App\Models\Dosen::where('nip', $nip)->firstOrFail();
+    $dosen = Dosen::where('nip', $nip)->firstOrFail();
     return view('dosen.Profile.update_profile', compact('dosen'));
 }
 

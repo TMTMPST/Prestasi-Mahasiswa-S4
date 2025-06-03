@@ -109,12 +109,15 @@
                 </div>
                 <div class="mb-3">
                     <label for="level" class="form-label">Level</label>
-                    <select class="form-control" id="level" name="level" required>
-                        <option value="DSN" {{ old('level', $dosen->level) == 'DSN' ? 'selected' : '' }}>DSN</option>
-                        <option value="MHS" {{ old('level', $dosen->level) == 'MHS' ? 'selected' : '' }}>MHS</option>
-                        <option value="ADM" {{ old('level', $dosen->level) == 'ADM' ? 'selected' : '' }}>ADM</option>
+                    <select class="form-control" id="level" name="level_display" disabled>
+                        <option value="DSN" {{ old('level', $dosen->level) == 'DSN' ? 'selected' : '' }}>Dosen ( DSN )</option>
+                        <option value="MHS" {{ old('level', $dosen->level) == 'MHS' ? 'selected' : '' }}>Mahasiswa ( MHS )</option>
+                        <option value="ADM" {{ old('level', $dosen->level) == 'ADM' ? 'selected' : '' }}>Admin ( ADM )</option>
                     </select>
+                    <!-- Kirim value sebenarnya pakai hidden input -->
+                    <input type="hidden" name="level" value="{{ old('level', $dosen->level) }}">
                 </div>
+
                 <div class="mb-3">
                     <label for="bidangMinat" class="form-label">Bidang Minat</label>
                     <select class="form-control" id="bidangMinat" name="bidangMinat">
