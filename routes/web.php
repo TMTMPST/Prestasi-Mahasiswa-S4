@@ -34,17 +34,11 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-// Show login form
+// Auth routes
 Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
-
-// Handle login form POST submission
 Route::post('/login', [AuthController::class, 'login'])->name('login.submit');
-
-
-Route::post('/logout', function () {
-    Session::flush(); // remove all session data
-    return redirect('/login')->with('success', 'Logout successful.');
-})->name('logout');
+Route::post('/register', [AuthController::class, 'register'])->name('register');
+Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
 // Dashboard routes
 Route::get('/mahasiswa/dashboard', [MahasiswaController::class, 'dashboard'])->middleware('checklogin')->name('mahasiswa.dashboard');
