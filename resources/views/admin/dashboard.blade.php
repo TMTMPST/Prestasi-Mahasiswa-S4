@@ -306,10 +306,10 @@
                                                 </div>
                                             </div>
                                             <div class="mt-4 d-flex justify-content-between align-items-end" style="min-height: 38px;">
-                                                <a href="#" class="btn btn-outline-maroon btn-sm px-3">
+                                                <a href="{{ route('admin.lomba.edit', $lomba->id_lomba) }}" class="btn btn-outline-maroon btn-sm px-3">
                                                     <i class="bi bi-pencil-square"></i> Edit
                                                 </a>
-                                                <a href="#" class="btn btn-maroon btn-sm px-3">
+                                                <a href="{{ route('admin.lomba.edit', $lomba->id_lomba) }}" class="btn btn-maroon btn-sm px-3">
                                                     <i class="bi bi-gear"></i> Kelola
                                                 </a>
                                             </div>

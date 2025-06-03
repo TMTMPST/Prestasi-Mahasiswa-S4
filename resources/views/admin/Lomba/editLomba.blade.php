@@ -88,7 +88,7 @@
                             value="{{ $lomba->tgl_ditutup }}" required>
                     </div>
 
-                    <a href="/manajemen-lomba" class="btn btn-secondary">Kembali</a>
+                    <a href="javascript:history.back()" class="btn btn-secondary">Kembali</a>
                     <button type="submit" class="btn btn-success">Simpan</button>
                     @if ($errors->any())
                         <div class="alert alert-danger">
