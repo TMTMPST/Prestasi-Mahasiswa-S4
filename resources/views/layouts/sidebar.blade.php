@@ -69,8 +69,14 @@
         </li>
 
         <li class="nav-item">
-            <a class="nav-link" href="/Presma/index">
+            <a class="nav-link" href="/manajemen-presma">
                 <i class="nav-icon cil-settings"></i> Manajemen Presma
+            </a>
+        </li>
+
+        <li class="nav-item">
+            <a class="nav-link" href="/manajemen-verifikasi">
+                <i class="nav-icon cil-check"></i> Verifikasi Prestasi
             </a>
         </li>
     @endif

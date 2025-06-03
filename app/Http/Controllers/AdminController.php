@@ -6,8 +6,12 @@ use Illuminate\Http\Request;
 use App\Models\DataLomba;
 use App\Models\Mahasiswa;
 use App\Models\Admin;
+use App\Models\DataPrestasi;
 use App\Models\Dosen;
+use App\Models\Jenis;
+use App\Models\Kategori;
 use App\Models\Level;
+use App\Models\Tingkat;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
 
@@ -25,6 +29,11 @@ class AdminController extends Controller
         return view('admin.dashboard', compact('lombas', 'mahasiswa'));
     }
 
+    /**
+     * Menampilkan daftar pengguna (mahasiswa, dosen, admin)
+     *
+     * @return \Illuminate\View\View
+     */
     public function showPengguna()
     {
         $mahasiswa = Mahasiswa::select('level', 'nama', 'nim')->get();
@@ -32,20 +41,11 @@ class AdminController extends Controller
         $admin = Admin::select('level', 'nama', 'username')->get();
 
         // Gabungkan data mahasiswa, dosen, dan admin
-        $pengguna = $mahasiswa->merge($dosen)->merge($admin);
-        // Urutkan berdasarkan level
-        $pengguna = $pengguna->sortByDesc('level');
-        // Ambil data mahasiswa saja
-        $mahasiswa = $pengguna->where('level', 'mahasiswa')->values();
-        // Ambil data dosen saja
-        $dosen = $pengguna->where('level', 'dosen')->values();
-        // Ambil data admin saja
-        $admin = $pengguna->where('level', 'admin')->values();
-        // Ambil data level
-        $levels = Level::all();
+        $pengguna = $mahasiswa->merge($dosen)->merge($admin)
+            ->sortByDesc('level'); // Urutkan berdasarkan level
 
         // Kirim data ke view pengguna
-        return view('admin.Pengguna.index', compact('pengguna', 'mahasiswa', 'dosen', 'admin', 'levels'));
+        return view('admin.Pengguna.index', compact('pengguna'));
     }
 
     public function createPengguna()
@@ -141,7 +141,7 @@ class AdminController extends Controller
         // Validasi input
         $request->validate([
             'level' => 'required|in:MHS,DSN,ADM',
-            'nim_nip_username' => 'required|string|max:15|unique:mahasiswa,nim|unique:dosen,nip|unique:admin,username',
+            'nim_nip_username' => 'required|string|max:15|unique:mahasiswa,nim,' . $id . ',nim|unique:dosen,nip,' . $id . ',nip|unique:admin,username,' . $id . ',username',
             'nama' => 'required|string|max:255',
             'password' => 'nullable|string|min:8',
             'angkatan' => 'nullable|integer',
@@ -194,5 +194,114 @@ class AdminController extends Controller
 
         // Redirect ke halaman pengguna dengan pesan sukses
         return redirect()->route('admin.pengguna.index')->with('success', 'Pengguna berhasil diperbarui.');
+    }
+
+    // Menampilkan daftar lomba
+    public function showLomba()
+    {
+        // Ambil semua data lomba lengkap dengan relasi tingkat, kategori, dan jenis
+        $lombas = DataLomba::with(['tingkatRelasi', 'kategoriRelasi', 'jenisRelasi'])->get();
+
+        // Kirim data ke view lomba
+        return view('admin.Lomba.index', compact('lombas'));
+    }
+
+    public function createLomba()
+    {
+        // Ambil semua tingkat, kategori, dan jenis untuk dropdown
+        $tingkats = Tingkat::all();
+        $kategoris = Kategori::all();
+        $jeniss = Jenis::all();
+
+        // Tampilkan halaman tambah lomba
+        return view('admin.Lomba.tambahLomba', compact('tingkats', 'kategoris', 'jeniss'));
+    }
+
+    public function storeLomba(Request $request)
+    {
+        // Validasi input
+        $request->validate([
+            'nama_lomba' => 'required|string|max:255',
+            'tingkat' => 'required|exists:tingkat,id_tingkat',
+            'kategori' => 'required|exists:kategori,id_kategori',
+            'jenis' => 'required|exists:jenis,id_jenis',
+            'penyelenggara' => 'required|string|max:255',
+            'alamat' => 'required|string|max:255',
+            'tgl_dibuka' => 'required|date',
+            'tgl_ditutup' => 'required|date|after_or_equal:tgl_dibuka',
+        ]);
+
+        // Simpan data lomba
+        DataLomba::create($request->all());
+
+        // Redirect ke halaman lomba dengan pesan sukses
+        return redirect()->route('admin.lomba.index')->with('success', 'Lomba berhasil ditambahkan.');
+    }
+
+    public function editLomba($id)
+    {
+        // Ambil data lomba berdasarkan ID
+        $lomba = DataLomba::with(['tingkatRelasi', 'kategoriRelasi', 'jenisRelasi'])->findOrFail($id);
+
+        // Ambil semua tingkat, kategori, dan jenis untuk dropdown
+        $tingkats = Tingkat::all();
+        $kategoris = Kategori::all();
+        $jeniss = Jenis::all();
+
+        // Tampilkan halaman edit lomba
+        return view('admin.Lomba.editLomba', compact('lomba', 'tingkats', 'kategoris', 'jeniss'));
+    }
+    
+    public function updateLomba(Request $request, $id)
+    {
+        // Validasi input
+        $request->validate([
+            'nama_lomba' => 'required|string|max:255',
+            'tingkat' => 'required|exists:tingkat,id_tingkat',
+            'kategori' => 'required|exists:kategori,id_kategori',
+            'jenis' => 'required|exists:jenis,id_jenis',
+            'penyelenggara' => 'required|string|max:255',
+            'alamat' => 'required|string|max:255',
+            'tgl_dibuka' => 'required|date',
+            'tgl_ditutup' => 'required|date|after_or_equal:tgl_dibuka',
+        ]);
+
+        // Update data lomba
+        $lomba = DataLomba::findOrFail($id);
+        $lomba->update($request->all());
+
+        // Redirect ke halaman lomba dengan pesan sukses
+        return redirect()->route('admin.lomba.index')->with('success', 'Lomba berhasil diperbarui.');
+    }
+
+    public function deleteLomba($id)
+    {
+        // Hapus data lomba berdasarkan ID
+        $lomba = DataLomba::findOrFail($id);
+        $lomba->delete();
+
+        // Redirect ke halaman lomba dengan pesan sukses
+        return redirect()->route('admin.lomba.index')->with('success', 'Lomba berhasil dihapus.');
+    }
+    
+    // Menampilkan daftar Verifikasi
+    public function showVerifikasi()
+    {
+        // Ambil semua data verifikasi prestasi
+        $verifikasis = DataPrestasi::with('dataLomba')->where('verifikasi', 'Pending')->get();
+
+        // Kirim data ke view verifikasi
+        return view('admin.Verifikasi.index', compact('verifikasis'));
+    }
+
+    public function updateVerifikasi(Request $request, $id)
+    {
+        // Update status verifikasi
+        $verifikasi = DataPrestasi::findOrFail($id);
+        $verifikasi->verifikasi = $request->status;
+        $verifikasi->save();
+
+        // Redirect ke halaman verifikasi dengan pesan sukses
+        return redirect()->route('admin.verifikasi.index')->with('success', 'Status verifikasi berhasil diperbarui.');
     }
 }

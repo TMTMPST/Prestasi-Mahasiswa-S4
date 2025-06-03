@@ -46,12 +46,40 @@ Route::get('/admin/dashboard', [AdminController::class, 'dashboard'])->middlewar
 Route::get('/dosen/dashboard', [DosenController::class, 'dashboard'])->middleware('checklogin')->name('dosen.dashboard');
 
     // Admin routes
-        Route::get('/manajemen-user', [AdminController::class, 'showPengguna'])->name('admin.pengguna.index');
-        Route::get('/manajemen-user/tambah', [AdminController::class, 'createPengguna'])->name('admin.pengguna.create');
-        Route::post('/manajemen-user/store', [AdminController::class, 'storePengguna'])->name('admin.pengguna.store');
-        Route::get('/manajemen-user/edit/{id}', [AdminController::class, 'editPengguna'])->name('admin.pengguna.edit');
-        Route::put('/manajemen-user/update/{id}', [AdminController::class, 'updatePengguna'])->name('admin.pengguna.update');
-        Route::delete('/manajemen-user/delete/{id}', [AdminController::class, 'deletePengguna'])->name('admin.pengguna.delete');
+        // Manajemen Pengguna
+        Route::group(['prefix' => 'manajemen-user'], function () {
+            Route::get('/', [AdminController::class, 'showPengguna'])->name('admin.pengguna.index');
+            Route::get('/tambah', [AdminController::class, 'createPengguna'])->name('admin.pengguna.create');
+            Route::post('/store', [AdminController::class, 'storePengguna'])->name('admin.pengguna.store');
+            Route::get('/edit/{id}', [AdminController::class, 'editPengguna'])->name('admin.pengguna.edit');
+            Route::put('/update/{id}', [AdminController::class, 'updatePengguna'])->name('admin.pengguna.update');
+            Route::delete('/delete/{id}', [AdminController::class, 'deletePengguna'])->name('admin.pengguna.delete');
+        });
+
+        // Manajemen Lomba
+        Route::group(['prefix' => 'manajemen-lomba'], function () {
+            Route::get('/', [AdminController::class, 'showLomba'])->name('admin.lomba.index');
+            Route::get('/create', [AdminController::class, 'createLomba'])->name('admin.lomba.create');
+            Route::post('/store', [AdminController::class, 'storeLomba'])->name('admin.lomba.store');
+            Route::get('/edit/{id}', [AdminController::class, 'editLomba'])->name('admin.lomba.edit');
+            Route::put('/update/{id}', [AdminController::class, 'updateLomba'])->name('admin.lomba.update');
+            Route::delete('/delete/{id}', [AdminController::class, 'deleteLomba'])->name('admin.lomba.delete');
+        });
+
+        // Manajemen Presma
+        Route::group(['prefix' => 'manajemen-presma'], function () {
+            Route::get('/', [AdminController::class, 'showPresma'])->name('admin.presma.index');
+            Route::get('/create', [AdminController::class, 'createPresma'])->name('admin.presma.create');
+            Route::post('/store', [AdminController::class, 'storePresma'])->name('admin.presma.store');
+            Route::get('/edit/{id}', [AdminController::class, 'editPresma'])->name('admin.presma.edit');
+            Route::put('/update/{id}', [AdminController::class, 'updatePresma'])->name('admin.presma.update');
+            Route::delete('/delete/{id}', [AdminController::class, 'deletePresma'])->name('admin.presma.delete');
+        });
+        
+        Route::group(['prefix' => 'manajemen-verifikasi'], function () {
+            Route::get('/', [AdminController::class, 'showVerifikasi'])->name('admin.verifikasi.index');
+            Route::put('/{id}/update', [AdminController::class, 'updateVerifikasi'])->name('admin.verifikasi.update');
+        });
 
     // Dosen routes
         Route::get('/Lomba/index', [DosenController::class, 'infoLomba'])->name('dosen.lomba.index');

@@ -20,12 +20,13 @@ class DataLomba extends Model
 
     protected $fillable = [
     'nama_lomba',
-    'tingkat_id',
-    'kategori_id',
-    'jenis_id',
+    'tingkat',
+    'kategori',
+    'jenis',
     'penyelenggara',
-    'tanggal_mulai',
-    'tanggal_selesai'
+    'alamat',
+    'tgl_dibuka',
+    'tgl_ditutup',
 ];
 
 
