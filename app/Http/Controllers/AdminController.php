@@ -324,6 +324,86 @@ class AdminController extends Controller
         return redirect()->route('admin.lomba.index')->with('success', 'Lomba berhasil dihapus.');
     }
 
+    // Menampilkan daftar presma
+    public function showPresma()
+    {
+        // Ambil semua data presma
+        $presmas = DataPrestasi::with('dataLomba')->get()->sortByDesc('updated_at');
+
+        // Kirim data ke view presma
+        return view('admin.Presma.index', compact('presmas'));
+    }
+    public function createPresma()
+    {
+        // Ambil semua data lomba untuk dropdown
+        $lombas = DataLomba::select('id_lomba', 'nama_lomba')->get()->sortBy('nama_lomba');
+        // Ambil semua data mahasiswa untuk dropdown
+        $mahasiswa = Mahasiswa::select('nim', 'nama')->get()->sortBy('nama');
+
+        // Tampilkan halaman tambah presma
+        return view('admin.Presma.tambahPresma', compact('lombas', 'mahasiswa'));
+    }
+    public function storePresma(Request $request)
+    {
+        // Validasi input
+        $request->validate([
+            // 'mahasiswa' => 'required|exists:mahasiswa,nim',
+            'peringkat' => 'required|in:Juara 1,Juara 2,Juara 3,Harapan 1,Harapan 2,Harapan 3',
+            'id_lomba' => 'required|exists:data_lomba,id_lomba',
+            'sertif' => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:2048',
+            'foto_bukti' => 'nullable|file|mimes:jpg,jpeg,png|max:2048',
+            'poster_lomba' => 'nullable|file|mimes:jpg,jpeg,png|max:2048',
+            'verifikasi' => 'required|in:Pending',
+        ]);
+
+        // Simpan data presma
+        DataPrestasi::create($request->all());
+
+        // Redirect ke halaman presma dengan pesan sukses
+        return redirect()->route('admin.presma.index')->with('success', 'Presma berhasil ditambahkan.');
+    }
+    public function editPresma($id)
+    {
+        // Ambil data presma berdasarkan ID
+        $presma = DataPrestasi::with('dataLomba')->findOrFail($id);
+        // Ambil semua lomba untuk dropdown
+        $lombas = DataLomba::select('id_lomba', 'nama_lomba')->get()->sortBy('nama_lomba');
+        // Ambil semua mahasiswa untuk dropdown
+        $mahasiswa = Mahasiswa::select('nim', 'nama')->get()->sortBy('nama');
+
+        // Tampilkan halaman edit presma
+        return view('admin.Presma.editPresma', compact('presma', 'lombas', 'mahasiswa'));
+    }
+    public function updatePresma(Request $request, $id)
+    {
+        // Validasi input
+        $request->validate([
+            // 'mahasiswa' => 'required|exists:mahasiswa,nim',
+            'peringkat' => 'required|in:Juara 1,Juara 2,Juara 3,Harapan 1,Harapan 2,Harapan 3',
+            'id_lomba' => 'required|exists:data_lomba,id_lomba',
+            'sertif' => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:2048',
+            'foto_bukti' => 'nullable|file|mimes:jpg,jpeg,png|max:2048',
+            'poster_lomba' => 'nullable|file|mimes:jpg,jpeg,png|max:2048',
+            'verifikasi' => 'required|in:Pending',
+        ]);
+
+        // Update data presma
+        $presma = DataPrestasi::findOrFail($id);
+        $presma->update($request->all());
+
+        // Redirect ke halaman presma dengan pesan sukses
+        return redirect()->route('admin.presma.index')->with('success', 'Presma berhasil diperbarui.');
+    }
+    public function deletePresma($id)
+    {
+        // Hapus data presma berdasarkan ID
+        $presma = DataPrestasi::findOrFail($id);
+        $presma->delete();
+
+        // Redirect ke halaman presma dengan pesan sukses
+        return redirect()->route('admin.presma.index')->with('success', 'Presma berhasil dihapus.');
+    }
+
     // Menampilkan daftar Verifikasi
     public function showVerifikasi()
     {

@@ -6,7 +6,7 @@
         <br>
         <div class="card">
             <div class="card-header">
-                <strong>Data Pengguna</strong>
+                <strong>Data Lomba</strong>
             </div>
             <div class="card-body">
                 <table class="table table-striped table-bordered">
