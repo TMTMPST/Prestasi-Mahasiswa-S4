@@ -15,8 +15,7 @@ return new class extends Migration
     $table->increments('id');
     $table->string('nama_kriteria', 100);
     $table->enum('tipe', ['benefit', 'cost']);
-    $table->float('bobot'); // misal: 0.3, 0.2, dst.
-    $table->timestamps();
+    $table->float('bobot');
 });
 
     }

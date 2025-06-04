@@ -8,7 +8,7 @@
     <li class="nav-title">Menu</li>
 
     {{-- Common menu items for all users --}}
-    @if ($authLevel == 'DSN') 
+    @if ($authLevel == 'DSN')
         <li class="nav-item">
             <a class="nav-link {{ request()->is('dosen/dashboard') ? 'active' : '' }}" href="/dosen/dashboard">
                 <i class="nav-icon cil-home"></i> Beranda
@@ -88,6 +88,11 @@
     {{-- Student Menu Items --}}
     @if ($authLevel == 'MHS')
         <li class="nav-item">
+            <a class="nav-link" href="/recommendation/form">
+                <i class="nav-icon cil-list"></i> Rekomendasi Lomba
+            </a>
+        </li>
+        <li class="nav-item">
             <a class="nav-link" href="/prestasi/index">
                 <i class="nav-icon cil-list"></i> Prestasi Mahasiswa
             </a>
@@ -100,7 +105,7 @@
         </li>
 
         <li class="nav-item">
-            <a class="nav-link" href="/verifikasi/index">
+                   <a class="nav-link" href="/verifikasi/index">
                 <i class="nav-icon cil-check"></i> Verifikasi Prestasi
             </a>
         </li>

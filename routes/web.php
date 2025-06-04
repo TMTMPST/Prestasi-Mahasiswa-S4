@@ -16,7 +16,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DosenController;
 use App\Http\Controllers\MahasiswaController;
 use App\Http\Controllers\AdminController;
-use App\Http\Controllers\PrometheeController;
+use App\Http\Controllers\RecommendationController;
 
 /*
 |--------------------------------------------------------------------------
@@ -125,6 +125,11 @@ Route::get('/dosen/profile/update_profile/{nip}', [DosenController::class, 'show
         // Verifikasi
         Route::get('/verifikasi/index', [MahasiswaController::class, 'verifikasi'])->name('mahasiswa.verifikasi.index');
 
+        // Recommendation
+        Route::get('/recommendation/form', [RecommendationController::class, 'showForm'])->name('mahasiswa.recomendation.form');
+        Route::post('/recommendation/process', [RecommendationController::class, 'processForm'])->name('mahasiswa.recomendation.process');
+        Route::get('/recommendation/trace', [RecommendationController::class, 'showTrace'])->name('mahasiswa.recomendation.trace');
+        
         // profile
-         Route::get('/profile/index', [MahasiswaController::class, 'profile'])->name('mahasiswa.profile.index');
-         Route::put('/mahasiswa/profile/{nim}', [MahasiswaController::class, 'updateProfileAction'])->name('mahasiswa.profile.update');
+        Route::get('/profile/index', [MahasiswaController::class, 'profile'])->name('mahasiswa.profile.index');
+        Route::put('/mahasiswa/profile/{nim}', [MahasiswaController::class, 'updateProfileAction'])->name('mahasiswa.profile.update');

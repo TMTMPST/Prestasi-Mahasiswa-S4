@@ -44,6 +44,22 @@ class Mahasiswa extends Model
     // 🔹 Relasi ke jenis lomba melalui keahlian
     public function keahlian()
     {
-        return $this->belongsToMany(Jenis::class, 'keahlian_mahasiswa', 'nim', 'id_jenis');
+        return $this->belongsToMany(Jenis::class, 'keahlian_mahasiswa', 'nim', 'id_jenis')
+                    ->select('jenis.*'); // Specify to select from jenis table
+    }
+
+    // Helper method to get preferred jenis
+    public function getPreferredJenisAttribute()
+    {
+        return $this->keahlian()->first();
+    }
+
+    // Helper method to get all preferred jenis IDs
+    public function getPreferredJenisIdsAttribute()
+    {
+        return \DB::table('keahlian_mahasiswa')
+                  ->where('nim', $this->nim)
+                  ->pluck('id_jenis')
+                  ->toArray();
     }
 }
