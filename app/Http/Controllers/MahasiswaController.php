@@ -8,13 +8,14 @@ use App\Models\DataLomba;
 use App\Models\DataPrestasi;
 use App\Models\Dosen;
 use App\Models\Mahasiswa;
+use App\Models\Jenis;
 
 class MahasiswaController extends Controller
 {
     public function dashboard()
     {
         // Ambil semua data lomba lengkap dengan relasi tingkat, kategori, dan jenis
-        $lombas = DataLomba::with(['tingkatRelasi', 'kategoriRelasi', 'jenisRelasi'])->get();
+        $lombas = DataLomba::with(['tingkatRelasi','jenisRelasi'])->get();
 
         // Ambil semua data mahasiswa, urutkan berdasarkan poin tertinggi
         $mahasiswa = Mahasiswa::orderByDesc('poin_presma')->get();
@@ -33,7 +34,7 @@ class MahasiswaController extends Controller
 
 
         // Ambil semua data lomba dengan relasi jika diperlukan
-        $lombas = DataLomba::with(['tingkatRelasi', 'kategoriRelasi', 'jenisRelasi'])->get();
+        $lombas = DataLomba::with(['tingkatRelasi','jenisRelasi'])->get();
 
         // Tampilkan halaman data prestasi
         return view('mahasiswa.prestasi.index', compact('lombas', 'prestasi'));
@@ -42,7 +43,7 @@ class MahasiswaController extends Controller
     public function create_prestasi()
     {   
         // Tampilkan halaman tambah_prestasi
-        $lombas = DataLomba::with(['tingkatRelasi', 'kategoriRelasi', 'jenisRelasi'])->get();
+        $lombas = DataLomba::with(['tingkatRelasi','jenisRelasi'])->get();
 
         $prestasi = DataPrestasi::select('peringkat')->get();
 
@@ -94,12 +95,11 @@ class MahasiswaController extends Controller
     public function edit_prestasi($id)
     {
         $prestasi = DataPrestasi::findOrFail($id); // BUKAN get()
-        $lombas = DataLomba::with(['tingkatRelasi', 'kategoriRelasi', 'jenisRelasi'])->get();
+        $lombas = DataLomba::with(['tingkatRelasi','jenisRelasi'])->get();
         $dosen = dosen::all();
 
         return view('mahasiswa.prestasi.edit_prestasi', compact('prestasi','lombas', 'dosen'));
     }
-
 
     public function update_prestasi(Request $request, $id)
     {
@@ -140,8 +140,6 @@ class MahasiswaController extends Controller
 
         return redirect()->route('mahasiswa.prestasi.index')->with('success', 'Data prestasi berhasil diperbarui.');
     }
-
-
 
     public function destroy($id)
     {
@@ -244,4 +242,34 @@ class MahasiswaController extends Controller
         // Tampilkan halaman data verifikasi 
         return view('mahasiswa.verifikasi.index', compact('lombas', 'prestasi'));
     }
+
+    public function profile()
+{
+    $mahasiswa = Mahasiswa::where('nim', session('user')->nim)->with('keahlian')->first();
+    $jenis = Jenis::all(); // ambil semua jenis lomba
+    return view('mahasiswa.profile.index', compact('mahasiswa', 'jenis'));
+}
+
+
+public function showUpdateProfile($nim)
+{
+    $mahasiswa = Mahasiswa::where('nim', $nim)->with('keahlian')->firstOrFail();
+    $jenis_lomba = Jenis::all(); // daftar jenis lomba
+    return view('mahasiswa.profile.update_profile', compact('mahasiswa', 'jenis_lomba'));
+}
+
+public function updateProfileAction(Request $request, $nim)
+{
+    $request->validate([
+        'nama' => 'required|string|max:255',
+        'prodi' => 'required|string|max:255',
+        'prestasi_tertinggi' => 'nullable|string|max:255',
+    ]);
+
+    $mahasiswa = Mahasiswa::where('nim', $nim)->firstOrFail();
+    $mahasiswa->update($request->only(['nama', 'prodi', 'prestasi_tertinggi']));
+
+    return redirect()->route('mahasiswa.profile.index')->with('success', 'Profil berhasil diperbarui.');
+}
+
 }

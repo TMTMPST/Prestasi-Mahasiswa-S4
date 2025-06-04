@@ -1,17 +1,6 @@
 <div class="sidebar-header text-center">
     <div class="sidebar-brand text-center">
         <b>SIMPRES</b>
-        @if($authUser)
-            <div class="small mt-1">
-                {{ $authUser->nama ?? '-' }}<br>
-                <span class="text-muted" style="font-size: 0.8em;">
-                    @if($authLevel == 'ADM') Admin
-                    @elseif($authLevel == 'DSN') Dosen
-                    @elseif($authLevel == 'MHS') Mahasiswa
-                    @endif
-                </span>
-            </div>
-        @endif
     </div>
 </div>
 

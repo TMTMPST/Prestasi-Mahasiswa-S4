@@ -127,3 +127,4 @@ Route::get('/dosen/profile/update_profile/{nip}', [DosenController::class, 'show
 
         // profile
          Route::get('/profile/index', [MahasiswaController::class, 'profile'])->name('mahasiswa.profile.index');
+         Route::put('/mahasiswa/profile/{nim}', [MahasiswaController::class, 'updateProfileAction'])->name('mahasiswa.profile.update');

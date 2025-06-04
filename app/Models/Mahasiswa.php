@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Dosen;
+use App\Models\Jenis;
 
 class Mahasiswa extends Model
 {
@@ -24,23 +25,25 @@ class Mahasiswa extends Model
         'prodi',
         'dosen_nip',
         'level',
-        'prestasi_tertinggi', // tambahkan ini
-        'poin_presma',        // dan ini
+        'prestasi_tertinggi',
+        'poin_presma',
     ];
 
-    // Relasi dengan tabel Level
+    // Relasi ke tabel level
     public function level()
     {
         return $this->belongsTo(Level::class, 'level', 'id_level');
     }
 
+    // Relasi ke dosen pembimbing
     public function dosen()
-{
-    return $this->belongsTo(Dosen::class, 'dosen_nip', 'nip');
-}
-    // Jika mahasiswa memiliki banyak prestasi, bisa tambahkan relasi seperti ini:
-    // public function prestasis()
-    // {
-    //     return $this->hasMany(Prestasi::class, 'nim', 'nim');
-    // }
+    {
+        return $this->belongsTo(Dosen::class, 'dosen_nip', 'nip');
+    }
+
+    // 🔹 Relasi ke jenis lomba melalui keahlian
+    public function keahlian()
+    {
+        return $this->belongsToMany(Jenis::class, 'keahlian_mahasiswa', 'nim', 'id_jenis');
+    }
 }

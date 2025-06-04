@@ -86,7 +86,7 @@ public function storeInfoLomba(Request $request)
     // Tampilkan view presma (pastikan view 'dosen.presma.index' ada)
     return view('dosen.presma.index', compact('mahasiswa'));
 }
-// di Dosen.php
+
 public function mahasiswas()
 {
     return $this->hasMany(Mahasiswa::class, 'dosen_nip', 'nip');
