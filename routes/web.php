@@ -129,7 +129,7 @@ Route::get('/dosen/profile/update_profile/{nip}', [DosenController::class, 'show
         Route::get('/recommendation/form', [RecommendationController::class, 'showForm'])->name('mahasiswa.recomendation.form');
         Route::post('/recommendation/process', [RecommendationController::class, 'processForm'])->name('mahasiswa.recomendation.process');
         Route::get('/recommendation/trace', [RecommendationController::class, 'showTrace'])->name('mahasiswa.recomendation.trace');
-        
+
         // profile
         Route::get('/profile/index', [MahasiswaController::class, 'profile'])->name('mahasiswa.profile.index');
         Route::put('/mahasiswa/profile/{nim}', [MahasiswaController::class, 'updateProfileAction'])->name('mahasiswa.profile.update');

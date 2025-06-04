@@ -11,11 +11,11 @@ class DatabaseSeeder extends Seeder
         $this->call([
             LevelSeeder::class,
             MahasiswaSeeder::class,
+            JenisSeeder::class,
             KeahlianMahasiswaSeeder::class,
             DosenSeeder::class,
             AdminSeeder::class,
             TingkatSeeder::class,
-            JenisSeeder::class,
             DataLombaSeeder::class,
             DataPrestasiSeeder::class,
             BimbinganSeeder::class,

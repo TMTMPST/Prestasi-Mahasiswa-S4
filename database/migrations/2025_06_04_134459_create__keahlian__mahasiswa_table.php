@@ -9,9 +9,8 @@ class CreateKeahlianMahasiswaTable extends Migration
     public function up()
     {
         Schema::create('keahlian_mahasiswa', function (Blueprint $table) {
-            $table->string('nim'); // sama tipe dengan mahasiswa.nim
-            $table->integer('id_jenis'); // disesuaikan dengan jenis.id_jenis
-
+            $table->string('nim', 15);
+            $table->integer('id_jenis');
             $table->timestamps();
 
             $table->primary(['nim', 'id_jenis']);
