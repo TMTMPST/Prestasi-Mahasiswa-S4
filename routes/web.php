@@ -110,15 +110,16 @@ Route::get('/dosen/profile/update_profile/{nip}', [DosenController::class, 'show
         Route::get('/prestasi/index', [MahasiswaController::class, 'prestasi'])->name('mahasiswa.prestasi.index');
         Route::get('/prestasi/tambah_prestasi', [MahasiswaController::class, 'create_prestasi'])->name('mahasiswa.prestasi.tambah_prestasi');
         Route::post('/prestasi', [MahasiswaController::class, 'store_prestasi'])->name('mahasiswa.store_prestasi');
-
-
+        Route::get('/prestasi/{id}/edit', [MahasiswaController::class, 'edit_prestasi'])->name('mahasiswa.edit_prestasi');
+        Route::put('/prestasi/{id}', [MahasiswaController::class, 'update_prestasi'])->name('mahasiswa.update_prestasi');
         Route::delete('/prestasi/{id}', [MahasiswaController::class, 'destroy'])->name('mahasiswa.destroy');
 
         // bimbingan
         Route::get('/bimbingan/index', [MahasiswaController::class, 'bimbingan'])->name('mahasiswa.bimbingan.index');
         Route::get('/bimbingan/tambah_bimbingan', [MahasiswaController::class, 'create_bimbingan'])->name('mahasiswa.bimbingan.tambah_bimbingan');
         Route::post('/bimbingan', [MahasiswaController::class, 'store_bimbingan'])->name('mahasiswa.store_bimbingan');
-
+        Route::get('/bimbingan/{id}/edit', [MahasiswaController::class, 'edit_bimbingan'])->name('mahasiswa.edit_bimbingan');
+        Route::put('/bimbingan/{id}', [MahasiswaController::class, 'update_bimbingan'])->name('mahasiswa.update_bimbingan');
         Route::delete('/bimbingan/{id}', [MahasiswaController::class, 'destroy_bimbingan'])->name('mahasiswa.destroy_bimbingan');
 
         // Verifikasi

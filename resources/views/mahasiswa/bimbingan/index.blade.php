@@ -37,9 +37,9 @@
                                 </button>
                                 </form>
 
-                            {{-- <a href="{{ route('mahasiswa.edit_bimbingan', $bimb->id_bimbingan) }}" class="btn btn-sm btn-primary">
+                            <a href="{{ route('mahasiswa.edit_bimbingan', $bimb->id_bimbingan) }}" class="btn btn-sm btn-primary">
                                 Edit
-                            </a> --}}
+                            </a>
                             </td>
                         </tr>
                     @empty

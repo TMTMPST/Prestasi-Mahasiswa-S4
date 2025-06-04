@@ -51,8 +51,6 @@ class MahasiswaController extends Controller
 
     public function store_prestasi(Request $request)
     {
-        // dd($request->all(), $request->id_lomba, $request->has('id_lomba'));
-
         $request->validate([
             'peringkat' => 'required',
             'id_lomba' => 'required',
@@ -67,19 +65,82 @@ class MahasiswaController extends Controller
         $data->verifikasi = 'pending';
 
         if ($request->hasFile('sertif')) {
-            $data->sertif = $request->file('sertif')->store('sertif', 'public');
+            $sertif = $request->file('sertif');
+            $sertifName = $sertif->getClientOriginalName();
+            $sertif->storeAs('sertif', $sertifName, 'public');
+            $data->sertif = 'sertif/' . $sertifName;
         }
+
         if ($request->hasFile('foto_bukti')) {
-            $data->foto_bukti = $request->file('foto_bukti')->store('foto_bukti', 'public');
+            $fotoBukti = $request->file('foto_bukti');
+            $fotoBuktiName = $fotoBukti->getClientOriginalName();
+            $fotoBukti->storeAs('foto_bukti', $fotoBuktiName, 'public');
+            $data->foto_bukti = 'foto_bukti/' . $fotoBuktiName;
         }
+
         if ($request->hasFile('poster_lomba')) {
-            $data->poster_lomba = $request->file('poster_lomba')->store('poster_lomba', 'public');
+            $poster = $request->file('poster_lomba');
+            $posterName = $poster->getClientOriginalName();
+            $poster->storeAs('poster_lomba', $posterName, 'public');
+            $data->poster_lomba = 'poster_lomba/' . $posterName;
         }
 
         $data->save();
 
         return redirect()->route('mahasiswa.prestasi.index')->with('success', 'Data berhasil disimpan.');
     }
+
+
+    public function edit_prestasi($id)
+    {
+        $prestasi = DataPrestasi::findOrFail($id); // BUKAN get()
+        $lombas = DataLomba::with(['tingkatRelasi', 'kategoriRelasi', 'jenisRelasi'])->get();
+        $dosen = dosen::all();
+
+        return view('mahasiswa.prestasi.edit_prestasi', compact('prestasi','lombas', 'dosen'));
+    }
+
+
+    public function update_prestasi(Request $request, $id)
+    {
+        $request->validate([
+            'peringkat' => 'required',
+            'id_lomba' => 'required',
+            'sertif' => 'nullable|file|mimes:pdf,jpg,jpeg,png',
+            'foto_bukti' => 'nullable|file|mimes:jpg,jpeg,png',
+            'poster_lomba' => 'nullable|file|mimes:jpg,jpeg,png',
+        ]);
+
+        $prestasi = DataPrestasi::findOrFail($id);
+        $prestasi->peringkat = $request->peringkat;
+        $prestasi->id_lomba = $request->id_lomba;
+
+        if ($request->hasFile('sertif')) {
+        $sertif = $request->file('sertif');
+        $sertifName = $sertif->getClientOriginalName();
+        $sertif->storeAs('sertif', $sertifName, 'public');
+        $prestasi->sertif = 'sertif/' . $sertifName;
+        }
+
+        if ($request->hasFile('foto_bukti')) {
+            $fotoBukti = $request->file('foto_bukti');
+            $fotoBuktiName = $fotoBukti->getClientOriginalName();
+            $fotoBukti->storeAs('foto_bukti', $fotoBuktiName, 'public');
+            $prestasi->foto_bukti = 'foto_bukti/' . $fotoBuktiName;
+        }
+
+        if ($request->hasFile('poster_lomba')) {
+            $poster = $request->file('poster_lomba');
+            $posterName = $poster->getClientOriginalName();
+            $poster->storeAs('poster_lomba', $posterName, 'public');
+            $prestasi->poster_lomba = 'poster_lomba/' . $posterName;
+        }
+
+        $prestasi->save();
+
+        return redirect()->route('mahasiswa.prestasi.index')->with('success', 'Data prestasi berhasil diperbarui.');
+    }
+
 
 
     public function destroy($id)
@@ -130,6 +191,34 @@ class MahasiswaController extends Controller
         $bimbingan->save();
 
         return redirect()->route('mahasiswa.bimbingan.index')->with('success', 'Data bimbingan berhasil disimpan.');
+    }
+
+    public function edit_bimbingan($id)
+    {
+        $bimbingan = Bimbingan::findOrFail($id); // BUKAN get()
+        $lombas = DataLomba::with(['tingkatRelasi', 'kategoriRelasi', 'jenisRelasi'])->get();
+        $dosen = dosen::all();
+
+        return view('mahasiswa.bimbingan.edit_bimbingan', compact('bimbingan','lombas', 'dosen'));
+    }
+
+
+    public function update_bimbingan(Request $request, $id)
+    {
+        $request->validate([
+            'id_lomba' => 'required',
+            'nama_anggota' => 'required',
+            'nip' => 'required',
+        ]);
+
+        $bimbingan = Bimbingan::findOrFail($id);
+        $bimbingan->id_lomba = $request->id_lomba;
+        $bimbingan->nama_anggota = $request->nama_anggota;
+        $bimbingan->nip = $request->nip;
+
+        $bimbingan->save();
+
+        return redirect()->route('mahasiswa.bimbingan.index')->with('success', 'Data bimbingan berhasil diperbarui.');
     }
 
     public function destroy_bimbingan($id_bimbingan)
