@@ -157,7 +157,7 @@ class MahasiswaController extends Controller
         $bimbingan = Bimbingan::select('id_bimbingan', 'id_lomba', 'nama_anggota', 'nip','status')
         ->with('lomba', 'dosen')
         ->get();
-        $lombas = DataLomba::with(['tingkatRelasi', 'kategoriRelasi', 'jenisRelasi'])->get();
+        $lombas = DataLomba::with(['tingkatRelasi','jenisRelasi'])->get();
         $dosen = dosen::all();
         
         // Tampilkan halaman data bimbingan 
@@ -167,7 +167,7 @@ class MahasiswaController extends Controller
     public function create_bimbingan()
     {   
         // Tampilkan halaman tambah_bimbingan
-        $lombas = DataLomba::with(['tingkatRelasi', 'kategoriRelasi', 'jenisRelasi'])->get();
+        $lombas = DataLomba::with(['tingkatRelasi', 'jenisRelasi'])->get();
         $dosen = dosen::all();
         return view('mahasiswa.bimbingan.tambah_bimbingan',compact('lombas', 'dosen'));
     }
@@ -194,7 +194,7 @@ class MahasiswaController extends Controller
     public function edit_bimbingan($id)
     {
         $bimbingan = Bimbingan::findOrFail($id); // BUKAN get()
-        $lombas = DataLomba::with(['tingkatRelasi', 'kategoriRelasi', 'jenisRelasi'])->get();
+        $lombas = DataLomba::with(['tingkatRelasi','jenisRelasi'])->get();
         $dosen = dosen::all();
 
         return view('mahasiswa.bimbingan.edit_bimbingan', compact('bimbingan','lombas', 'dosen'));
@@ -237,7 +237,7 @@ class MahasiswaController extends Controller
         ->get();
 
         // Ambil semua data lomba dengan relasi jika diperlukan
-        $lombas = DataLomba::with(['tingkatRelasi', 'kategoriRelasi', 'jenisRelasi'])->get();
+        $lombas = DataLomba::with(['tingkatRelasi','jenisRelasi'])->get();
 
         // Tampilkan halaman data verifikasi 
         return view('mahasiswa.verifikasi.index', compact('lombas', 'prestasi'));

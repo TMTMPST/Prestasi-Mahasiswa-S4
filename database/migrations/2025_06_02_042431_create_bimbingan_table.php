@@ -16,6 +16,7 @@ return new class extends Migration
             $table->unsignedInteger('id_lomba');
             $table->string('nama_anggota');
             $table->string('nip');
+            $table->string('nim');
             $table->enum('status', ['Pending', 'Rejected', 'Accepted'])->default('Pending');
             $table->timestamps();
 

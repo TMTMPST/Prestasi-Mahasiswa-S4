@@ -8,6 +8,7 @@ use App\Models\Mahasiswa;
 use App\Models\Tingkat;
 use App\Models\Jenis;
 use App\Models\Dosen;
+use App\Models\Bimbingan;
 use Illuminate\Support\Facades\Auth;
 
 class DosenController extends Controller
@@ -87,21 +88,21 @@ public function storeInfoLomba(Request $request)
     return view('dosen.presma.index', compact('mahasiswa'));
 }
 
-public function mahasiswas()
-{
-    return $this->hasMany(Mahasiswa::class, 'dosen_nip', 'nip');
-}
-
     public function Bimbingan()
 {
     $dosen = session('user');
-    if (!$dosen || session('level') !== 'DSN') {
-        return redirect()->route('login')->with('error', 'Silakan login sebagai dosen.');
-    }
-    $mahasiswa = Mahasiswa::where('dosen_nip', $dosen->nip)->get();
 
-    return view('dosen.Bimbingan.index', compact('mahasiswa'));
+    if (!$dosen) {
+        return redirect()->route('login')->withErrors('Session dosen tidak ditemukan.');
+    }
+
+    $bimbingan = Bimbingan::where('nip', $dosen->nip)->get();   
+    $mahasiswa = Mahasiswa::where('dosen_nip', $dosen->nip)->get();
+    
+
+    return view('dosen.Bimbingan.index', compact('mahasiswa', 'bimbingan'));
 }
+
 public function showPrestasiMhs($nim)
 {
     $mahasiswa = Mahasiswa::with('prestasis')->where('nim', $nim)->firstOrFail();

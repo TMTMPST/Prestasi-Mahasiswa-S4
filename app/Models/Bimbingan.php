@@ -15,6 +15,7 @@ class Bimbingan extends Model
         'id_lomba',
         'nama_anggota',
         'nip',
+        'nim',
         'status',
     ];
 
@@ -23,7 +24,14 @@ class Bimbingan extends Model
         return $this->belongsTo(DataLomba::class, 'id_lomba', 'id_lomba');
     }
 
-    public function dosen(){
-        return $this->belongsTo(dosen::class, 'nip', 'nip');
-    }
+
+    public function mahasiswa()
+{
+    return $this->belongsTo(Mahasiswa::class, 'nim', 'nim');
+}
+
+public function dosen()
+{
+    return $this->belongsTo(Dosen::class, 'nip', 'nip');
+}
 }
