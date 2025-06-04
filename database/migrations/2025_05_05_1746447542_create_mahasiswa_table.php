@@ -15,10 +15,11 @@ class CreateMahasiswaTable extends Migration
             $table->string('password');
             $table->string('prodi');
             $table->string('dosen_nip', 20)->nullable(); // nullable karena beberapa data tidak ada dosen_nip
-            $table->string('level')->default('MHS');
+            $table->char('level', 3)->default('MHS');
             $table->integer('poin_presma')->default(0);
             $table->string('prestasi_tertinggi')->nullable();
             $table->timestamps();
+            $table->foreign('level')->references('id_level')->on('level');
         });
     }
 
