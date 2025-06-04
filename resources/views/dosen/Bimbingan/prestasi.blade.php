@@ -16,7 +16,6 @@
                         <th>No</th>
                         <th>Nama Prestasi</th>
                         <th>Tingkat</th>
-                        <th>Kategori</th>
                         <th>Jenis</th>
                         <th>Tahun</th>
                     </tr>
@@ -27,7 +26,6 @@
                         <td>{{ $index + 1 }}</td>
                         <td>{{ $prestasi->nama_lomba }}</td>
                         <td>{{ $prestasi->tingkatRelasi->nama_tingkat ?? '-' }}</td>
-                        <td>{{ $prestasi->kategoriRelasi->nama_kategori ?? '-' }}</td>
                         <td>{{ $prestasi->jenisRelasi->nama_jenis ?? '-' }}</td>
                         <td>{{ \Carbon\Carbon::parse($prestasi->tanggal_mulai)->format('Y') }}</td>
                     </tr>

@@ -280,10 +280,7 @@
                                                             <strong class="text-maroon">Tingkat:</strong>
                                                             <span class="badge bg-info text-dark ms-1">{{ $lomba->tingkatRelasi->nama_tingkat ?? '-' }}</span>
                                                         </p>
-                                                        <p class="mb-2">
-                                                            <strong class="text-maroon">Kategori:</strong><br>
-                                                            <small>{{ $lomba->kategoriRelasi->nama_kategori ?? '-' }}</small>
-                                                        </p>
+                                
                                                         <p class="mb-0">
                                                             <strong class="text-maroon">Jenis:</strong><br>
                                                             <small>{{ $lomba->jenisRelasi->nama_jenis ?? '-' }}</small>

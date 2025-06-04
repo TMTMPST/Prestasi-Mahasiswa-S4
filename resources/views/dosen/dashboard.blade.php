@@ -176,10 +176,6 @@
                                                         <strong class="text-maroon">Tingkat:</strong>
                                                         {{ $lomba->tingkatRelasi->nama_tingkat ?? '-' }}
                                                     </p>
-                                                    <p class="mb-2">
-                                                        <strong class="text-maroon">Kategori:</strong>
-                                                        {{ $lomba->kategoriRelasi->nama_kategori ?? '-' }}
-                                                    </p>
                                                     <p class="mb-0">
                                                         <strong class="text-maroon">Jenis:</strong>
                                                         {{ $lomba->jenisRelasi->nama_jenis ?? '-' }}

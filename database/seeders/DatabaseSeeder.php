@@ -14,11 +14,11 @@ class DatabaseSeeder extends Seeder
             DosenSeeder::class,
             AdminSeeder::class,
             TingkatSeeder::class,
-            KategoriSeeder::class,
             JenisSeeder::class,
             DataLombaSeeder::class,
             DataPrestasiSeeder::class,
             BimbinganSeeder::class,
+            
         ]);
     }
 }

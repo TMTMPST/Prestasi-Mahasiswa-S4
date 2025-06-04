@@ -6,7 +6,6 @@ use Illuminate\Http\Request;
 use App\Models\DataLomba;
 use App\Models\Mahasiswa;
 use App\Models\Tingkat;
-use App\Models\Kategori;
 use App\Models\Jenis;
 use App\Models\Dosen;
 use Illuminate\Support\Facades\Auth;
@@ -16,7 +15,7 @@ class DosenController extends Controller
     public function dashboard()
     {
         // Ambil semua data lomba lengkap dengan relasi tingkat, kategori, dan jenis
-        $lombas = DataLomba::with(['tingkatRelasi', 'kategoriRelasi', 'jenisRelasi'])->get();
+        $lombas = DataLomba::with(['tingkatRelasi','jenisRelasi'])->get();
 
         // Ambil semua data mahasiswa, urutkan berdasarkan poin tertinggi
         $mahasiswa = Mahasiswa::orderByDesc('poin_presma')->get();
@@ -28,7 +27,7 @@ class DosenController extends Controller
     // LOMBA
     public function infoLomba()
 {   
-    $lombas = DataLomba::with(['tingkatRelasi', 'kategoriRelasi', 'jenisRelasi'])->get();
+    $lombas = DataLomba::with(['tingkatRelasi', 'jenisRelasi'])->get();
 
     return view('dosen.lomba.index', compact('lombas'));
 }
@@ -36,10 +35,9 @@ class DosenController extends Controller
     public function CreateInfoLomba()
 {
     $tingkats = Tingkat::all();
-    $kategoris = Kategori::all();
     $jeniss = Jenis::all();
 
-    return view('dosen.lomba.create', compact('tingkats', 'kategoris', 'jeniss'));
+    return view('dosen.lomba.create', compact('tingkats', 'jeniss'));
 }   
 
     
@@ -49,7 +47,6 @@ public function storeInfoLomba(Request $request)
     $request->validate([
         'nama_lomba' => 'required|string|max:255',
         'tingkat' => 'required|exists:tingkats,id',
-        'kategori' => 'required|exists:kategoris,id',
         'jenis' => 'required|exists:jenis_lombas,id',
         'penyelenggara' => 'required|string|max:255',
         'tanggal_mulai' => 'required|date',
@@ -59,7 +56,6 @@ public function storeInfoLomba(Request $request)
     DataLomba::create([
         'nama_lomba' => $request->input('nama_lomba'),
         'tingkat_id' => $request->input('tingkat'),
-        'kategori_id' => $request->input('kategori'),
         'jenis_id' => $request->input('jenis'),
         'penyelenggara' => $request->input('penyelenggara'),
         'tanggal_mulai' => $request->input('tanggal_mulai'),
@@ -75,7 +71,7 @@ public function storeInfoLomba(Request $request)
     public function showLomba($id)
     {
         // Ambil detail lomba berdasarkan ID beserta relasinya
-        $lomba = DataLomba::with(['tingkatRelasi', 'kategoriRelasi', 'jenisRelasi'])->findOrFail($id);
+        $lomba = DataLomba::with(['tingkatRelasi','jenisRelasi'])->findOrFail($id);
 
         // Tampilkan view detail lomba
         return view('dosen.lomba.show', compact('lomba'));
