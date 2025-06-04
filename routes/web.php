@@ -124,3 +124,6 @@ Route::get('/dosen/profile/update_profile/{nip}', [DosenController::class, 'show
 
         // Verifikasi
         Route::get('/verifikasi/index', [MahasiswaController::class, 'verifikasi'])->name('mahasiswa.verifikasi.index');
+
+        // profile
+         Route::get('/profile/index', [MahasiswaController::class, 'profile'])->name('mahasiswa.profile.index');
