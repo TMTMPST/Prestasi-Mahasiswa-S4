@@ -9,7 +9,6 @@ use App\Models\Admin;
 use App\Models\DataPrestasi;
 use App\Models\Dosen;
 use App\Models\Jenis;
-use App\Models\Kategori;
 use App\Models\Level;
 use App\Models\Tingkat;
 use Illuminate\Support\Facades\Hash;
@@ -20,7 +19,7 @@ class AdminController extends Controller
     public function dashboard()
     {
         // Ambil semua data lomba lengkap dengan relasi tingkat, kategori, dan jenis
-        $lombas = DataLomba::with(['tingkatRelasi', 'kategoriRelasi', 'jenisRelasi'])->get();
+        $lombas = DataLomba::with(['tingkatRelasi', 'jenisRelasi'])->get();
 
         // Ambil semua data mahasiswa, urutkan berdasarkan poin tertinggi
         $mahasiswa = Mahasiswa::orderByDesc('poin_presma')->get();
@@ -240,7 +239,7 @@ class AdminController extends Controller
     public function showLomba()
     {
         // Ambil semua data lomba lengkap dengan relasi tingkat, kategori, dan jenis
-        $lombas = DataLomba::with(['tingkatRelasi', 'kategoriRelasi', 'jenisRelasi'])->get();
+        $lombas = DataLomba::with(['tingkatRelasi', 'jenisRelasi'])->get();
 
         // Kirim data ke view lomba
         return view('admin.Lomba.index', compact('lombas'));
@@ -250,11 +249,10 @@ class AdminController extends Controller
     {
         // Ambil semua tingkat, kategori, dan jenis untuk dropdown
         $tingkats = Tingkat::all();
-        $kategoris = Kategori::all();
         $jeniss = Jenis::all();
 
         // Tampilkan halaman tambah lomba
-        return view('admin.Lomba.tambahLomba', compact('tingkats', 'kategoris', 'jeniss'));
+        return view('admin.Lomba.tambahLomba', compact('tingkats', 'jeniss'));
     }
 
     public function storeLomba(Request $request)
@@ -263,10 +261,13 @@ class AdminController extends Controller
         $request->validate([
             'nama_lomba' => 'required|string|max:255',
             'tingkat' => 'required|exists:tingkat,id_tingkat',
-            'kategori' => 'required|exists:kategori,id_kategori',
             'jenis' => 'required|exists:jenis,id_jenis',
+            'tingkat_penyelenggara' => 'required|string|max:255',
             'penyelenggara' => 'required|string|max:255',
             'alamat' => 'required|string|max:255',
+            'link_lomba' => 'required|string|max:255',
+            'biaya' => 'int|nullable',
+            'hadiah' => 'string|max:255|nullable',
             'tgl_dibuka' => 'required|date',
             'tgl_ditutup' => 'required|date|after_or_equal:tgl_dibuka',
         ]);
@@ -281,15 +282,14 @@ class AdminController extends Controller
     public function editLomba($id)
     {
         // Ambil data lomba berdasarkan ID
-        $lomba = DataLomba::with(['tingkatRelasi', 'kategoriRelasi', 'jenisRelasi'])->findOrFail($id);
+        $lomba = DataLomba::with(['tingkatRelasi', 'jenisRelasi'])->findOrFail($id);
 
         // Ambil semua tingkat, kategori, dan jenis untuk dropdown
         $tingkats = Tingkat::all();
-        $kategoris = Kategori::all();
         $jeniss = Jenis::all();
 
         // Tampilkan halaman edit lomba
-        return view('admin.Lomba.editLomba', compact('lomba', 'tingkats', 'kategoris', 'jeniss'));
+        return view('admin.Lomba.editLomba', compact('lomba', 'tingkats', 'jeniss'));
     }
 
     public function updateLomba(Request $request, $id)
@@ -298,10 +298,13 @@ class AdminController extends Controller
         $request->validate([
             'nama_lomba' => 'required|string|max:255',
             'tingkat' => 'required|exists:tingkat,id_tingkat',
-            'kategori' => 'required|exists:kategori,id_kategori',
             'jenis' => 'required|exists:jenis,id_jenis',
+            'tingkat_penyelenggara' => 'required|string|max:255',
             'penyelenggara' => 'required|string|max:255',
             'alamat' => 'required|string|max:255',
+            'link_lomba' => 'required|string|max:255',
+            'biaya' => 'int|nullable',
+            'hadiah' => 'string|max:255|nullable',
             'tgl_dibuka' => 'required|date',
             'tgl_ditutup' => 'required|date|after_or_equal:tgl_dibuka',
         ]);

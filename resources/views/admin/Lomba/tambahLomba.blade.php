@@ -27,17 +27,6 @@
                         </select>
                     </div>
 
-                    <!-- Kategori-->
-                    <div class="mb-3">
-                        <label for="kategori_id" class="form-label">Kategori</label>
-                        <select class="form-select" id="kategori_id" name="kategori" required>
-                            <option value="">Pilih Kategori</option>
-                            @foreach ($kategoris as $kategori)
-                                <option value="{{ $kategori->id_kategori }}">{{ $kategori->nama_kategori }}</option>
-                            @endforeach
-                        </select>
-                    </div>
-
                     <!-- Jenis -->
                     <div class="mb-3">
                         <label for="jenis_id" class="form-label">Jenis</label>
@@ -46,6 +35,19 @@
                             @foreach ($jeniss as $jenis)
                                 <option value="{{ $jenis->id_jenis }}">{{ $jenis->nama_jenis }}</option>
                             @endforeach
+                        </select>
+                    </div>
+
+                    <!-- Tingkat Penyelenggara -->
+                    <div class="mb-3">
+                        <label for="tingkat_penyelenggara" class="form-label">Tingkat Penyelenggara</label>
+                        <select class="form-select" id="tingkat_penyelenggara" name="tingkat_penyelenggara" required>
+                            <option value="">Pilih Tingkat Penyelenggara</option>
+                            <option value="Internal Kampus / Komunitas Lokal">Internal Kampus / Komunitas Lokal</option>
+                            <option value="Kampus Lain / Organisasi Mahasiswa Nasional">Kampus Lain / Organisasi Mahasiswa Nasional</option>
+                            <option value="Perusahaan / Start-up Teknologi">Perusahaan / Start-up Teknologi</option>
+                            <option value="Lembaga Pemerintah / Kementerian">Lembaga Pemerintah / Kementerian</option>
+                            <option value="Asosiasi Profesional / Internasional (IEEE, ACM, Google, dsb)">Asosiasi Profesional / Internasional (IEEE, ACM, Google, dsb)</option>
                         </select>
                     </div>
 
@@ -60,6 +62,28 @@
                         <label for="alamat" class="form-label">Alamat</label>
                         <input type="text" class="form-control" id="alamat" name="alamat" required>
                     </div>
+                    
+                    <!-- Link -->
+                    <div class="mb-3">
+                        <label for="link_lomba" class="form-label">Link Lomba</label>
+                        <input type="text" class="form-control" id="link_lomba" name="link_lomba" required>
+                    </div>
+
+                    <!-- Biaya -->
+                    <div class="mb-3">
+                        <label for="biaya" class="form-label">Biaya</label>
+                        <input type="number" class="form-control" id="biaya" 
+                        value="0" name="biaya" required>
+                    </div>
+
+                    <!-- Hadiah -->
+                    <div class="mb-3">
+                        <label for="hadiah" class="form-label">Hadiah</label>
+                        <input type="text" class="form-control" id="hadiah" 
+                        name="hadiah" value="0" required>
+                    </div>
+
+                    <input type="hidden" name="verifikasi" value="Pending">
 
                     <!-- Tanggal Mulai -->
                     <div class="mb-3">

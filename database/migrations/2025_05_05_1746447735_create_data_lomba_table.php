@@ -22,6 +22,7 @@ class CreateDataLombaTable extends Migration
             $table->string('penyelenggara', 255);
             $table->string('alamat', 255);
             $table->string('link_lomba', 255)->nullable();
+            $table->enum('verifikasi', ['Pending', 'Rejected', 'Accepted']);
             
             // CORRECTED LINE: Remove the '10' from integer.
             // Also, 'biaya' should typically be a decimal or float if it can have cents,

@@ -14,10 +14,13 @@
                         <tr>
                             <th>Nama Lomba</th>
                             <th>Tingkat</th>
-                            <th>Kategori</th>
                             <th>Jenis</th>
+                            <th>Tingkat Penyelenggara</th>
                             <th>Penyelenggara</th>
                             <th>Alamat</th>
+                            <th>Link</th>
+                            <th>Biaya Pendaftaran</th>
+                            <th>Hadiah</th>
                             <th>Tanggal Mulai</th>
                             <th>Tanggal Selesai</th>
                             <th>Aksi</th>
@@ -28,10 +31,13 @@
                             <tr>
                                 <td>{{ $lomba->nama_lomba }}</td>
                                 <td>{{ $lomba->tingkatRelasi->nama_tingkat }}</td>
-                                <td>{{ $lomba->kategoriRelasi->nama_kategori }}</td>
                                 <td>{{ $lomba->jenisRelasi->nama_jenis }}</td>
+                                <td>{{ $lomba->tingkat_penyelenggara }}</td>
                                 <td>{{ $lomba->penyelenggara }}</td>
                                 <td>{{ $lomba->alamat }}</td>
+                                <td><a href="{{ $lomba->link_lomba }}">Klik</a></td>
+                                <td>{{ $lomba->biaya == 0 ? 'Gratis' : "Rp".$lomba->biaya }}</td>
+                                <td>{{ $lomba->hadiah }}</td>
                                 <td>{{ $lomba->tgl_dibuka }}</td>
                                 <td>{{ $lomba->tgl_ditutup }}</td>
                                 <td>
