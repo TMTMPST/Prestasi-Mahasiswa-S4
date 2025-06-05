@@ -254,7 +254,6 @@
                                     <th>Positive Flow (φ⁺)</th>
                                     <th>Negative Flow (φ⁻)</th>
                                     <th>Net Flow (φ)</th>
-                                    <th>Ranking</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -269,7 +268,6 @@
                                                 {{ number_format($flow['net_flow'], 4) }}
                                             </span>
                                         </td>
-                                        <td><span class="badge bg-primary">{{ $rank++ }}</span></td>
                                     </tr>
                                 @endforeach
                             </tbody>
