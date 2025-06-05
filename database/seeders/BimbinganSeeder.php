@@ -16,9 +16,9 @@ class BimbinganSeeder extends Seeder
         Bimbingan::create([
     'id_bimbingan' => 1,
     'id_lomba' => 1,
-    'nama_anggota' => 'Var',
+    'nama_pengaju' => 'Var',
     'nip' => '123456789012345',
-    'nim' => '220401010001', // contoh
+    'nim' => '2341720243', 
     'status' => 'Pending',
 ]);
 

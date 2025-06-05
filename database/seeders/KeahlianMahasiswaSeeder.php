@@ -17,7 +17,7 @@ class KeahlianMahasiswaSeeder extends Seeder
     ['nim' => '2341720162', 'id_jenis' => 2, 'created_at' => now(), 'updated_at' => now()],
     ['nim' => '2341720162', 'id_jenis' => 10, 'created_at' => now(), 'updated_at' => now()],
     ['nim' => '2341720093', 'id_jenis' => 4, 'created_at' => now(), 'updated_at' => now()],
-    ['nim' => '2341720243', 'id_jenis' => 15, 'created_at' => now(), 'updated_at' => now()],
+    ['nim' => '2341720243', 'id_jenis' => 2, 'created_at' => now(), 'updated_at' => now()],
     ['nim' => '2341720112', 'id_jenis' => 7, 'created_at' => now(), 'updated_at' => now()],
     ]);
     }

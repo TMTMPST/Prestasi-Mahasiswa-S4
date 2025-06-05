@@ -16,7 +16,7 @@ class DataLombaSeeder extends Seeder
             [
                 'nama_lomba' => 'Lomba IT Nasional',
                 'tgl_dibuka' => '2025-01-01', // Tanggal pendaftaran dibuka
-                'tgl_ditutup' => '2025-02-01', // Tanggal pendaftaran ditutup
+                'tgl_ditutup' => '2025-12-12', // Tanggal pendaftaran ditutup
                 'tingkat' => 3, // Corresponds to id_tingkat in 'tingkat' table
                 'jenis' => 1, // Corresponds to id_jenis in 'jenis' table
                 'tingkat_penyelenggara' => 'Kampus Lain / Organisasi Mahasiswa Nasional',
@@ -30,8 +30,8 @@ class DataLombaSeeder extends Seeder
             ],
             [
                 'nama_lomba' => 'Lomba Desain Grafis Kota',
-                'tgl_dibuka' => '2025-03-01',
-                'tgl_ditutup' => '2025-04-01',
+                'tgl_dibuka' => '2025-01-01',
+                'tgl_ditutup' => '2025-12-12',
                 'tingkat' => 1, // Corresponds to id_tingkat in 'tingkat' table
                 'jenis' => 19, // Corresponds to id_jenis in 'jenis' table
                 'tingkat_penyelenggara' => 'Kampus Lain / Organisasi Mahasiswa Nasional',
@@ -45,8 +45,8 @@ class DataLombaSeeder extends Seeder
             ],
             [
                 'nama_lomba' => 'Hackathon Inovasi Digital Provinsi',
-                'tgl_dibuka' => '2025-05-10',
-                'tgl_ditutup' => '2025-06-10',
+                'tgl_dibuka' => '2025-01-01',
+                'tgl_ditutup' => '2025-12-12',
                 'tingkat' => 2, // Corresponds to id_tingkat in 'tingkat' table
                 'jenis' => 2, // Corresponds to id_jenis in 'jenis' table
                 'tingkat_penyelenggara' => 'Kampus Lain / Organisasi Mahasiswa Nasional',
@@ -60,8 +60,8 @@ class DataLombaSeeder extends Seeder
             ],
             [
                 'nama_lomba' => 'Olimpiade Sains Internasional',
-                'tgl_dibuka' => '2025-07-15',
-                'tgl_ditutup' => '2025-08-15',
+                'tgl_dibuka' => '2025-01-01',
+                'tgl_ditutup' => '2025-12-12',
                 'tingkat' => 4, // Corresponds to id_tingkat in 'tingkat' table
                 'jenis' => 5, // Corresponds to id_jenis in 'jenis' table
                 'tingkat_penyelenggara' => 'Kampus Lain / Organisasi Mahasiswa Nasional',
@@ -75,8 +75,8 @@ class DataLombaSeeder extends Seeder
             ],
             [
                 'nama_lomba' => 'Kompetisi Robotika Kampus',
-                'tgl_dibuka' => '2025-09-01',
-                'tgl_ditutup' => '2025-09-30',
+                'tgl_dibuka' => '2025-01-01',
+                'tgl_ditutup' => '2025-12-12',
                 'tingkat' => 4, // Corresponds to id_tingkat in 'tingkat' table
                 'jenis' => 10, // Corresponds to id_jenis in 'jenis' table
                 'tingkat_penyelenggara' => 'Kampus Lain / Organisasi Mahasiswa Nasional',
@@ -90,8 +90,8 @@ class DataLombaSeeder extends Seeder
             ],
             [
                 'nama_lomba' => 'Lomba Penulisan Esai Nasional',
-                'tgl_dibuka' => '2025-10-01',
-                'tgl_ditutup' => '2025-11-01',
+                'tgl_dibuka' => '2025-01-01',
+                'tgl_ditutup' => '2025-12-12',
                 'tingkat' => 3, // Corresponds to id_tingkat in 'tingkat' table
                 'jenis' => 25, // Corresponds to id_jenis in 'jenis' table
                 'tingkat_penyelenggara' => 'Kampus Lain / Organisasi Mahasiswa Nasional',

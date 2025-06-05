@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('bimbingan', function (Blueprint $table) {
             $table->increments('id_bimbingan');
             $table->unsignedInteger('id_lomba');
-            $table->string('nama_anggota');
+            $table->string('nama_pengaju');
             $table->string('nip');
             $table->string('nim');
             $table->enum('status', ['Pending', 'Rejected', 'Accepted'])->default('Pending');
