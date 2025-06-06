@@ -31,7 +31,17 @@ class RecommendationController extends Controller
         }
 
         $tingkatList = Tingkat::all();
-        return view('mahasiswa.Recommendation.form', compact('jenisList', 'tingkatList', 'mahasiswa'));
+        
+        // Get distinct tingkat penyelenggara from competitions
+        $tingkatPenyelenggaraList = DataLomba::select('tingkat_penyelenggara')
+            ->distinct()
+            ->whereNotNull('tingkat_penyelenggara')
+            ->where('tingkat_penyelenggara', '!=', '')
+            ->pluck('tingkat_penyelenggara')
+            ->sort()
+            ->values();
+        
+        return view('mahasiswa.Recommendation.form', compact('jenisList', 'tingkatList', 'mahasiswa', 'tingkatPenyelenggaraList'));
     }
 
     public function processForm(Request $request)
@@ -45,12 +55,14 @@ class RecommendationController extends Controller
         $request->validate([
             'selected_jenis' => 'array',
             'tingkat_scores' => 'array|min:1',
+            'tingkat_penyelenggara_scores' => 'array|min:1',
             'criteria_ranks' => 'array|size:5',
             'manual_weights' => 'sometimes|array|size:5',
         ]);
 
         $selectedJenis = $request->input('selected_jenis', []);
         $tingkatScores = $request->input('tingkat_scores');
+        $tingkatPenyelenggaraScores = $request->input('tingkat_penyelenggara_scores');
         $criteriaRanks = $request->input('criteria_ranks');
         $manualWeights = $request->input('manual_weights');
 
@@ -99,10 +111,14 @@ class RecommendationController extends Controller
         foreach ($competitions as $comp) {
             // Check if tingkat exists in tingkatScores array
             $tingkatScore = isset($tingkatScores[$comp->tingkat]) ? $tingkatScores[$comp->tingkat] : 1;
+            
+            // Get tingkat penyelenggara score from user input
+            $tingkatPenyelenggaraScore = isset($tingkatPenyelenggaraScores[$comp->tingkat_penyelenggara]) 
+                ? $tingkatPenyelenggaraScores[$comp->tingkat_penyelenggara] : 1;
 
             $scores = [
                 'jenis' => (in_array($comp->jenis, $mahasiswaJenisIds)) ? 1 : 0,
-                'tingkat_penyelenggara' => 3, // Fixed for now
+                'tingkat_penyelenggara' => $tingkatPenyelenggaraScore,
                 'biaya' => $this->categorizeBiaya($comp->biaya),
                 'hadiah' => $this->categorizeHadiah($comp->hadiah),
                 'tingkat' => $tingkatScore,
@@ -185,62 +201,82 @@ class RecommendationController extends Controller
     {
         $criteriaTypes = ['jenis' => 'max', 'tingkat_penyelenggara' => 'max', 'biaya' => 'min', 'hadiah' => 'max', 'tingkat' => 'max'];
         
-        // Step 1: Normalize data (for display purposes)
-        $normalizedData = [];
-        $minMaxValues = [];
+        // Step 1: Raw data (already available in scores)
+        $rawData = [];
+        foreach ($competitions as $id => $data) {
+            $rawData[$id] = $data['scores'];
+        }
+
+        // Step 2: Calculate pairwise comparisons for each criterion
+        $pairwiseComparisons = [];
+        $criteriaPreferences = [];
         
         foreach (['jenis', 'tingkat_penyelenggara', 'biaya', 'hadiah', 'tingkat'] as $criterion) {
-            $values = array_column(array_column($competitions, 'scores'), $criterion);
-            $minMaxValues[$criterion] = ['min' => min($values), 'max' => max($values)];
-        }
-        
-        foreach ($competitions as $id => $data) {
-            foreach ($data['scores'] as $criterion => $score) {
-                $min = $minMaxValues[$criterion]['min'];
-                $max = $minMaxValues[$criterion]['max'];
-                $normalized = ($max - $min) != 0 ? ($score - $min) / ($max - $min) : 0;
-                $normalizedData[$id][$criterion] = $normalized;
+            $criteriaPreferences[$criterion] = [];
+            
+            foreach ($competitions as $idA => $dataA) {
+                foreach ($competitions as $idB => $dataB) {
+                    if ($idA == $idB) continue;
+                    
+                    $scoreA = $dataA['scores'][$criterion];
+                    $scoreB = $dataB['scores'][$criterion];
+                    
+                    // Calculate preference using Excel formulas
+                    if ($criteriaTypes[$criterion] == 'max') {
+                        // For benefit criteria: =IF(A>B;1;0)
+                        $preference = ($scoreA > $scoreB) ? 1 : 0;
+                    } else {
+                        // For cost criteria (biaya): =IF(A<B;1;0) 
+                        $preference = ($scoreA < $scoreB) ? 1 : 0;
+                    }
+                    
+                    $criteriaPreferences[$criterion][$idA][$idB] = [
+                        'score_a' => $scoreA,
+                        'score_b' => $scoreB,
+                        'difference' => $scoreA - $scoreB,
+                        'preference' => $preference,
+                        'interpretation' => $this->getPreferenceInterpretation($scoreA, $scoreB, $criteriaTypes[$criterion], $criterion)
+                    ];
+                }
             }
         }
 
-        // Step 2: Calculate preference matrix
-        $preferenceMatrix = [];
-        $preferenceDetails = [];
+        // Step 3: Weight aggregation - Calculate weighted preference indices
+        $aggregatedPreferences = [];
+        $weightedDetails = [];
         
         foreach ($competitions as $idA => $dataA) {
             foreach ($competitions as $idB => $dataB) {
                 if ($idA == $idB) continue;
                 
-                $pi = 0;
-                $criteriaDetails = [];
+                $totalPreference = 0;
+                $criteriaBreakdown = [];
                 
-                foreach ($criteriaTypes as $crit => $type) {
-                    $scoreA = $dataA['scores'][$crit];
-                    $scoreB = $dataB['scores'][$crit];
-                    $pref = ($type == 'max') ? ($scoreA > $scoreB ? 1 : 0) : ($scoreA < $scoreB ? 1 : 0);
-                    $weightedPref = $weights[$crit] * $pref;
-                    $pi += $weightedPref;
+                foreach (['jenis', 'tingkat_penyelenggara', 'biaya', 'hadiah', 'tingkat'] as $criterion) {
+                    $preference = $criteriaPreferences[$criterion][$idA][$idB]['preference'];
+                    $weight = $weights[$criterion];
+                    $weightedPreference = $weight * $preference;
+                    $totalPreference += $weightedPreference;
                     
-                    $criteriaDetails[$crit] = [
-                        'score_a' => $scoreA,
-                        'score_b' => $scoreB,
-                        'preference' => $pref,
-                        'weight' => $weights[$crit],
-                        'weighted_preference' => $weightedPref
+                    $criteriaBreakdown[$criterion] = [
+                        'preference' => $preference,
+                        'weight' => $weight,
+                        'weighted_preference' => $weightedPreference
                     ];
                 }
                 
-                $preferenceMatrix[$idA][$idB] = $pi;
-                $preferenceDetails[$idA][$idB] = [
-                    'total_preference' => $pi,
-                    'criteria' => $criteriaDetails
+                $aggregatedPreferences[$idA][$idB] = $totalPreference;
+                $weightedDetails[$idA][$idB] = [
+                    'total_preference' => $totalPreference,
+                    'criteria_breakdown' => $criteriaBreakdown
                 ];
             }
         }
 
-        // Step 3: Calculate flows
+        // Step 4: Calculate positive and negative flows
         $flowCalculations = [];
         $flows = [];
+        $n = count($competitions);
         
         foreach ($competitions as $idA => $dataA) {
             $positiveFlow = 0;
@@ -251,17 +287,28 @@ class RecommendationController extends Controller
             foreach ($competitions as $idB => $dataB) {
                 if ($idA == $idB) continue;
                 
-                $prefAB = $preferenceMatrix[$idA][$idB] ?? 0;
-                $prefBA = $preferenceMatrix[$idB][$idA] ?? 0;
-                
+                // Positive flow: how much A dominates others
+                $prefAB = $aggregatedPreferences[$idA][$idB] ?? 0;
                 $positiveFlow += $prefAB;
-                $negativeFlow += $prefBA;
+                $positiveFlowDetails[] = [
+                    'competition' => $dataB['competition']->nama_lomba,
+                    'preference' => $prefAB
+                ];
                 
-                $positiveFlowDetails[] = ['competition' => $dataB['competition']->nama_lomba, 'value' => $prefAB];
-                $negativeFlowDetails[] = ['competition' => $dataB['competition']->nama_lomba, 'value' => $prefBA];
+                // Negative flow: how much others dominate A
+                $prefBA = $aggregatedPreferences[$idB][$idA] ?? 0;
+                $negativeFlow += $prefBA;
+                $negativeFlowDetails[] = [
+                    'competition' => $dataB['competition']->nama_lomba,
+                    'preference' => $prefBA
+                ];
             }
             
+            // Normalize by number of comparisons (n-1)
+            $positiveFlow = $positiveFlow / ($n - 1);
+            $negativeFlow = $negativeFlow / ($n - 1);
             $netFlow = $positiveFlow - $negativeFlow;
+            
             $flows[$idA] = $netFlow;
             $competitions[$idA]['net_flow'] = $netFlow;
             
@@ -275,20 +322,41 @@ class RecommendationController extends Controller
             ];
         }
 
-        // Sort by net flow
+        // Sort by net flow (highest first)
         uasort($competitions, fn($a, $b) => $b['net_flow'] <=> $a['net_flow']);
         
         return [
             'ranked_competitions' => $competitions,
             'calculation_steps' => [
-                'normalized_data' => $normalizedData,
-                'min_max_values' => $minMaxValues,
-                'preference_matrix' => $preferenceMatrix,
-                'preference_details' => $preferenceDetails,
+                'raw_data' => $rawData,
+                'pairwise_comparisons' => $criteriaPreferences,
+                'weight_aggregation' => $weightedDetails,
+                'aggregated_preferences' => $aggregatedPreferences,
                 'flow_calculations' => $flowCalculations,
                 'criteria_types' => $criteriaTypes
             ]
         ];
+    }
+
+    private function getPreferenceInterpretation($scoreA, $scoreB, $type, $criterion)
+    {
+        if ($type == 'max') {
+            // Benefit criteria: =IF(A>B;1;0)
+            $preference = ($scoreA > $scoreB) ? 1 : 0;
+            if ($preference == 1) {
+                return "A preferred (A=$scoreA > B=$scoreB)";
+            } else {
+                return "B preferred or equal (A=$scoreA ≤ B=$scoreB)";
+            }
+        } else {
+            // Cost criteria: =IF(A<B;1;0)
+            $preference = ($scoreA < $scoreB) ? 1 : 0;
+            if ($preference == 1) {
+                return "A preferred (cost A=$scoreA < cost B=$scoreB)";
+            } else {
+                return "B preferred or equal (cost A=$scoreA ≥ cost B=$scoreB)";
+            }
+        }
     }
 
     // Keep the original method for backward compatibility

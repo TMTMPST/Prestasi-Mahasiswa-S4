@@ -124,71 +124,102 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($rankedCompetitions as $data)
+                                @foreach ($rankedCompetitions as $id => $data)
                                     <tr>
                                         <td>{{ $data['competition']->nama_lomba }}</td>
-                                        <td>{{ $data['scores']['jenis'] }}</td>
-                                        <td>{{ $data['scores']['tingkat_penyelenggara'] }}</td>
-                                        <td>{{ $data['scores']['biaya'] }}</td>
-                                        <td>{{ $data['scores']['hadiah'] }}</td>
+                                        <td>{{ $data['competition']->jenis }} ({{ $data['scores']['jenis'] }})</td>
+                                        <td>{{ $data['competition']->tingkat_penyelenggara }} ({{ $data['scores']['tingkat_penyelenggara'] }})</td>
+                                        <td>{{ $data['competition']->biaya }} ({{ $data['scores']['biaya'] }})</td>
+                                        <td>{{ $data['competition']->hadiah }} ({{ $data['scores']['hadiah'] }})</td>
                                         <td>{{ $data['scores']['tingkat'] }}</td>
                                     </tr>
                                 @endforeach
                             </tbody>
                         </table>
                     </div>
+                    <p class="text-muted mt-2"><strong>Keterangan:</strong> Angka dalam kurung adalah skor yang diberikan untuk setiap kriteria.</p>
                 </div>
             </div>
 
-            <!-- Step 2: Normalized Data -->
+            <!-- Step 2: Pairwise Comparisons -->
             <div class="calculation-step">
                 <div class="step-header" onclick="toggleStep('step2')">
-                    <h6 class="mb-0"><i class="bi bi-2-circle me-2"></i>Data Ternormalisasi</h6>
+                    <h6 class="mb-0"><i class="bi bi-2-circle me-2"></i>Perbandingan Berpasangan per Kriteria</h6>
                 </div>
                 <div class="step-content" id="step2">
-                    <p class="text-muted mb-3">Data dinormalisasi menggunakan Min-Max Normalization: (x - min) / (max - min)</p>
-                    <div class="table-responsive">
-                        <table class="table table-sm table-bordered">
-                            <thead class="table-dark">
-                                <tr>
-                                    <th>Nama Lomba</th>
-                                    <th>Jenis</th>
-                                    <th>Tingkat Penyelenggara</th>
-                                    <th>Biaya</th>
-                                    <th>Hadiah</th>
-                                    <th>Tingkat</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach ($rankedCompetitions as $id => $data)
+                    <p class="text-muted mb-3">Setiap alternatif dibandingkan dengan alternatif lainnya untuk setiap kriteria</p>
+                    
+                    @foreach($calculationSteps['criteria_types'] as $criterion => $type)
+                        <h6 class="mt-4">{{ ucfirst(str_replace('_', ' ', $criterion)) }} ({{ $type === 'max' ? 'Maximize' : 'Minimize' }})</h6>
+                        <div class="table-responsive">
+                            <table class="table table-sm table-bordered matrix-table">
+                                <thead class="table-secondary">
                                     <tr>
-                                        <td>{{ $data['competition']->nama_lomba }}</td>
-                                        @foreach(['jenis', 'tingkat_penyelenggara', 'biaya', 'hadiah', 'tingkat'] as $criterion)
-                                            <td>{{ number_format($calculationSteps['normalized_data'][$id][$criterion], 4) }}</td>
+                                        <th>Alternatif</th>
+                                        @foreach ($rankedCompetitions as $data)
+                                            <th class="text-center" style="writing-mode: vertical-lr;">
+                                                {{ substr($data['competition']->nama_lomba, 0, 8) }}...
+                                            </th>
                                         @endforeach
                                     </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
-                    </div>
+                                </thead>
+                                <tbody>
+                                    @foreach ($rankedCompetitions as $idA => $dataA)
+                                        <tr>
+                                            <td><strong>{{ substr($dataA['competition']->nama_lomba, 0, 15) }}...</strong></td>
+                                            @foreach ($rankedCompetitions as $idB => $dataB)
+                                                <td class="text-center">
+                                                    @if($idA != $idB)
+                                                        {{ $calculationSteps['pairwise_comparisons'][$criterion][$idA][$idB]['preference'] }}
+                                                    @else
+                                                        -
+                                                    @endif
+                                                </td>
+                                            @endforeach
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
+                    @endforeach
                 </div>
             </div>
 
-            <!-- Step 3: Preference Matrix -->
+            <!-- Step 3: Weight Aggregation -->
             <div class="calculation-step">
                 <div class="step-header" onclick="toggleStep('step3')">
-                    <h6 class="mb-0"><i class="bi bi-3-circle me-2"></i>Matriks Preferensi</h6>
+                    <h6 class="mb-0"><i class="bi bi-3-circle me-2"></i>Agregasi dengan Bobot Kriteria</h6>
                 </div>
                 <div class="step-content" id="step3">
-                    <p class="text-muted mb-3">Perhitungan preferensi antar alternatif berdasarkan kriteria (Max/Min)</p>
+                    <p class="text-muted mb-3">Preferensi setiap kriteria dikalikan dengan bobotnya dan dijumlahkan</p>
+                    
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <h6>Bobot Kriteria (ROC):</h6>
+                            <ul class="list-unstyled">
+                                @foreach($criteriaWeights as $crit => $weight)
+                                    <li><strong>{{ ucfirst(str_replace('_', ' ', $crit)) }}:</strong> {{ number_format($weight, 4) }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
+                        <div class="col-md-6">
+                            <h6>Formula:</h6>
+                            <p class="text-muted">π(a,b) = Σ[w<sub>j</sub> × P<sub>j</sub>(a,b)]</p>
+                            <p class="text-muted">dimana:</p>
+                            <p class="text-muted">w<sub>j</sub> = bobot kriteria j</p>
+                            <p class="text-muted">P<sub>j</sub>(a,b) = preferensi alternatif a terhadap b pada kriteria j</p>
+                        </div>
+                    </div>
+
+                    <h6>Matriks Preferensi Teragregasi:</h6>
                     <div class="table-responsive">
                         <table class="table table-sm table-bordered matrix-table">
                             <thead class="table-dark">
                                 <tr>
                                     <th>Alternatif</th>
                                     @foreach ($rankedCompetitions as $data)
-                                        <th class="text-center" style="writing-mode: vertical-lr; text-orientation: mixed;">
-                                            {{ substr($data['competition']->nama_lomba, 0, 10) }}...
+                                        <th class="text-center" style="writing-mode: vertical-lr;">
+                                            {{ substr($data['competition']->nama_lomba, 0, 8) }}...
                                         </th>
                                     @endforeach
                                 </tr>
@@ -198,9 +229,9 @@
                                     <tr>
                                         <td><strong>{{ substr($dataA['competition']->nama_lomba, 0, 15) }}...</strong></td>
                                         @foreach ($rankedCompetitions as $idB => $dataB)
-                                            <td>
+                                            <td class="text-center">
                                                 @if($idA != $idB)
-                                                    {{ number_format($calculationSteps['preference_matrix'][$idA][$idB], 3) }}
+                                                    {{ number_format($calculationSteps['aggregated_preferences'][$idA][$idB], 4) }}
                                                 @else
                                                     -
                                                 @endif
@@ -214,46 +245,23 @@
                 </div>
             </div>
 
-            <!-- Step 4: Weighted Aggregation -->
+            <!-- Step 4: Flow Calculations -->
             <div class="calculation-step">
                 <div class="step-header" onclick="toggleStep('step4')">
-                    <h6 class="mb-0"><i class="bi bi-4-circle me-2"></i>Agregasi dengan Bobot</h6>
+                    <h6 class="mb-0"><i class="bi bi-4-circle me-2"></i>Perhitungan Aliran PROMETHEE</h6>
                 </div>
                 <div class="step-content" id="step4">
-                    <p class="text-muted mb-3">Setiap preferensi dikalikan dengan bobot kriteria masing-masing</p>
-                    <div class="row">
-                        <div class="col-md-6">
-                            <h6>Tipe Kriteria:</h6>
-                            <ul class="list-unstyled">
-                                @foreach($calculationSteps['criteria_types'] as $crit => $type)
-                                    <li><strong>{{ ucfirst(str_replace('_', ' ', $crit)) }}:</strong> {{ $type === 'max' ? 'Maximize' : 'Minimize' }}</li>
-                                @endforeach
-                            </ul>
-                        </div>
-                        <div class="col-md-6">
-                            <h6>Formula Agregasi:</h6>
-                            <p class="text-muted">π(a,b) = Σ(w<sub>j</sub> × P<sub>j</sub>(a,b))</p>
-                            <p class="text-muted">dimana w<sub>j</sub> = bobot kriteria j</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Step 5: Flow Calculations -->
-            <div class="calculation-step">
-                <div class="step-header" onclick="toggleStep('step5')">
-                    <h6 class="mb-0"><i class="bi bi-5-circle me-2"></i>Perhitungan Aliran (Flow)</h6>
-                </div>
-                <div class="step-content" id="step5">
-                    <p class="text-muted mb-3">Positive Flow (φ⁺), Negative Flow (φ⁻), dan Net Flow (φ)</p>
+                    <p class="text-muted mb-3">Entering Flow (φ⁺), Leaving Flow (φ⁻), dan Net Flow (φ)</p>
+                    
                     <div class="table-responsive">
                         <table class="table table-sm table-bordered">
                             <thead class="table-dark">
                                 <tr>
                                     <th>Nama Lomba</th>
-                                    <th>Positive Flow (φ⁺)</th>
-                                    <th>Negative Flow (φ⁻)</th>
+                                    <th>Entering Flow (φ⁺)</th>
+                                    <th>Leaving Flow (φ⁻)</th>
                                     <th>Net Flow (φ)</th>
+                                    <th>Ranking</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -268,16 +276,19 @@
                                                 {{ number_format($flow['net_flow'], 4) }}
                                             </span>
                                         </td>
+                                        <td><span class="badge bg-primary">{{ $rank++ }}</span></td>
                                     </tr>
                                 @endforeach
                             </tbody>
                         </table>
                     </div>
+                    
                     <div class="mt-3">
-                        <p class="text-muted mb-1"><strong>Formula:</strong></p>
-                        <p class="text-muted mb-1">φ⁺(a) = Σπ(a,x) untuk semua x ≠ a</p>
-                        <p class="text-muted mb-1">φ⁻(a) = Σπ(x,a) untuk semua x ≠ a</p>
-                        <p class="text-muted">φ(a) = φ⁺(a) - φ⁻(a)</p>
+                        <p class="text-muted mb-1"><strong>Formula PROMETHEE:</strong></p>
+                        <p class="text-muted mb-1">φ⁺(a) = (1/(n-1)) × Σπ(a,x) untuk semua x ≠ a</p>
+                        <p class="text-muted mb-1">φ⁻(a) = (1/(n-1)) × Σπ(x,a) untuk semua x ≠ a</p>
+                        <p class="text-muted mb-1">φ(a) = φ⁺(a) - φ⁻(a)</p>
+                        <p class="text-muted"><strong>Keterangan:</strong> n = jumlah alternatif, π(a,x) = preferensi teragregasi</p>
                     </div>
                 </div>
             </div>
@@ -285,7 +296,7 @@
 
             <!-- Final Results Section -->
             <div class="mb-4">
-                <h5 class="text-maroon mb-3"><i class="bi bi-trophy me-2"></i>Hasil Akhir Rekomendasi</h5>
+                <h5 class="text-maroon mb-3"><i class="bi bi-trophy me-2"></i>Hasil Akhir Rekomendasi PROMETHEE</h5>
                 <div class="table-responsive">
                     <table class="table table-bordered">
                         <thead>
@@ -307,9 +318,9 @@
                                     <td><span class="badge bg-primary">{{ $rank++ }}</span></td>
                                     <td><strong>{{ $data['competition']->nama_lomba }}</strong></td>
                                     <td>{{ $data['scores']['jenis'] }}</td>
-                                    <td>{{ $data['scores']['tingkat_penyelenggara'] }}</td>
-                                    <td>{{ $data['scores']['biaya'] }}</td>
-                                    <td>{{ $data['scores']['hadiah'] }}</td>
+                                    <td>{{ $data['competition']->tingkat_penyelenggara }} ({{ $data['scores']['tingkat_penyelenggara'] }})</td>
+                                    <td>{{ $data['competition']->biaya }} ({{ $data['scores']['biaya'] }})</td>
+                                    <td>{{ $data['competition']->hadiah }} ({{ $data['scores']['hadiah'] }})</td>
                                     <td>{{ $data['scores']['tingkat'] }}</td>
                                     <td>
                                         <span class="badge bg-{{ $data['net_flow'] > 0 ? 'success' : 'danger' }}">
@@ -325,14 +336,14 @@
 
             <!-- Explanation Section -->
             <div class="alert alert-info">
-                <h6><i class="bi bi-info-circle me-2"></i>Penjelasan Perhitungan PROMETHEE</h6>
+                <h6><i class="bi bi-info-circle me-2"></i>Penjelasan Metode PROMETHEE</h6>
                 <ul class="mb-0">
-                    <li><strong>Normalisasi:</strong> Data mentah dinormalisasi untuk menyamakan skala antar kriteria</li>
-                    <li><strong>Matriks Preferensi:</strong> Menghitung tingkat preferensi antar alternatif berdasarkan setiap kriteria</li>
-                    <li><strong>Agregasi Bobot:</strong> Preferensi dikombinasikan dengan bobot kriteria menggunakan ROC</li>
-                    <li><strong>Positive Flow:</strong> Mengukur seberapa baik alternatif dibandingkan dengan yang lain</li>
-                    <li><strong>Negative Flow:</strong> Mengukur seberapa buruk alternatif dibandingkan dengan yang lain</li>
-                    <li><strong>Net Flow:</strong> Selisih antara positive dan negative flow, menentukan ranking akhir</li>
+                    <li><strong>Perbandingan Berpasangan:</strong> Setiap alternatif dibandingkan dengan alternatif lain untuk setiap kriteria</li>
+                    <li><strong>Agregasi Bobot:</strong> Preferensi setiap kriteria dikalikan dengan bobot ROC dan dijumlahkan</li>
+                    <li><strong>Entering Flow (φ⁺):</strong> Mengukur seberapa baik alternatif dibanding alternatif lain</li>
+                    <li><strong>Leaving Flow (φ⁻):</strong> Mengukur seberapa buruk alternatif dibanding alternatif lain</li>
+                    <li><strong>Net Flow (φ):</strong> Selisih antara positive dan Leaving Flow, menentukan ranking akhir</li>
+                    <li><strong>Semakin tinggi Net Flow, semakin direkomendasikan</strong> lomba tersebut</li>
                 </ul>
             </div>
 
