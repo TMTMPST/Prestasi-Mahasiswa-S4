@@ -180,15 +180,17 @@ class MahasiswaController extends Controller
         'id_lomba' => 'required',
         'nim' => 'required',
         'nip' => 'required',
+        'deskripsi_lomba' => 'required', 
     ]);
 
-    $mahasiswa = \App\Models\Mahasiswa::where('nim', $request->nim)->first();
+    $mahasiswa =Mahasiswa::where('nim', $request->nim)->first();
 
     $bimbingan = new Bimbingan();
     $bimbingan->id_lomba = $request->id_lomba;
     $bimbingan->nim = $request->nim;
     $bimbingan->nama_pengaju = $mahasiswa ? $mahasiswa->nama : null;
     $bimbingan->nip = $request->nip;
+    $bimbingan->deskripsi_lomba = $request->deskripsi_lomba; 
     $bimbingan->status = 'Pending';
     $bimbingan->save();
 
@@ -197,7 +199,7 @@ class MahasiswaController extends Controller
 
     public function edit_bimbingan($id)
     {
-        $bimbingan = Bimbingan::findOrFail($id); // BUKAN get()
+        $bimbingan = Bimbingan::findOrFail($id); 
         $lombas = DataLomba::with(['tingkatRelasi', 'jenisRelasi'])->get();
         $dosen = dosen::all();
 

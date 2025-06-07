@@ -23,6 +23,7 @@
                                             <th>No</th>
                                             <th>Nama Pengaju</th>
                                             <th>NIM</th>
+                                            <th>Nama Lomba</th>
                                             <th>Status</th>
                                             <th>Aksi</th>
                                         </tr>
@@ -36,6 +37,7 @@
                                                     {{ $bmb->mahasiswa->nama ?? ($bmb->nama_pengaju ?? 'Belum Ada Nama') }}
                                                 </td>
                                                 <td>{{ $bmb->mahasiswa->nim ?? ($bmb->nim ?? 'Belum Ada NIM') }}</td>
+                                                <td>{{ $bmb->lomba->nama_lomba ?? '-' }}</td>
                                                 <td>
                                                     <span class="badge bg-secondary">Pending</span>
                                                 </td>
@@ -49,6 +51,7 @@
                                                             data-nama="{{ $bmb->mahasiswa->nama ?? ($bmb->nama_pengaju ?? '-') }}"
                                                             data-nim="{{ $bmb->nim }}"
                                                             data-lomba="{{ $bmb->lomba->nama_lomba ?? '-' }}"
+                                                            data-deskripsi="{{ $bmb->deskripsi_lomba ?? '-' }}"
                                                             data-status="{{ $bmb->status }}"
                                                             data-dosen="{{ $bmb->dosen->nama ?? '-' }}"
                                                         >
@@ -91,7 +94,7 @@
             <div class="col-12">
                 <div class="card dashboard-card shadow-sm">
                     <div class="card-header ranking-header d-flex align-items-center" style="font-size:1.2rem;">
-                        <i class="bi bi-check-circle-fill me-2"></i>Bimbingan Diterima
+                        <i class="bi bi-check-circle-fill me-2"></i>Daftar Mahasiswa Bimbingan
                     </div>
                     <div class="card-body">
                         @if ($bimbinganAccepted->count())
@@ -102,6 +105,7 @@
                                             <th>No</th>
                                             <th>Nama Pengaju</th>
                                             <th>NIM</th>
+                                            <th>Nama Lomba</th>
                                             <th>Status</th>
                                         </tr>
                                     </thead>
@@ -114,6 +118,7 @@
                                                     {{ $bmb->mahasiswa->nama ?? ($bmb->nama_pengaju ?? 'Belum Ada Nama') }}
                                                 </td>
                                                 <td>{{ $bmb->mahasiswa->nim ?? ($bmb->nim ?? 'Belum Ada NIM') }}</td>
+                                                <td>{{ $bmb->lomba->nama_lomba ?? '-' }}</td>
                                                 <td>
                                                     <span class="badge bg-success">Accepted</span>
                                                 </td>
@@ -153,6 +158,9 @@
                         <strong>Nama Lomba:</strong> <span id="modal-lomba"></span>
                     </div>
                     <div class="mb-2">
+                        <strong>Deskripsi Lomba:</strong> <span id="modal-deskripsi"></span>
+                    </div>
+                    <div class="mb-2">
                         <strong>Nama Dosen Pembimbing:</strong> <span id="modal-dosen"></span>
                     </div>
                     <div class="mb-2">
@@ -169,16 +177,18 @@
             var nama = document.getElementById('modal-nama');
             var nim = document.getElementById('modal-nim');
             var lomba = document.getElementById('modal-lomba');
+            var deskripsi_lomba = document.getElementById('modal-deskripsi');
             var dosen = document.getElementById('modal-dosen');
             var status = document.getElementById('modal-status');
 
             document.querySelectorAll('.btn-detail-bimbingan').forEach(function(btn) {
                 btn.addEventListener('click', function () {
-                    nama.textContent = btn.getAttribute('data-nama');
-                    nim.textContent = btn.getAttribute('data-nim');
-                    lomba.textContent = btn.getAttribute('data-lomba');
-                    dosen.textContent = btn.getAttribute('data-dosen');
-                    status.textContent = btn.getAttribute('data-status');
+                    nama.textContent = btn.getAttribute('data-nama') || '-';
+                    nim.textContent = btn.getAttribute('data-nim') || '-';
+                    lomba.textContent = btn.getAttribute('data-lomba') || '-';
+                    deskripsi_lomba.textContent = btn.getAttribute('data-deskripsi') || '-';
+                    dosen.textContent = btn.getAttribute('data-dosen') || '-';
+                    status.textContent = btn.getAttribute('data-status') || '-';
                 });
             });
         });

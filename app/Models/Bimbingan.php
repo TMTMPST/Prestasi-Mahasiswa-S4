@@ -16,6 +16,7 @@ class Bimbingan extends Model
         'nama_pengaju',
         'nip',
         'nim',
+        'deskripsi_lomba',
         'status',
     ];
 

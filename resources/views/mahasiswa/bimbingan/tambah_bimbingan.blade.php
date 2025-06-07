@@ -19,15 +19,18 @@
                 </div>
 
                 <div class="mb-3">
-    <label for="nim" class="form-label">Nama Pengaju</label>
-    <select class="form-select" id="nim" name="nim" required>
-        <option value="">Pilih Mahasiswa</option>
-        @foreach ($mahasiswas as $mhs)
-            <option value="{{ $mhs->nim }}">{{ $mhs->nama }} ({{ $mhs->nim }})</option>
-        @endforeach
-    </select>
-</div>
-
+                    <label for="nim" class="form-label">Nama Pengaju</label>
+                    <select class="form-select" id="nim" name="nim" required>
+                        <option value="">Pilih Mahasiswa</option>
+                        @foreach ($mahasiswas as $mhs)
+                            <option value="{{ $mhs->nim }}">{{ $mhs->nama }} ({{ $mhs->nim }})</option>
+                        @endforeach
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label for="deskripsi_lomba" class="form-label">Deskripsi Lomba</label>
+                    <textarea id="deskripsi_lomba" name="deskripsi_lomba" class="form-control" rows="3" required></textarea>
+                </div>
                 <div class="mb-3">
                     <label for="nip" class="form-label">Nama Dosen Pembimbing</label>
                     <select id="nip" name="nip" class="form-select" required>

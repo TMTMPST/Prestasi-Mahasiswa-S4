@@ -26,6 +26,7 @@
                                 <td>{{ $index + 1 }}</td>
                                 <td>{{ $bimb->lomba->nama_lomba }}</td>
                                 <td>{{ $bimb->nama_pengaju }}</td>
+                                
                                 <td>{{ $bimb->dosen->nama }}</td>
                                 <td>{{ $bimb->status }}</td>
                                 <td>

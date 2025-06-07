@@ -18,6 +18,7 @@ class BimbinganSeeder extends Seeder
             'nama_pengaju' => 'Varizky Naldiba Rimra',
             'nip' => '123456789012345',
             'nim' => '2341720243',
+            'deskripsi_lomba' => 'Lomba Karya Tulis Ilmiah Nasional',
             'status' => 'Pending',
         ]);
 
@@ -27,6 +28,7 @@ class BimbinganSeeder extends Seeder
             'nama_pengaju' => 'Diana Rahmawati',
             'nip' => '123456789012345',
             'nim' => '2341720162',
+            'deskripsi_lomba' => 'Lomba Inovasi Teknologi Mahasiswa',
             'status' => 'Accepted',
         ]);
 
@@ -36,6 +38,7 @@ class BimbinganSeeder extends Seeder
             'nama_pengaju' => 'Vidi Joshubzky Saviola',
             'nip' => '123456789012345',
             'nim' => '2341720112',
+            'deskripsi_lomba' => 'Lomba Debat Bahasa Inggris',
             'status' => 'Rejected',
         ]);
     }
