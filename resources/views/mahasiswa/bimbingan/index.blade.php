@@ -21,9 +21,32 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td colspan="6" class="text-center">Data belum tersedia</td>
-                    </tr>
+                    @forelse ($bimbingan as $index => $bimb)
+                        <tr>
+                            <td>{{ $index + 1 }}</td>
+                            <td>{{ $bimb->lomba->nama_lomba }}</td>
+                            <td>{{ $bimb->nama_anggota }}</td>
+                            <td>{{ $bimb->dosen->nama }}</td>
+                            <td>{{ $bimb->status }}</td>
+                            <td>
+                                <form action="{{ route('mahasiswa.destroy_bimbingan', $bimb->id_bimbingan) }}" method="POST" onsubmit="return confirm('Apakah kamu yakin ingin menghapus data ini?');" style="display: inline;">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="btn btn-sm btn-danger">
+                                    Hapus
+                                </button>
+                                </form>
+
+                            <a href="{{ route('mahasiswa.edit_bimbingan', $bimb->id_bimbingan) }}" class="btn btn-sm btn-primary">
+                                Edit
+                            </a>
+                            </td>
+                        </tr>
+                    @empty
+                        <tr>
+                            <td colspan="8" class="text-center">Belum ada data mahasiswa</td>
+                        </tr>
+                    @endforelse
                 </tbody>
             </table>
         </div>

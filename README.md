@@ -1,4 +1,4 @@
-# Sistem Informasi Prestasi Mahasiswa dengan DSS PROMETHEE
+# Sistem Informasi Prestasi Mahasiswa dengan DSS ROC
 
 ## Deskripsi Proyek
 Sistem Informasi Prestasi Mahasiswa adalah aplikasi berbasis web yang dikembangkan untuk membantu mengelola dan menganalisis prestasi mahasiswa di lingkungan akademik Politeknik Negeri Malang. Sistem ini dilengkapi dengan Decision Support System (DSS) menggunakan metode PROMETHEE (Preference Ranking Organization Method for Enrichment Evaluation) yang memungkinkan pengambilan keputusan berdasarkan multi-kriteria untuk menentukan mahasiswa berprestasi.
@@ -37,16 +37,6 @@ Sistem ini memiliki beberapa tabel utama:
 - Kriteria
 - Penilaian
 - dan tabel pendukung lainnya
-
-## Implementasi Metode PROMETHEE
-Metode PROMETHEE diimplementasikan untuk menentukan mahasiswa berprestasi dengan langkah-langkah:
-1. Penentuan alternatif dan kriteria
-2. Penentuan dominasi kriteria
-3. Perhitungan nilai preferensi
-4. Perhitungan indeks preferensi multikriteria
-5. Perhitungan leaving flow dan entering flow
-6. Perhitungan net flow
-7. Penentuan rangking berdasarkan net flow
 
 ## Tim Pengembang
 Proyek ini dikembangkan oleh tim dari kelas TI 2F Politeknik Negeri Malang:

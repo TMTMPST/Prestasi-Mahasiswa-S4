@@ -1,29 +1,14 @@
 <div class="sidebar-header text-center">
     <div class="sidebar-brand text-center">
         <b>SIMPRES</b>
-        @if($authUser)
-            <div class="small mt-1">
-                {{ $authUser->nama ?? '-' }}<br>
-                <span class="text-muted" style="font-size: 0.8em;">
-                    @if($authLevel == 'ADM') Admin
-                    @elseif($authLevel == 'DSN') Dosen
-                    @elseif($authLevel == 'MHS') Mahasiswa
-                    @endif
-                </span>
-            </div>
-        @endif
     </div>
-    <button class="btn btn-lg btn-primary me-10 sidebar-toggler d-none d-lg-block" type="button"
-        data-coreui-toggle="unfoldable"
-        onclick="document.querySelector('.sidebar').classList.toggle('sidebar-unfoldable')">
-    </button>
 </div>
 
 <ul class="sidebar-nav">
     <li class="nav-title">Menu</li>
 
     {{-- Common menu items for all users --}}
-    @if ($authLevel == 'DSN') 
+    @if ($authLevel == 'DSN')
         <li class="nav-item">
             <a class="nav-link {{ request()->is('dosen/dashboard') ? 'active' : '' }}" href="/dosen/dashboard">
                 <i class="nav-icon cil-home"></i> Beranda
@@ -73,8 +58,14 @@
         </li>
 
         <li class="nav-item">
-            <a class="nav-link" href="/Presma/index">
+            <a class="nav-link" href="/manajemen-presma">
                 <i class="nav-icon cil-settings"></i> Manajemen Presma
+            </a>
+        </li>
+
+        <li class="nav-item">
+            <a class="nav-link" href="/manajemen-verifikasi">
+                <i class="nav-icon cil-check"></i> Verifikasi Prestasi
             </a>
         </li>
     @endif
@@ -97,6 +88,11 @@
     {{-- Student Menu Items --}}
     @if ($authLevel == 'MHS')
         <li class="nav-item">
+            <a class="nav-link" href="/recommendation/form">
+                <i class="nav-icon cil-list"></i> Rekomendasi Lomba
+            </a>
+        </li>
+        <li class="nav-item">
             <a class="nav-link" href="/prestasi/index">
                 <i class="nav-icon cil-list"></i> Prestasi Mahasiswa
             </a>
@@ -109,7 +105,7 @@
         </li>
 
         <li class="nav-item">
-            <a class="nav-link" href="/verifikasi/index">
+                   <a class="nav-link" href="/verifikasi/index">
                 <i class="nav-icon cil-check"></i> Verifikasi Prestasi
             </a>
         </li>

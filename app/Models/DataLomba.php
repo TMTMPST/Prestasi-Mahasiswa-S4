@@ -20,23 +20,22 @@ class DataLomba extends Model
 
     protected $fillable = [
     'nama_lomba',
-    'tingkat_id',
-    'kategori_id',
-    'jenis_id',
+    'tingkat',
+    'jenis',
+    'tingkat_penyelenggara',
     'penyelenggara',
-    'tanggal_mulai',
-    'tanggal_selesai'
+    'alamat',
+    'link_lomba',
+    'biaya',
+    'hadiah',
+    'tgl_dibuka',
+    'tgl_ditutup',
 ];
 
 
     public function tingkatRelasi()
     {
         return $this->belongsTo(Tingkat::class, 'tingkat', 'id_tingkat');
-    }
-
-    public function kategoriRelasi()
-    {
-        return $this->belongsTo(Kategori::class, 'kategori', 'id_kategori');
     }
 
     public function jenisRelasi()

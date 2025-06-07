@@ -21,7 +21,8 @@
                     <tbody>
                         @foreach ($pengguna as $item)
                             <tr>
-                                <td>{{ $item->level }}</td>
+                                <td>{{ $item->level ?? 'N/A' }}</td>
+                                {{-- <td>{{ dd($item->level) }}</td> --}}
                                 <td>{{ $item->nama }}</td>
                                 <td>{{ $item->nim ?? ($item->nip ?? $item->username) }}</td>
                                 <td>

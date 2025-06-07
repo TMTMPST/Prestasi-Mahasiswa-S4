@@ -6,9 +6,9 @@ use Illuminate\Http\Request;
 use App\Models\DataLomba;
 use App\Models\Mahasiswa;
 use App\Models\Tingkat;
-use App\Models\Kategori;
 use App\Models\Jenis;
 use App\Models\Dosen;
+use App\Models\Bimbingan;
 use Illuminate\Support\Facades\Auth;
 
 class DosenController extends Controller
@@ -16,7 +16,7 @@ class DosenController extends Controller
     public function dashboard()
     {
         // Ambil semua data lomba lengkap dengan relasi tingkat, kategori, dan jenis
-        $lombas = DataLomba::with(['tingkatRelasi', 'kategoriRelasi', 'jenisRelasi'])->get();
+        $lombas = DataLomba::with(['tingkatRelasi','jenisRelasi'])->get();
 
         // Ambil semua data mahasiswa, urutkan berdasarkan poin tertinggi
         $mahasiswa = Mahasiswa::orderByDesc('poin_presma')->get();
@@ -28,7 +28,7 @@ class DosenController extends Controller
     // LOMBA
     public function infoLomba()
 {   
-    $lombas = DataLomba::with(['tingkatRelasi', 'kategoriRelasi', 'jenisRelasi'])->get();
+    $lombas = DataLomba::with(['tingkatRelasi', 'jenisRelasi'])->get();
 
     return view('dosen.lomba.index', compact('lombas'));
 }
@@ -36,10 +36,9 @@ class DosenController extends Controller
     public function CreateInfoLomba()
 {
     $tingkats = Tingkat::all();
-    $kategoris = Kategori::all();
     $jeniss = Jenis::all();
 
-    return view('dosen.lomba.create', compact('tingkats', 'kategoris', 'jeniss'));
+    return view('dosen.lomba.create', compact('tingkats', 'jeniss'));
 }   
 
     
@@ -49,7 +48,6 @@ public function storeInfoLomba(Request $request)
     $request->validate([
         'nama_lomba' => 'required|string|max:255',
         'tingkat' => 'required|exists:tingkats,id',
-        'kategori' => 'required|exists:kategoris,id',
         'jenis' => 'required|exists:jenis_lombas,id',
         'penyelenggara' => 'required|string|max:255',
         'tanggal_mulai' => 'required|date',
@@ -59,7 +57,6 @@ public function storeInfoLomba(Request $request)
     DataLomba::create([
         'nama_lomba' => $request->input('nama_lomba'),
         'tingkat_id' => $request->input('tingkat'),
-        'kategori_id' => $request->input('kategori'),
         'jenis_id' => $request->input('jenis'),
         'penyelenggara' => $request->input('penyelenggara'),
         'tanggal_mulai' => $request->input('tanggal_mulai'),
@@ -75,7 +72,7 @@ public function storeInfoLomba(Request $request)
     public function showLomba($id)
     {
         // Ambil detail lomba berdasarkan ID beserta relasinya
-        $lomba = DataLomba::with(['tingkatRelasi', 'kategoriRelasi', 'jenisRelasi'])->findOrFail($id);
+        $lomba = DataLomba::with(['tingkatRelasi','jenisRelasi'])->findOrFail($id);
 
         // Tampilkan view detail lomba
         return view('dosen.lomba.show', compact('lomba'));
@@ -90,22 +87,22 @@ public function storeInfoLomba(Request $request)
     // Tampilkan view presma (pastikan view 'dosen.presma.index' ada)
     return view('dosen.presma.index', compact('mahasiswa'));
 }
-// di Dosen.php
-public function mahasiswas()
-{
-    return $this->hasMany(Mahasiswa::class, 'dosen_nip', 'nip');
-}
 
     public function Bimbingan()
 {
     $dosen = session('user');
-    if (!$dosen || session('level') !== 'DSN') {
-        return redirect()->route('login')->with('error', 'Silakan login sebagai dosen.');
-    }
-    $mahasiswa = \App\Models\Mahasiswa::where('dosen_nip', $dosen->nip)->get();
 
-    return view('dosen.Bimbingan.index', compact('mahasiswa'));
+    if (!$dosen) {
+        return redirect()->route('login')->withErrors('Session dosen tidak ditemukan.');
+    }
+
+    $bimbingan = Bimbingan::where('nip', $dosen->nip)->get();   
+    $mahasiswa = Mahasiswa::where('dosen_nip', $dosen->nip)->get();
+    
+
+    return view('dosen.Bimbingan.index', compact('mahasiswa', 'bimbingan'));
 }
+
 public function showPrestasiMhs($nim)
 {
     $mahasiswa = Mahasiswa::with('prestasis')->where('nim', $nim)->firstOrFail();
@@ -122,7 +119,7 @@ public function profile()
 
 public function showUpdateProfile($nip)
 {
-    $dosen = \App\Models\Dosen::where('nip', $nip)->firstOrFail();
+    $dosen = Dosen::where('nip', $nip)->firstOrFail();
     return view('dosen.Profile.update_profile', compact('dosen'));
 }
 
