@@ -96,8 +96,8 @@
 
 <ul class="header-nav">
     <li class="nav-item profile-dropdown dropdown">
-        <a class="nav-link p-0" href="#" id="profileDropdown" role="button" data-coreui-toggle="dropdown"
-            aria-expanded="false">
+        <a class="nav-link p-0 dropdown" id="profileDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+
             @if(isset($authUser) && $authUser->photo)
                 <img src="{{ asset('storage/photos/' . $authUser->photo) }}" alt="Profile" class="profile-photo">
             @else

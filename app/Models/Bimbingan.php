@@ -13,25 +13,26 @@ class Bimbingan extends Model
     public $incrementing = true;
     protected $fillable = [
         'id_lomba',
-        'nama_anggota',
+        'nama_pengaju',
         'nip',
         'nim',
         'status',
     ];
 
-    
-    public function lomba(){
+
+    public function lomba()
+    {
         return $this->belongsTo(DataLomba::class, 'id_lomba', 'id_lomba');
     }
 
 
     public function mahasiswa()
-{
-    return $this->belongsTo(Mahasiswa::class, 'nim', 'nim');
-}
+    {
+        return $this->belongsTo(Mahasiswa::class, 'nim', 'nim');
+    }
 
-public function dosen()
-{
-    return $this->belongsTo(Dosen::class, 'nip', 'nip');
-}
+    public function dosen()
+    {
+        return $this->belongsTo(Dosen::class, 'nip', 'nip');
+    }
 }

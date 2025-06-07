@@ -14,7 +14,7 @@ class DosenSeeder extends Seeder
         DB::table('dosen')->insert([
             [
                 'nip' => '123456789012345',
-                'nama' => 'Varizky Naldiba Rimra. SPd., M.Kom',
+                'nama' => 'Bunga Janarti F. SPd., M.Kom',
                 'password' => Hash::make('12345'),
                 'level' => 'DSN'
             ],
