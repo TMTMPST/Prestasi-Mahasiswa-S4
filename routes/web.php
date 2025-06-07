@@ -98,7 +98,9 @@ Route::get('/dosen/dashboard', [DosenController::class, 'dashboard'])->middlewar
         Route::get('Bimbingan/index', [DosenController::class, 'Bimbingan'])->name('dosen.bimbingan.index');
         Route::get('/dosen/bimbingan/{nim}/prestasi', [DosenController::class, 'showPrestasiMhs'])->name('dosen.bimbingan.prestasi');
         Route::get('/dosen/bimbingan', [DosenController::class, 'Bimbingan'])->name('dosen.bimbingan');
-        
+        Route::post('/bimbingan/{nim}/accept', [\App\Http\Controllers\DosenController::class, 'acceptBimbingan'])->name('bimbingan.accept');
+        Route::post('/bimbingan/{nim}/reject', [\App\Http\Controllers\DosenController::class, 'rejectBimbingan'])->name('bimbingan.reject');
+
         Route::get('/dosen/profile', [DosenController::class, 'profile'])->name('dosen.profile.index');
         Route::put('/dosen/profile/update/{nip}', [DosenController::class, 'updateProfileAction'])->name('dosen.profile.update');        
         Route::get('/dosen/profile/update_profile/{nip}', [DosenController::class, 'showUpdateProfile'])->name('dosen.profile.update_profile');

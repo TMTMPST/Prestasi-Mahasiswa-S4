@@ -89,7 +89,7 @@
     @if ($authLevel == 'MHS')
         <li class="nav-item">
             <a class="nav-link" href="/recommendation/form">
-                <i class="nav-icon cil-list"></i> Rekomendasi Lomba
+                <i class="nav-icon cil-lightbulb"></i> Rekomendasi Lomba
             </a>
         </li>
         <li class="nav-item">
