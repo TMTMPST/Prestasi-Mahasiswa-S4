@@ -1,4 +1,3 @@
-{{-- filepath: d:\weblanjut\Prestasi-Mahasiswa-S4\resources\views\layouts\header.blade.php --}}
 <style>
     .profile-dropdown {
         position: relative;
@@ -96,7 +95,7 @@
 
 <ul class="header-nav">
     <li class="nav-item profile-dropdown dropdown">
-        <a class="nav-link p-0 dropdown" id="profileDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+        <a class="nav-link p-0 dropdown-toggle d-flex justify-content-center align-items-center" id="profileDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
 
             @if(isset($authUser) && $authUser->photo)
                 <img src="{{ asset('storage/photos/' . $authUser->photo) }}" alt="Profile" class="profile-photo">
@@ -160,15 +159,5 @@
         return confirm('Apakah Anda yakin ingin logout?');
     }
 
-    // Close dropdown when clicking outside
-    document.addEventListener('click', function (event) {
-        const dropdown = document.querySelector('.profile-dropdown');
-        const dropdownMenu = dropdown?.querySelector('.dropdown-menu');
-
-        if (dropdown && !dropdown.contains(event.target)) {
-            if (dropdownMenu?.classList.contains('show')) {
-                dropdownMenu.classList.remove('show');
-            }
-        }
-    });
+    
 </script>
