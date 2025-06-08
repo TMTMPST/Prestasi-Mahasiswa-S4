@@ -54,7 +54,6 @@
     </style>
 </head>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <body>
     <div class="d-flex min-vh-100 bg-light">
         <div class="sidebar sidebar-dark sidebar-fixed border-end" id="sidebar">
@@ -83,9 +82,9 @@
             </footer>
         </div>
     </div>
+  
     
-    @stack('scripts')
-
+    
     <script src="https://cdn.jsdelivr.net/npm/@coreui/coreui@5.3.1/dist/js/coreui.bundle.min.js"
         integrity="sha384-8QmUFX1sl4cMveCP2+H1tyZlShMi1LeZCJJxTZeXDxOwQexlDrLQ3O9L78gwBbe"
         crossorigin="anonymous"></script>
@@ -94,6 +93,7 @@
         // Keep your existing sidebar toggle functionality
         // Just ensure the content adjusts properly with CSS
     </script>
+    @stack('scripts')
 </body>
 
 </html>
