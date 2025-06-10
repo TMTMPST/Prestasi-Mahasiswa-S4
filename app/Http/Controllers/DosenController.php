@@ -46,23 +46,32 @@ class DosenController extends Controller
             'nama_lomba' => 'required|string|max:255',
             'tingkat' => 'required|exists:tingkat,id_tingkat',
             'jenis' => 'required|exists:jenis,id_jenis',
+            'tingkat_penyelenggara' => 'required|string|max:255',
             'penyelenggara' => 'required|string|max:255',
-            'tanggal_mulai' => 'required|date',
-            'tanggal_selesai' => 'required|date|after_or_equal:tanggal_mulai',
+            'alamat' => 'required|string|max:255',
+            'link_lomba' => 'required|string|max:255',
+            'biaya' => 'int|nullable',
+            'hadiah' => 'string|max:255|nullable',
+            'tgl_dibuka' => 'required|date',
+            'tgl_ditutup' => 'required|date|after_or_equal:tgl_dibuka',
+            'file_lomba' => 'required|file|mimes:jpg,jpeg,png,pdf|max:2048',
         ]);
 
-        DataLomba::create([
-            'nama_lomba'    => $request->input('nama_lomba'),
-            'tingkat'       => $request->input('tingkat'),
-            'jenis'         => $request->input('jenis'),
-            'penyelenggara' => $request->input('penyelenggara'),
-            'tgl_dibuka'    => $request->input('tanggal_mulai'),
-            'tgl_ditutup'   => $request->input('tanggal_selesai'),
-            // tambahkan field lain jika diperlukan dan ada di $fillable
-        ]);
+        $data = $request->all();
 
-        return redirect()->route('dosen.dashboard')->with('success', 'Informasi lomba berhasil dikirim ke admin untuk diverifikasi.');
+        // Handle file upload
+        if ($request->hasFile('file_lomba')) {
+            $file = $request->file('file_lomba');
+            $filename = time() . '_' . $file->getClientOriginalName();
+            $path = $file->storeAs('lomba_files', $filename, 'public');
+            $data['file_lomba'] = $path;
+        }
+
+        DataLomba::create($data);
+
+        return redirect()->route('dosen.lomba.index')->with('success', 'Lomba berhasil ditambahkan!');
     }
+
 
     public function showLomba($id)
     {
