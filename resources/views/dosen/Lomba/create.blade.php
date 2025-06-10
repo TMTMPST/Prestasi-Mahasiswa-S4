@@ -120,11 +120,11 @@
             <div class="col-md-6 mb-3">
                 <label for="tingkatLomba" class="form-label custom-label">Tingkat</label>
                 <select class="form-select custom-form-control" id="tingkatLomba" name="tingkat" required>
-                    <option value="">Pilih Tingkat</option>
-                    @foreach($tingkats as $tingkat)
-                        <option value="{{ $tingkat->id }}">{{ $tingkat->nama_tingkat }}</option>
-                    @endforeach
-                </select>
+    <option value="">Pilih Tingkat</option>
+    @foreach($tingkats as $tingkat)
+        <option value="{{ $tingkat->id_tingkat }}">{{ $tingkat->nama_tingkat }}</option>
+    @endforeach
+</select>
             </div>
             <div class="col-md-6 mb-3">
                 <label for="tingkatPenyelenggara" class="form-label custom-label">Tingkat Penyelenggara</label>
@@ -145,11 +145,11 @@
             <div class="col-md-6 mb-3">
                 <label for="jenisLomba" class="form-label custom-label">Jenis</label>
                 <select class="form-select custom-form-control" id="jenisLomba" name="jenis" required>
-                    <option value="">Pilih Jenis</option>
-                    @foreach($jeniss as $jenis)
-                        <option value="{{ $jenis->id }}">{{ $jenis->nama_jenis }}</option>
-                    @endforeach
-                </select>
+    <option value="">Pilih Jenis</option>
+    @foreach($jeniss as $jenis)
+        <option value="{{ $jenis->id_jenis }}">{{ $jenis->nama_jenis }}</option>
+    @endforeach
+</select>
             </div>
             <div class="col-md-6 mb-3">
                 <label for="penyelenggaraLomba" class="form-label custom-label">Penyelenggara</label>
@@ -189,10 +189,10 @@
         </div>
 
         <div class="mb-3">
-            <label for="fileLomba" class="form-label custom-label">Upload File (Poster/Panduan)</label>
-            <input type="file" class="form-control custom-form-control" id="fileLomba" name="file_lomba" accept=".jpg,.jpeg,.png,.pdf" required>
+            <label for="fileLomba" class="form-label custom-label">Upload File (Poster)</label>
+            <input type="file" class="form-control custom-form-control" id="fileLomba" name="file_lomba" accept=".jpg,.jpeg,.png" required>
         </div>
-    </div>
+        </div>
 
     <div class="modal-footer">
         <button type="submit" class="btn custom-btn-primary">Simpan</button>

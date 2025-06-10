@@ -31,4 +31,9 @@ class Dosen extends Authenticatable
     {
         return $this->hasMany(Mahasiswa::class, 'dosen_nip', 'nip');
     }
+
+    public function bidangMinatJenis()
+{
+    return $this->belongsTo(Jenis::class, 'bidangMinat', 'id_jenis');
+}
 }

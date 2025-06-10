@@ -137,9 +137,9 @@
                     </td>
                 </tr>
                 <tr>
-                    <th class="text-maroon">Bidang Minat</th>
-                    <td>{{ $dosen->bidangMinat }}</td>
-                </tr>
+    <th class="text-maroon">Bidang Minat</th>
+    <td>{{ $dosen->bidangMinatJenis->nama_jenis ?? '-' }}</td>
+</tr>
                 </tbody>
             </table>
             <a href="{{ route('dosen.profile.update_profile', $dosen->nip) }}" class="btn btn-maroon mt-4 px-4">
