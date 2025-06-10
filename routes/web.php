@@ -86,6 +86,7 @@ Route::get('/dosen/dashboard', [DosenController::class, 'dashboard'])->middlewar
         });
 
     // Dosen routes
+        Route::get('/dashboard/lomba/{id}/detail', [App\Http\Controllers\DosenController::class, 'showLomba'])->name('dosen.dashboard.lomba.show');
         Route::get('/Lomba/index', [DosenController::class, 'infoLomba'])->name('dosen.lomba.index');
         Route::get('/lomba', [DosenController::class, 'infoLomba'])->name('lomba.index');
         Route::get('/Lomba/{id}/detail', [DosenController::class, 'showLomba'])->name('dosen.lomba.show');
