@@ -239,7 +239,7 @@ class AdminController extends Controller
     public function showLomba()
     {
         // Ambil semua data lomba lengkap dengan relasi tingkat, kategori, dan jenis
-        $lombas = DataLomba::with(['tingkatRelasi', 'jenisRelasi'])->get();
+        $lombas = DataLomba::with(['tingkatRelasi', 'jenisRelasi'])->get()->sortBy('verifikasi');
 
         // Kirim data ke view lomba
         return view('admin.Lomba.index', compact('lombas'));
@@ -331,7 +331,7 @@ class AdminController extends Controller
     public function showPresma()
     {
         // Ambil semua data presma
-        $presmas = DataPrestasi::with('dataLomba')->get()->sortByDesc('updated_at');
+        $presmas = DataPrestasi::with('dataLomba', 'nimMahasiswa')->get()->sortByDesc('updated_at');
 
         // Kirim data ke view presma
         return view('admin.Presma.index', compact('presmas'));
@@ -368,7 +368,7 @@ class AdminController extends Controller
     public function editPresma($id)
     {
         // Ambil data presma berdasarkan ID
-        $presma = DataPrestasi::with('dataLomba')->findOrFail($id);
+        $presma = DataPrestasi::with('dataLomba', 'nimMahasiswa')->findOrFail($id);
         // Ambil semua lomba untuk dropdown
         $lombas = DataLomba::select('id_lomba', 'nama_lomba')->get()->sortBy('nama_lomba');
         // Ambil semua mahasiswa untuk dropdown

@@ -14,6 +14,7 @@ class DataPrestasiSeeder extends Seeder
             [
                 'peringkat' => 'Juara 1',
                 'id_lomba' => 1,
+                'nim' => '2341720093',
                 'sertif' => 'sertifikat_1.pdf',
                 'foto_bukti' => 'foto_1.jpg',
                 'verifikasi' => 'Accepted',
@@ -22,6 +23,7 @@ class DataPrestasiSeeder extends Seeder
             [
                 'peringkat' => 'Juara 2',
                 'id_lomba' => 2,
+                'nim' => '2341720243',
                 'sertif' => 'sertifikat_2.pdf',
                 'foto_bukti' => 'foto_2.jpg',
                 'verifikasi' => 'Pending',

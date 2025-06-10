@@ -10,6 +10,7 @@ class CreateDataPrestasiTable extends Migration
     {
         Schema::create('data_prestasi', function (Blueprint $table) {
             $table->increments('id');
+            $table->string('nim', 15);
             $table->enum('peringkat', ['Juara 1', 'Juara 2', 'Juara 3', 'Harapan 1', 'Harapan 2', 'Harapan 3']);
             $table->integer('id_lomba')->unsigned();
             $table->string('sertif', 255);
@@ -18,6 +19,7 @@ class CreateDataPrestasiTable extends Migration
             $table->string('poster_lomba', 255);
             $table->timestamps();
 
+            $table->foreign('nim')->references('nim')->on('mahasiswa')->onDelete('cascade');
             $table->foreign('id_lomba')->references('id_lomba')->on('data_lomba');
         });
     }
