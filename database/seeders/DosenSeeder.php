@@ -15,8 +15,10 @@ class DosenSeeder extends Seeder
             [
                 'nip' => '123456789012345',
                 'nama' => 'Bunga Janarti F. SPd., M.Kom',
+                'email' => 'bunga.janarti@example.com', // tambahkan email di sini
                 'password' => Hash::make('12345'),
-                'level' => 'DSN'
+                'level' => 'DSN',
+                'bidangMinat' => 1, // id_jenis yang valid dari tabel jenis
             ],
         ]);
     }

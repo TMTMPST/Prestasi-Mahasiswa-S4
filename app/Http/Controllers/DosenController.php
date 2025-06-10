@@ -15,7 +15,13 @@ class DosenController extends Controller
 {
     public function dashboard()
     {
-        $lombas = DataLomba::with(['tingkatRelasi', 'jenisRelasi'])->get();
+        $sessionUser = session('user');
+        $dosen = Dosen::where('nip', $sessionUser->nip)->first();
+        $lombas = DataLomba::with(['tingkatRelasi', 'jenisRelasi'])
+            ->when($dosen && $dosen->bidangMinat, function ($query) use ($dosen) {
+                $query->where('jenis', $dosen->bidangMinat);
+            })
+            ->get();
         $mahasiswa = Mahasiswa::orderByDesc('poin_presma')->get();
         return view('dosen.dashboard', compact('lombas', 'mahasiswa'));
     }
@@ -38,22 +44,21 @@ class DosenController extends Controller
     {
         $request->validate([
             'nama_lomba' => 'required|string|max:255',
-            'tingkat' => 'required|exists:tingkats,id',
-            'jenis' => 'required|exists:jenis_lombas,id',
+            'tingkat' => 'required|exists:tingkat,id_tingkat',
+            'jenis' => 'required|exists:jenis,id_jenis',
             'penyelenggara' => 'required|string|max:255',
             'tanggal_mulai' => 'required|date',
             'tanggal_selesai' => 'required|date|after_or_equal:tanggal_mulai',
         ]);
 
         DataLomba::create([
-            'nama_lomba' => $request->input('nama_lomba'),
-            'tingkat_id' => $request->input('tingkat'),
-            'jenis_id' => $request->input('jenis'),
+            'nama_lomba'    => $request->input('nama_lomba'),
+            'tingkat'       => $request->input('tingkat'),
+            'jenis'         => $request->input('jenis'),
             'penyelenggara' => $request->input('penyelenggara'),
-            'tanggal_mulai' => $request->input('tanggal_mulai'),
-            'tanggal_selesai' => $request->input('tanggal_selesai'),
-            'status' => 'menunggu',
-            'dosen_id' => Auth::id(),
+            'tgl_dibuka'    => $request->input('tanggal_mulai'),
+            'tgl_ditutup'   => $request->input('tanggal_selesai'),
+            // tambahkan field lain jika diperlukan dan ada di $fillable
         ]);
 
         return redirect()->route('dosen.dashboard')->with('success', 'Informasi lomba berhasil dikirim ke admin untuk diverifikasi.');
@@ -73,23 +78,23 @@ class DosenController extends Controller
     }
 
     public function Bimbingan()
-{
-    $sessionUser = session('user');
-    if (!$sessionUser) {
-        return redirect()->route('login')->withErrors('Session dosen tidak ditemukan.');
+    {
+        $sessionUser = session('user');
+        if (!$sessionUser) {
+            return redirect()->route('login')->withErrors('Session dosen tidak ditemukan.');
+        }
+
+        $dosen = Dosen::where('nip', $sessionUser->nip)->first();
+        if (!$dosen) {
+            return redirect()->route('login')->withErrors('Dosen tidak ditemukan.');
+        }
+
+        // Pisahkan request dan accepted
+        $bimbinganRequest = Bimbingan::where('nip', $dosen->nip)->where('status', 'Pending')->get();
+        $bimbinganAccepted = Bimbingan::where('nip', $dosen->nip)->where('status', 'Accepted')->get();
+
+        return view('dosen.Bimbingan.index', compact('bimbinganRequest', 'bimbinganAccepted'));
     }
-
-    $dosen = Dosen::where('nip', $sessionUser->nip)->first();
-    if (!$dosen) {
-        return redirect()->route('login')->withErrors('Dosen tidak ditemukan.');
-    }
-
-    // Pisahkan request dan accepted
-    $bimbinganRequest = Bimbingan::where('nip', $dosen->nip)->where('status', 'Pending')->get();
-    $bimbinganAccepted = Bimbingan::where('nip', $dosen->nip)->where('status', 'Accepted')->get();
-
-    return view('dosen.Bimbingan.index', compact('bimbinganRequest', 'bimbinganAccepted'));
-}
 
     public function acceptBimbingan($nim)
     {
@@ -110,10 +115,9 @@ class DosenController extends Controller
     public function rejectBimbingan($nim)
     {
         $bimbingan = Bimbingan::where('nim', $nim)->firstOrFail();
-        $bimbingan->status = 'Rejected'; // Sesuai enum di DB
-        $bimbingan->save();
+        $bimbingan->delete();
 
-        return back()->with('success', 'Bimbingan ditolak.');
+        return back()->with('success', 'Bimbingan ditolak dan dihapus dari daftar.');
     }
 
     public function showPrestasiMhs($nim)
@@ -132,7 +136,8 @@ class DosenController extends Controller
     public function showUpdateProfile($nip)
     {
         $dosen = Dosen::where('nip', $nip)->firstOrFail();
-        return view('dosen.Profile.update_profile', compact('dosen'));
+        $jeniss = \App\Models\Jenis::all();
+        return view('dosen.Profile.update_profile', compact('dosen', 'jeniss'));
     }
 
     public function updateProfileAction(Request $request, $nip)
@@ -140,10 +145,14 @@ class DosenController extends Controller
         $request->validate([
             'nama' => 'required|string|max:255',
             'email' => 'required|email|max:255',
-            'bidangMinat' => 'nullable|string|max:255',
+            'bidangMinat' => 'nullable|exists:jenis,id_jenis',
         ]);
         $dosen = Dosen::where('nip', $nip)->firstOrFail();
-        $dosen->update($request->only(['nama', 'email', 'bidangMinat']));
+        $dosen->update([
+            'nama' => $request->nama,
+            'email' => $request->email,
+            'bidangMinat' => $request->bidangMinat,
+        ]);
         return redirect()->route('dosen.profile.index')->with('success', 'Profil berhasil diperbarui.');
     }
 }
