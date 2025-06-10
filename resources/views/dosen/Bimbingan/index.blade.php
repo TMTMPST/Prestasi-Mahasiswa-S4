@@ -3,7 +3,106 @@
 @section('content')
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <style>
-        /* ...style tetap... */
+        :root {
+            --primary: #0c1e47;
+            --secondary: #f7b71d;
+            --accent1: #f26430;
+            --accent2: #f9a11b;
+            --accent3: #e6e6e6;
+            --light: #ffffff;
+            --dark: #212529;
+            --gray: #6c757d;
+            --light-gray: #f8f9fa;
+        }
+
+        body {
+            background: var(--accent3);
+        }
+
+        .dashboard-card {
+            border-left: 6px solid var(--secondary);
+            border-radius: 18px;
+            box-shadow: 0 4px 24px rgba(12, 30, 71, 0.07);
+        }
+
+        .ranking-header {
+            background: linear-gradient(90deg, var(--primary) 100%);
+            color: var(--light);
+            border-radius: 18px 18px 0 0;
+        }
+
+        .card-header {
+            font-weight: 600;
+            font-size: 1.1rem;
+            border-radius: 18px 18px 0 0;
+            letter-spacing: 0.5px;
+        }
+
+        .table thead th {
+            background-color: var(--primary);
+            color: var(--light);
+            font-size: 1rem;
+            letter-spacing: 0.5px;
+        }
+
+        .badge.bg-primary {
+            background-color: var(--secondary) !important;
+            color: var(--primary) !important;
+            font-weight: 500;
+            border-radius: 8px;
+            padding: 0.5em 1em;
+        }
+
+        .badge.bg-success {
+            background-color: #28a745 !important;
+        }
+        .badge.bg-secondary {
+            background-color: #6c757d !important;
+        }
+
+        .avatar-initial {
+            display: inline-block;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background-color: var(--primary);
+            color: var(--light);
+            text-align: center;
+            line-height: 30px;
+            font-size: 1.2rem;
+            margin-right: 6px;
+        }
+
+        .table tbody tr {
+            transition: background 0.15s;
+        }
+
+        .table tbody tr:hover {
+            background: var(--light-gray);
+        }
+
+        .table-responsive::-webkit-scrollbar {
+            display: none;
+        }
+        .table-responsive {
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+        }
+
+        .btn-detail-bimbingan {
+            border-color: var(--primary);
+            color: var(--primary);
+            background: var(--light);
+            font-weight: 500;
+            border-radius: 8px;
+            transition: all 0.2s;
+        }
+        .btn-detail-bimbingan:hover,
+        .btn-detail-bimbingan:focus {
+            background: var(--primary);
+            color: var(--light);
+            border-color: var(--primary);
+        }
     </style>
 
     <div class="container py-4">

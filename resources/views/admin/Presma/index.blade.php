@@ -1,213 +1,250 @@
 @extends('layouts.app')
 
 @section('content')
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 
-    <style>
-        :root {
-            --primary: #0c1e47;
-            /* Biru tua utama (bg utama welcome) */
-            --secondary: #f7b71d;
-            /* Kuning emas (aksen utama welcome) */
-            --accent1: #f26430;
-            /* Oranye (aksen tombol/ikon) */
-            --accent2: #f9a11b;
-            /* Oranye muda */
-            --accent3: #e6e6e6;
-            /* Abu terang (background) */
-            --light: #ffffff;
-            --dark: #212529;
-            --gray: #6c757d;
-            --light-gray: #f8f9fa;
-        }
+<style>
+    :root {
+        --primary: #0c1e47;
+        --secondary: #f7b71d;
+        --accent1: #f26430;
+        --accent2: #f9a11b;
+        --accent3: #e6e6e6;
+        --light: #ffffff;
+        --dark: #212529;
+        --gray: #6c757d;
+        --light-gray: #f8f9fa;
+        --success: #28a745;
+        --pending: #adb5bd;
+    }
+    body { background: var(--accent3); }
+    .bg-maroon { background-color: var(--primary) !important; }
+    .bg-navy { background-color: var(--secondary) !important; }
+    .text-maroon { color: var(--primary) !important; }
+    .text-navy { color: var(--secondary) !important; }
+    .dashboard-card {
+        border-left: 6px solid var(--secondary);
+        border-radius: 18px;
+        box-shadow: 0 4px 24px rgba(12,30,71,0.07);
+        background: var(--light);
+    }
+    .ranking-header {
+        background: linear-gradient(90deg, var(--primary) 100%);
+        color: var(--light);
+        border-radius: 18px 18px 0 0;
+        font-size: 1.2rem;
+        font-weight: 600;
+        letter-spacing: 0.5px;
+        padding: 1rem 1.5rem;
+        display: flex;
+        align-items: center;
+    }
+    .btn-maroon {
+        background-color: var(--secondary);
+        color: var(--primary);
+        border: none;
+        border-radius: 8px;
+        font-weight: 500;
+        transition: background 0.2s, color 0.2s;
+        box-shadow: 0 2px 8px rgba(247,183,29,0.08);
+    }
+    .btn-maroon:hover, .btn-maroon:focus {
+        background-color: var(--primary);
+        color: var(--light);
+    }
+    .btn-primary, .btn-danger {
+        border-radius: 8px;
+        font-weight: 500;
+    }
+    .btn-primary {
+        background-color: var(--secondary);
+        color: var(--primary);
+        border: none;
+        transition: background 0.2s, color 0.2s;
+    }
+    .btn-primary:hover, .btn-primary:focus {
+        background-color: var(--primary);
+        color: var(--light);
+    }
+    .btn-danger {
+        background-color: #e74c3c;
+        border: none;
+    }
+    .btn-danger:hover, .btn-danger:focus {
+        background-color: #c0392b;
+    }
+    .table thead th {
+        background-color: var(--primary);
+        color: var(--light);
+        font-size: 1rem;
+        letter-spacing: 0.5px;
+        text-align: center;
+        vertical-align: middle;
+    }
+    .table tbody td {
+        vertical-align: middle;
+        text-align: center;
+    }
+    .td-left {
+        text-align: left !important;
+    }
+    .badge.bg-primary {
+        background-color: var(--secondary) !important;
+        color: var(--primary) !important;
+        font-weight: 500;
+        border-radius: 8px;
+        padding: 0.5em 1em;
+        font-size: 0.95em;
+    }
+    .badge.bg-success {
+        background-color: var(--success) !important;
+        color: #fff !important;
+        font-weight: 500;
+        border-radius: 8px;
+        padding: 0.5em 1em;
+        font-size: 0.95em;
+    }
+    .badge.bg-pending {
+        background-color: var(--pending) !important;
+        color: #fff !important;
+        font-weight: 500;
+        border-radius: 8px;
+        padding: 0.5em 1em;
+        font-size: 0.95em;
+    }
+    .table-striped > tbody > tr:nth-of-type(odd) {
+        background-color: var(--light-gray);
+    }
+    .table tbody tr:hover {
+        background: #f3f6fa;
+    }
+    .ellipsis-cell {
+        max-width: 100px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+    .avatar-initial {
+        display: inline-block;
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        background-color: var(--primary);
+        color: var(--light);
+        text-align: center;
+        line-height: 30px;
+        font-size: 1.2rem;
+    }
+    .table-responsive::-webkit-scrollbar {
+        display: none;
+    }
+    .table-responsive {
+        scrollbar-width: none;
+        -ms-overflow-style: none;
+    }
+</style>
 
-        body {
-            background: var(--accent3);
-        }
-
-        .bg-maroon {
-            background-color: var(--primary) !important;
-        }
-
-        .bg-navy {
-            background-color: var(--secondary) !important;
-        }
-
-        .text-maroon {
-            color: var(--primary) !important;
-        }
-
-        .text-navy {
-            color: var(--secondary) !important;
-        }
-
-        .dashboard-card {
-            border-left: 6px solid var(--secondary);
-            border-radius: 18px;
-            box-shadow: 0 4px 24px rgba(12, 30, 71, 0.07);
-        }
-
-        .lomba-card {
-            border-top: 4px solid var(--accent1);
-            border-radius: 18px;
-            transition: transform 0.15s, box-shadow 0.15s;
-            box-shadow: 0 2px 12px rgba(12, 30, 71, 0.08);
-        }
-
-        .lomba-card:hover {
-            transform: translateY(-6px) scale(1.03);
-            box-shadow: 0 8px 32px rgba(12, 30, 71, 0.13);
-        }
-
-        .ranking-header {
-            background: linear-gradient(90deg, var(--primary) 100%);
-            color: var(--light);
-            border-radius: 18px 18px 0 0;
-        }
-
-        .card-header {
-            font-weight: 600;
-            font-size: 1.1rem;
-            border-radius: 18px 18px 0 0;
-            letter-spacing: 0.5px;
-        }
-
-        .btn-maroon {
-            background-color: var(--secondary);
-            color: var(--primary);
-            border: none;
-            border-radius: 8px;
-            transition: background 0.2s;
-            font-weight: 500;
-        }
-
-        .btn-maroon:hover,
-        .btn-maroon:focus {
-            background-color: var(--primary);
-            color: var(--light);
-        }
-
-        .btn-outline-maroon {
-            border: 1.5px solid var(--secondary);
-            color: var(--secondary);
-            background: var(--light);
-            border-radius: 8px;
-            font-weight: 500;
-            transition: background 0.2s, color 0.2s;
-        }
-
-        .btn-outline-maroon:hover,
-        .btn-outline-maroon:focus {
-            background: var(--secondary);
-            color: var(--primary);
-        }
-
-        .table thead th {
-            background-color: var(--primary);
-            color: var(--light);
-            font-size: 1rem;
-            letter-spacing: 0.5px;
-        }
-
-        .badge.bg-primary {
-            background-color: var(--secondary) !important;
-            color: var(--primary) !important;
-            font-weight: 500;
-            border-radius: 8px;
-            padding: 0.5em 1em;
-        }
-
-        .avatar-initial {
-            display: inline-block;
-            width: 30px;
-            height: 30px;
-            border-radius: 50%;
-            background-color: var(--primary);
-            color: var(--light);
-            text-align: center;
-            line-height: 30px;
-            font-size: 1.2rem;
-        }
-
-        .table tbody tr {
-            transition: background 0.15s;
-        }
-
-        .table tbody tr:hover {
-            background: var(--light-gray);
-        }
-
-        .d-flex.flex-nowrap.overflow-auto::-webkit-scrollbar,
-        .table-responsive::-webkit-scrollbar {
-            display: none;
-        }
-
-        .d-flex.flex-nowrap.overflow-auto,
-        .table-responsive {
-            scrollbar-width: none;
-            -ms-overflow-style: none;
-        }
-    </style>
-
-    <div class="container">
-        <a href="/manajemen-presma/create" class="btn btn-success mb-3">Tambah Prestasi</a>
-        <br>
-        <div class="card dashboard-card shadow-sm">
-            <div class="card-header ranking-header d-flex align-items-center" style="font-size:1.2rem;">
-                <strong>Prestasi Mahasiswa</strong>
-            </div>
-            <div class="card-body table-responsive">
-                <table class="table table-striped table-bordered mb-0 align-middle">
-                    <thead>
+<div class="container py-4">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h3 class="mb-0 text-maroon">
+            <i class="bi bi-trophy-fill me-2"></i>Manajemen Prestasi Mahasiswa
+        </h3>
+        <a href="/manajemen-presma/create" class="btn btn-maroon shadow-sm">
+            <i class="bi bi-plus-circle me-1"></i>Tambah Prestasi
+        </a>
+    </div>
+    <div class="card dashboard-card shadow-sm">
+        <div class="ranking-header">
+            <i class="bi bi-award me-2"></i>
+            <span>Prestasi Mahasiswa</span>
+        </div>
+        <div class="card-body table-responsive">
+            <table class="table table-striped table-bordered mb-0 align-middle">
+                <thead>
+                    <tr>
+                        <th class="text-start">Nama Mahasiswa</th>
+                        <th>Peringkat</th>
+                        <th class="text-start">Nama Lomba</th>
+                        <th class="ellipsis-cell">Sertifikat</th>
+                        <th class="ellipsis-cell">Foto Bukti</th>
+                        <th class="ellipsis-cell">Foto Poster</th>
+                        <th>Status</th>
+                        <th>Aksi</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @forelse ($presmas as $presma)
                         <tr>
-                            <th>Nama Mahasiswa</th>
-                            <th>Peringkat</th>
-                            <th>Nama Lomba</th>
-                            <th style="max-width: 80px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
-                                Sertifikat</th>
-                            <th style="max-width: 80px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
-                                Foto Bukti</th>
-                            <th style="max-width: 80px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
-                                Foto Poster</th>
-                            <th>Status</th>
-                            <th>Aksi</th>
+                            <td class="td-left">
+                                <span class="avatar-initial me-2">
+                                    {{ strtoupper(substr($presma->nimMahasiswa->nama ?? 'N/A', 0, 1)) }}
+                                </span>
+                                {{ $presma->nimMahasiswa->nama ?? 'N/A' }}
+                            </td>
+                            <td>{{ $presma->peringkat }}</td>
+                            <td class="td-left">{{ $presma->dataLomba->nama_lomba }}</td>
+                            <td class="ellipsis-cell">
+                                @if($presma->sertif)
+                                    <a href="{{ asset('storage/'.$presma->sertif) }}" target="_blank" class="text-decoration-none">
+                                        <i class="bi bi-file-earmark-text"></i> Lihat
+                                    </a>
+                                @else
+                                    <span class="text-muted">-</span>
+                                @endif
+                            </td>
+                            <td class="ellipsis-cell">
+                                @if($presma->foto_bukti)
+                                    <a href="{{ asset('storage/'.$presma->foto_bukti) }}" target="_blank" class="text-decoration-none">
+                                        <i class="bi bi-image"></i> Lihat
+                                    </a>
+                                @else
+                                    <span class="text-muted">-</span>
+                                @endif
+                            </td>
+                            <td class="ellipsis-cell">
+                                @if($presma->poster_lomba)
+                                    <a href="{{ asset('storage/'.$presma->poster_lomba) }}" target="_blank" class="text-decoration-none">
+                                        <i class="bi bi-image"></i> Lihat
+                                    </a>
+                                @else
+                                    <span class="text-muted">-</span>
+                                @endif
+                            </td>
+                            <td>
+                                @if(strtolower($presma->verifikasi) == 'accepted')
+                                    <span class="badge bg-success">Accepted</span>
+                                @elseif(strtolower($presma->verifikasi) == 'pending')
+                                    <span class="badge bg-pending">Pending</span>
+                                @else
+                                    <span class="badge bg-primary">{{ $presma->verifikasi }}</span>
+                                @endif
+                            </td>
+                            <td>
+                                <a href="/manajemen-presma/edit/{{ $presma->id }}" class="btn btn-primary btn-sm me-1" title="Edit">
+                                    <i class="bi bi-pencil-square"></i>
+                                </a>
+                                <form action="/manajemen-presma/delete/{{ $presma->id }}" method="POST"
+                                    style="display:inline;"
+                                    onsubmit="return confirm('Apakah Anda yakin ingin menghapus prestasi ini?')">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn-danger btn-sm" title="Hapus">
+                                        <i class="bi bi-trash-fill"></i>
+                                    </button>
+                                </form>
+                            </td>
                         </tr>
-                    </thead>
-                    <tbody>
-                        @forelse ($presmas as $presma)
-                            <tr>
-                                <td>{{ $presma->nimMahasiswa->nama ?? 'N/A' }}</td>
-                                <td>{{ $presma->peringkat }}</td>
-                                <td>{{ $presma->dataLomba->nama_lomba }}</td>
-                                <td
-                                    style="max-width: 80px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
-                                    {{ $presma->sertif }}</td>
-                                <td
-                                    style="max-width: 80px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
-                                    {{ $presma->foto_bukti }}</td>
-                                <td
-                                    style="max-width: 80px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
-                                    {{ $presma->poster_lomba }}</td>
-                                <td>{{ $presma->verifikasi }}</td>
-                                <td>
-                                    <a href="/manajemen-presma/edit/{{ $presma->id }}" class="btn btn-primary"><i class="bi bi-pencil-square"></i> Edit</a>
-                                    <form action="/manajemen-presma/delete/{{ $presma->id }}" method="POST"
-                                        style="display:inline;"
-                                        onsubmit="return confirm('Apakah Anda yakin ingin menghapus prestasi ini?')">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="btn btn-danger"><i class="bi bi-trash-fill"></i> Hapus</button>
-                                    </form>
-                                </td>
-                            </tr>
-                        @empty
-                            <tr>
-                                <td colspan="8" class="text-center">Belum ada data mahasiswa</td>
-                            </tr>
-                        @endforelse
-                    </tbody>
-                </table>
-            </div>
+                    @empty
+                        <tr>
+                            <td colspan="8" class="text-center text-muted py-4">
+                                <i class="bi bi-emoji-frown fs-4"></i><br>
+                                Belum ada data mahasiswa
+                            </td>
+                        </tr>
+                    @endforelse
+                </tbody>
+            </table>
         </div>
     </div>
+</div>
 @endsection

@@ -6,15 +6,10 @@
     <style>
         :root {
             --primary: #0c1e47;
-            /* Biru tua utama (bg utama welcome) */
             --secondary: #f7b71d;
-            /* Kuning emas (aksen utama welcome) */
             --accent1: #f26430;
-            /* Oranye (aksen tombol/ikon) */
             --accent2: #f9a11b;
-            /* Oranye muda */
             --accent3: #e6e6e6;
-            /* Abu terang (background) */
             --light: #ffffff;
             --dark: #212529;
             --gray: #6c757d;
@@ -25,38 +20,10 @@
             background: var(--accent3);
         }
 
-        .bg-maroon {
-            background-color: var(--primary) !important;
-        }
-
-        .bg-navy {
-            background-color: var(--secondary) !important;
-        }
-
-        .text-maroon {
-            color: var(--primary) !important;
-        }
-
-        .text-navy {
-            color: var(--secondary) !important;
-        }
-
         .dashboard-card {
             border-left: 6px solid var(--secondary);
             border-radius: 18px;
             box-shadow: 0 4px 24px rgba(12, 30, 71, 0.07);
-        }
-
-        .lomba-card {
-            border-top: 4px solid var(--accent1);
-            border-radius: 18px;
-            transition: transform 0.15s, box-shadow 0.15s;
-            box-shadow: 0 2px 12px rgba(12, 30, 71, 0.08);
-        }
-
-        .lomba-card:hover {
-            transform: translateY(-6px) scale(1.03);
-            box-shadow: 0 8px 32px rgba(12, 30, 71, 0.13);
         }
 
         .ranking-header {
@@ -72,34 +39,34 @@
             letter-spacing: 0.5px;
         }
 
-        .btn-maroon {
-            background-color: var(--secondary);
-            color: var(--primary);
-            border: none;
+        .btn-success,
+        .btn-primary,
+        .btn-danger {
             border-radius: 8px;
-            transition: background 0.2s;
             font-weight: 500;
         }
 
-        .btn-maroon:hover,
-        .btn-maroon:focus {
+        .btn-primary {
+            background-color: var(--secondary);
+            color: var(--primary);
+            border: none;
+            transition: background 0.2s;
+        }
+
+        .btn-primary:hover,
+        .btn-primary:focus {
             background-color: var(--primary);
             color: var(--light);
         }
 
-        .btn-outline-maroon {
-            border: 1.5px solid var(--secondary);
-            color: var(--secondary);
-            background: var(--light);
-            border-radius: 8px;
-            font-weight: 500;
-            transition: background 0.2s, color 0.2s;
+        .btn-danger {
+            background-color: #e74c3c;
+            border: none;
         }
 
-        .btn-outline-maroon:hover,
-        .btn-outline-maroon:focus {
-            background: var(--secondary);
-            color: var(--primary);
+        .btn-danger:hover,
+        .btn-danger:focus {
+            background-color: #c0392b;
         }
 
         .table thead th {
@@ -137,51 +104,54 @@
             background: var(--light-gray);
         }
 
-        .d-flex.flex-nowrap.overflow-auto::-webkit-scrollbar,
         .table-responsive::-webkit-scrollbar {
             display: none;
         }
 
-        .d-flex.flex-nowrap.overflow-auto,
         .table-responsive {
             scrollbar-width: none;
             -ms-overflow-style: none;
         }
     </style>
 
-    <div class="container">
-        <a href="/manajemen-user/tambah" class="btn btn-success mb-3">Tambah Pengguna</a>
-        <br>
+    <div class="container py-4">
+        <a href="/manajemen-user/tambah" class="btn btn-success mb-3"><i class="bi bi-person-plus-fill me-1"></i>Tambah
+            Pengguna</a>
         <div class="card dashboard-card shadow-sm">
             <div class="card-header ranking-header d-flex align-items-center" style="font-size:1.2rem;">
                 <i class="bi bi-people-fill me-2"></i><strong>Data Pengguna</strong>
             </div>
-            <div class="card-body">
+            <div class="card-body table-responsive">
                 <table class="table table-striped table-bordered mb-0 align-middle">
                     <thead>
                         <tr>
-                            <th>Level</th>
+                            <th class="text-center">Level</th>
                             <th>Nama</th>
                             <th>ID</th>
-                            <th>Aksi</th>
+                            <th class="text-center">Aksi</th>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach ($pengguna as $item)
                             <tr>
-                                <td>{{ $item->level ?? 'N/A' }}</td>
-                                {{-- <td>{{ dd($item->level) }}</td> --}}
+                                <td class="text-center">
+                                    <span class="badge bg-primary">{{ $item->level ?? 'N/A' }}</span>
+                                </td>
                                 <td>{{ $item->nama }}</td>
                                 <td>{{ $item->nim ?? ($item->nip ?? $item->username) }}</td>
-                                <td>
+                                <td class="text-center">
                                     <a href="/manajemen-user/edit/{{ $item->nim ?? ($item->nip ?? $item->username) }}"
-                                        class="btn btn-primary"><i class="bi bi-pencil-square"></i> Edit</a>
-                                    <form action="/manajemen-user/delete/{{ $item->nim ?? ($item->nip ?? $item->username) }}"
-                                        method="POST" style="display:inline;" onsubmit="return confirm('Apakah Anda yakin ingin menghapus pengguna ini?')">
+                                        class="btn btn-primary btn-sm me-1"><i class="bi bi-pencil-square"></i> Edit</a>
+                                    <form
+                                        action="/manajemen-user/delete/{{ $item->nim ?? ($item->nip ?? $item->username) }}"
+                                        method="POST" style="display:inline;"
+                                        onsubmit="return confirm('Apakah Anda yakin ingin menghapus pengguna ini?')">
                                         @csrf
                                         @method('DELETE')
-                                        <button type="submit" class="btn btn-danger">Hapus</button>
+                                        <button type="submit" class="btn btn-danger btn-sm"><i class="bi bi-trash"></i>
+                                            Hapus</button>
                                     </form>
+                                </td>
                             </tr>
                         @endforeach
                     </tbody>

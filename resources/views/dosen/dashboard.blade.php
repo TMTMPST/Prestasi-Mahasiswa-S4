@@ -266,76 +266,75 @@
 
         {{-- Rekomendasi Lomba --}}
         <div class="row mb-4">
-            <div class="col-12">
-                <div class="card dashboard-card shadow-sm">
-                    <div class="card-header bg-maroon text-white d-flex align-items-center">
-                        <i class="bi bi-trophy me-2"></i>Rekomendasi Lomba <span class="ms-2 badge bg-primary">Filtered by Profile</span>
-                    </div>
-                    <div class="card-body">
-                        <div class="slide-container position-relative">
-                            <button class="slide-nav prev" id="prevBtn" onclick="slideLeft()" aria-label="Sebelumnya">
-                                <i class="bi bi-chevron-left"></i>
-                            </button>
-                            <button class="slide-nav next" id="nextBtn" onclick="slideRight()" aria-label="Berikutnya">
-                                <i class="bi bi-chevron-right"></i>
-                            </button>
-                            <div class="d-flex flex-nowrap overflow-auto slide-scroll" id="lombaSlider"
-                                style="gap: 1.5rem; padding-bottom: 8px;">
-                                @forelse ($lombas->take(4) as $lomba)
-                                    <div class="flex-shrink-0" style="min-width: 350px; max-width: 400px;">
-                                        <div class="card lomba-card border-0 h-100 mb-0 d-flex flex-column">
-                                            <div class="card-header bg-navy text-white text-truncate">
-                                                <i class="bi bi-award me-2"></i>{{ $lomba->nama_lomba }}
+    <div class="col-12">
+        <div class="card dashboard-card shadow-sm">
+            <div class="card-header bg-maroon text-white d-flex align-items-center">
+                <i class="bi bi-trophy me-2"></i>Rekomendasi Lomba (filtered by Profil)
+            </div>
+            <div class="card-body">
+                <div class="slide-container position-relative">
+                    <button class="slide-nav prev" id="prevBtn" onclick="slideLeft()" aria-label="Sebelumnya">
+                        <i class="bi bi-chevron-left"></i>
+                    </button>
+                    <button class="slide-nav next" id="nextBtn" onclick="slideRight()" aria-label="Berikutnya">
+                        <i class="bi bi-chevron-right"></i>
+                    </button>
+                    <div class="d-flex flex-nowrap overflow-auto slide-scroll" id="lombaSlider"
+                        style="gap: 1.5rem; padding-bottom: 8px;">
+                        @forelse ($lombas->take(4) as $lomba)
+                            <div class="flex-shrink-0" style="min-width: 350px; max-width: 400px;">
+                                <div class="card lomba-card border-0 h-100 mb-0 d-flex flex-column">
+                                    <div class="card-header bg-navy text-white text-truncate">
+                                        <i class="bi bi-award me-2"></i>{{ $lomba->nama_lomba }}
+                                    </div>
+                                    <div class="card-body d-flex flex-column justify-content-between"
+                                        style="font-size: 0.97rem; flex: 1 1 auto;">
+                                        <div class="mb-3">
+                                            <div class="row mb-2">
+                                                <div class="col-4 fw-semibold text-maroon">Tingkat</div>
+                                                <div class="col-8">: {{ $lomba->tingkatRelasi->nama_tingkat ?? '-' }}</div>
                                             </div>
-                                            <div class="card-body d-flex flex-column justify-content-between"
-                                                style="font-size: 0.97rem; flex: 1 1 auto;">
-                                                <div class="mb-3">
-                                                    <div class="row mb-2">
-                                                        <div class="col-4 fw-semibold text-maroon">Tingkat</div>
-                                                        <div class="col-8">: {{ $lomba->tingkatRelasi->nama_tingkat ?? '-' }}</div>
-                                                    </div>
-                                                    <div class="row">
-                                                        <div class="col-4 fw-semibold text-maroon">Jenis</div>
-                                                        <div class="col-8">: {{ $lomba->jenisRelasi->nama_jenis ?? '-' }}</div>
-                                                    </div>
-                                                </div>
-                                                <div class="mt-auto d-flex justify-content-between align-items-end gap-2"
-                                                    style="min-height: 38px;">
-                                                    <button type="button"
-                                                        class="btn btn-detail btn-sm w-50 btn-detail-lomba"
-                                                        data-id="{{ $lomba->id_lomba }}" data-bs-toggle="modal"
-                                                        data-bs-target="#modalDetailLomba">
-                                                        <i class="bi bi-info-circle me-1"></i> Detail
-                                                    </button>
-                                                    <a href="{{ $lomba->link_lomba ?? '#' }}" target="_blank" class="btn btn-daftar btn-sm w-50">
-                                                        <i class="bi bi-pencil-square"></i> Daftar
-                                                    </a>
-                                                </div>
+                                            <div class="row">
+                                                <div class="col-4 fw-semibold text-maroon">Jenis</div>
+                                                <div class="col-8">: {{ $lomba->jenisRelasi->nama_jenis ?? '-' }}</div>
                                             </div>
                                         </div>
-                                    </div>
-                                @empty
-                                    <div class="flex-shrink-0" style="min-width: 350px;">
-                                        <div class="alert alert-warning mb-0 w-100 text-center">
-                                            <i class="bi bi-exclamation-triangle me-2"></i>Tidak ada informasi lomba tersedia.
+                                        <div class="mt-auto d-flex justify-content-between align-items-end gap-2"
+                                            style="min-height: 38px;">
+                                            <button type="button"
+                                                class="btn btn-detail btn-sm w-50 btn-detail-lomba"
+                                                data-id="{{ $lomba->id_lomba }}" data-bs-toggle="modal"
+                                                data-bs-target="#modalDetailLomba">
+                                                <i class="bi bi-info-circle me-1"></i> Detail
+                                            </button>
+                                            <a href="{{ $lomba->link_lomba ?? '#' }}" target="_blank" class="btn btn-daftar btn-sm w-50">
+                                                <i class="bi bi-pencil-square"></i> Daftar
+                                            </a>
                                         </div>
                                     </div>
-                                @endforelse
+                                </div>
                             </div>
-                        </div>
-                        @if ($lombas->count() > 3)
-                            <div class="slide-indicators mt-3">
-                                @for ($i = 0; $i < ceil($lombas->count() / 3); $i++)
-                                    <div class="slide-dot{{ $i == 0 ? ' active' : '' }}"
-                                        onclick="slideTo({{ $i }})"></div>
-                                @endfor
+                        @empty
+                            <div class="flex-shrink-0" style="min-width: 350px;">
+                                <div class="alert alert-warning mb-0 w-100 text-center">
+                                    <i class="bi bi-exclamation-triangle me-2"></i>Tidak ada informasi lomba tersedia.
+                                </div>
                             </div>
-                        @endif
+                        @endforelse
                     </div>
                 </div>
+                @if ($lombas->count() > 3)
+                    <div class="slide-indicators mt-3">
+                        @for ($i = 0; $i < ceil($lombas->count() / 3); $i++)
+                            <div class="slide-dot{{ $i == 0 ? ' active' : '' }}"
+                                onclick="slideTo({{ $i }})"></div>
+                        @endfor
+                    </div>
+                @endif
             </div>
         </div>
     </div>
+</div>
 
     {{-- Ranking Mahasiswa --}}
     <div class="row mt-4">

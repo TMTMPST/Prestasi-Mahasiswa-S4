@@ -135,4 +135,5 @@ Route::get('/dosen/dashboard', [DosenController::class, 'dashboard'])->middlewar
 
         // profile
         Route::get('/profile/index', [MahasiswaController::class, 'profile'])->name('mahasiswa.profile.index');
-        Route::put('/mahasiswa/profile/{nim}', [MahasiswaController::class, 'updateProfileAction'])->name('mahasiswa.profile.update');
+        Route::get('/profile/update_profile/{nim}', [MahasiswaController::class, 'showUpdateProfile'])->name('mahasiswa.profile.update_profile');
+        Route::put('/profile/update_profile/{nim}', [MahasiswaController::class, 'updateProfileAction'])->name('mahasiswa.profile.update_profile');

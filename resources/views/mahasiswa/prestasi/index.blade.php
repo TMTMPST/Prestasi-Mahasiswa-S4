@@ -1,58 +1,160 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container">
-    <a href="/prestasi/tambah_prestasi" class="btn btn-success mb-3">Tambah Prestasi</a>
-    <br>
-    <div class="card">
-        <div class="card-header">
-            <strong>Data Prestasi </strong>
-        </div>
-        <div class="card-body">
-            <table class="table table-striped table-bordered">
-                <thead>
-                    <tr>
-                        <th>No</th>
-                        <th>Peringkat</th>
-                        <th>Nama Lomba</th>
-                        <th>Sertifikat</th>
-                        <th>Foto Bukti</th>
-                        <th>Poster Lomba</th>
-                        <th>Status</th>
-                        <th>Aksi</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @forelse ($prestasi as $index => $pres)
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <style>
+        :root {
+            --primary: #0c1e47;
+            --secondary: #f7b71d;
+            --accent1: #f26430;
+            --accent3: #e6e6e6;
+            --light: #ffffff;
+        }
+
+        body {
+            background: var(--accent3);
+        }
+
+        .dashboard-card {
+            border-left: 6px solid var(--secondary);
+            border-radius: 18px;
+            box-shadow: 0 4px 24px rgba(12, 30, 71, 0.07);
+            background: var(--light);
+        }
+
+        .card-header.bg-maroon {
+            background-color: var(--primary) !important;
+            color: var(--light);
+            font-size: 1.2rem;
+            font-weight: 600;
+            border-radius: 18px 18px 0 0;
+            letter-spacing: 0.5px;
+            display: flex;
+            align-items: center;
+        }
+
+        .form-label {
+            color: var(--primary);
+            font-weight: 500;
+        }
+
+        .btn-success {
+            background: var(--secondary);
+            color: var(--primary);
+            font-weight: 500;
+            border-radius: 8px;
+            border: none;
+            transition: all 0.2s;
+        }
+
+        .btn-success:hover,
+        .btn-success:focus {
+            background: var(--primary);
+            color: var(--light);
+        }
+
+        .btn-secondary {
+            border-radius: 8px;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: var(--light);
+            border-radius: 8px;
+            border: none;
+            transition: all 0.2s;
+        }
+
+        .btn-primary:hover,
+        .btn-primary:focus {
+            background: var(--secondary);
+            color: var(--primary);
+        }
+
+        .btn-danger {
+            border-radius: 8px;
+        }
+
+        .table thead th {
+            background-color: var(--primary);
+            color: var(--light);
+            font-size: 1rem;
+            letter-spacing: 0.5px;
+        }
+
+        .table-striped>tbody>tr:nth-of-type(odd) {
+            background-color: #f8f9fa;
+        }
+
+        .table-bordered {
+            border-radius: 12px;
+            overflow: hidden;
+        }
+    </style>
+    <div class="container py-4">
+        <a href="/prestasi/tambah_prestasi" class="btn btn-success mb-3">
+            <i class="bi bi-plus-circle me-1"></i>Tambah Prestasi
+        </a>
+        <div class="card dashboard-card shadow-sm">
+            <div class="card-header bg-maroon">
+                <i class="bi bi-trophy me-2"></i>
+                <strong>Data Prestasi</strong>
+            </div>
+            <div class="card-body">
+                <table class="table table-striped table-bordered align-middle">
+                    <thead>
                         <tr>
-                            <td>{{ $index + 1 }}</td>
-                            <td>{{ $pres->peringkat }}</td>
-                            <td>{{ $pres->dataLomba->nama_lomba }}</td>
-                            <td><img src="{{ asset('storage/' . $pres->sertif) }}" alt="Sertifikat" width="100"></td>
-                            <td><img src="{{ asset('storage/' . $pres->foto_bukti) }}" alt="Foto Bukti" width="100"></td>
-                            <td><img src="{{ asset('storage/' . $pres->poster_lomba) }}" alt="Poster Lomba" width="100"></td>
-                            <td>{{ $pres->verifikasi }}</td>
-                            <td>
-                                <form action="{{ route('mahasiswa.destroy', $pres->id) }}" method="POST" onsubmit="return confirm('Apakah kamu yakin ingin menghapus data ini?');" style="display: inline;">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" class="btn btn-sm btn-danger">
-                                    Hapus
-                                    </button>
-                                </form>
-                                <a href="{{ route('mahasiswa.edit_prestasi', $pres->id) }}" class="btn btn-sm btn-primary">
-                                Edit
-                            </a>
-                            </td>
+                            <th>No</th>
+                            <th>Peringkat</th>
+                            <th>Nama Lomba</th>
+                            <th>Sertifikat</th>
+                            <th>Foto Bukti</th>
+                            <th>Poster Lomba</th>
+                            <th>Status</th>
+                            <th>Aksi</th>
                         </tr>
-                    @empty
-                        <tr>
-                            <td colspan="8" class="text-center">Belum ada data mahasiswa</td>
-                        </tr>
-                    @endforelse
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                        @forelse ($prestasi as $index => $pres)
+                            <tr>
+                                <td>{{ $index + 1 }}</td>
+                                <td>{{ $pres->peringkat }}</td>
+                                <td>{{ $pres->dataLomba->nama_lomba }}</td>
+                                <td>
+                                    <img src="{{ asset('storage/' . $pres->sertif) }}" alt="Sertifikat" width="100">
+                                </td>
+                                <td>
+                                    <img src="{{ asset('storage/' . $pres->foto_bukti) }}" alt="Foto Bukti" width="100">
+                                </td>
+                                <td>
+                                    <img src="{{ asset('storage/' . $pres->poster_lomba) }}" alt="Poster Lomba"
+                                        width="100">
+                                </td>
+                                <td>{{ $pres->verifikasi }}</td>
+                                <td>
+                                    <form action="{{ route('mahasiswa.destroy', $pres->id) }}" method="POST"
+                                        onsubmit="return confirm('Apakah kamu yakin ingin menghapus data ini?');"
+                                        style="display: inline;">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="btn btn-sm btn-danger">
+                                            <i class="bi bi-trash"></i> Hapus
+                                        </button>
+                                    </form>
+                                    <a href="{{ route('mahasiswa.edit_prestasi', $pres->id) }}"
+                                        class="btn btn-sm btn-primary">
+                                        <i class="bi bi-pencil-square"></i> Edit
+                                    </a>
+                                </td>
+                            </tr>
+                        @empty
+                            <tr>
+                                <td colspan="8" class="text-center">Belum ada data mahasiswa</td>
+                            </tr>
+                        @endforelse
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
-</div>
 @endsection
