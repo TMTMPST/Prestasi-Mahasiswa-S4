@@ -97,7 +97,7 @@
                 </div>
             @endif
 
-            <form method="POST" action="{{ route('mahasiswa.recomendation.process') }}">
+            <form method="POST" action="{{ route('mahasiswa.recomendation.step1') }}">
                 @csrf
 
                 {{-- Jenis Lomba --}}
@@ -142,10 +142,10 @@
                                 <label class="form-label mb-0">{{ $tingkat->nama_tingkat }}</label>
                             </div>
                             <div class="col-6">
-                                <select name="tingkat_scores[{{ $tingkat->id_tingkat }}]" class="form-select tingkat-score">
+                                <select name="tingkat_scores[{{ $tingkat->id_tingkat }}]" class="form-select tingkat-score" required>
                                     <option value="">-- Pilih Skor --</option>
                                     @for ($i = 1; $i <= 4; $i++)
-                                        <option value="{{ $i }}">{{ $i }} - {{ ['Kurang', 'Cukup', 'Baik', 'Sangat Baik'][$i-1] }}</option>
+                                        <option value="{{ $i }}">{{ $i }} - {{ ['Kurang Diminati', 'Cukup Diminati', 'Lumayan Diminati', 'Sangat Diminati'][$i-1] }}</option>
                                     @endfor
                                 </select>
                             </div>
@@ -153,31 +153,14 @@
                     @endforeach
                 </div>
 
-                {{-- Ranking Kriteria --}}
-                <div class="mb-4">
-                    <label class="form-label">
-                        <i class="bi bi-list-ol me-2"></i>Ranking Kriteria Penilaian
-                    </label>
-                    <small class="text-muted d-block mb-2">Urutkan kriteria berdasarkan kepentingan (1 = Paling Penting, 5 = Kurang Penting)</small>
-
-                    @foreach (['jenis', 'tingkat_penyelenggara', 'biaya', 'hadiah', 'tingkat'] as $crit)
-                        <div class="row align-items-center mb-2">
-                            <div class="col-6">
-                                <label class="form-label mb-0">{{ ucfirst(str_replace('_', ' ', $crit)) }}</label>
-                            </div>
-                            <div class="col-6">
-                                <select name="criteria_ranks[{{ $crit }}]" class="form-select criteria-rank">
-                                    <option value="">-- Pilih Ranking --</option>
-                                    @for ($i = 1; $i <= 5; $i++)
-                                        <option value="{{ $i }}">{{ $i }}</option>
-                                    @endfor
-                                </select>
-                            </div>
-                        </div>
-                    @endforeach
+                <div class="d-flex justify-content-between">
+                    <a href="{{ route('mahasiswa.dashboard') }}" class="btn btn-outline-maroon">
+                        <i class="bi bi-arrow-left me-2"></i>Kembali
+                    </a>
+                    <button type="submit" class="btn btn-maroon">
+                        Selanjutnya <i class="bi bi-arrow-right ms-2"></i>
+                    </button>
                 </div>
-
-                <button type="submit" class="btn btn-maroon">Proses Rekomendasi</button>
             </form>
         </div>
     </div>
@@ -208,11 +191,11 @@
             });
         }
 
-        function checkDuplicate(className, alertMessage) {
+        $('.tingkat-score').on('change', function () {
             let selectedValues = [];
             let isDuplicate = false;
 
-            $('.' + className).each(function () {
+            $('.tingkat-score').each(function () {
                 let val = $(this).val();
                 if (val) {
                     if (selectedValues.includes(val)) {
@@ -225,16 +208,8 @@
             });
 
             if (isDuplicate) {
-                alert(alertMessage);
+                alert('Setiap tingkat harus memiliki skor yang berbeda!');
             }
-        }
-
-        $('.tingkat-score').on('change', function () {
-            checkDuplicate('tingkat-score', 'Setiap tingkat harus memiliki skor yang berbeda!');
-        });
-
-        $('.criteria-rank').on('change', function () {
-            checkDuplicate('criteria-rank', 'Setiap kriteria harus memiliki ranking yang berbeda!');
         });
     });
 </script>

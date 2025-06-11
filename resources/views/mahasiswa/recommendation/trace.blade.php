@@ -87,6 +87,18 @@
             <i class="bi bi-calculator me-2"></i><strong>Detail Perhitungan Rekomendasi PROMETHEE</strong>
         </div>
         <div class="card-body">
+            <!-- Process Steps Indicator -->
+            <div class="alert alert-info mb-4">
+                <h6 class="mb-2"><i class="bi bi-info-circle me-2"></i>Proses Rekomendasi PROMETHEE</h6>
+                <div class="d-flex align-items-center justify-content-center">
+                    <span class="badge bg-primary me-2">Step 1: Preferensi Tingkat</span>
+                    <i class="bi bi-arrow-right mx-2"></i>
+                    <span class="badge bg-primary me-2">Step 2: Ranking Kriteria</span>
+                    <i class="bi bi-arrow-right mx-2"></i>
+                    <span class="badge bg-primary">Hasil: Perhitungan PROMETHEE</span>
+                </div>
+            </div>
+
             <!-- Criteria Weights Section -->
             <div class="mb-4">
                 <h5 class="text-maroon mb-3"><i class="bi bi-graph-up me-2"></i>Bobot Kriteria</h5>

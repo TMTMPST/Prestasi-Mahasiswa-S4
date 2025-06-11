@@ -102,6 +102,23 @@
                     </div>
 
                     <div class="card-body">
+                        <!-- Step Indicator -->
+                        <div class="alert alert-success mb-4">
+                            <div class="d-flex align-items-center justify-content-center">
+                                <span class="badge bg-success me-2">
+                                    <i class="bi bi-check-circle me-1"></i>Preferensi Tingkat
+                                </span>
+                                <i class="bi bi-arrow-right mx-2"></i>
+                                <span class="badge bg-success me-2">
+                                    <i class="bi bi-check-circle me-1"></i>Ranking Kriteria
+                                </span>
+                                <i class="bi bi-arrow-right mx-2"></i>
+                                <span class="badge bg-success">
+                                    <i class="bi bi-star me-1"></i>Hasil Rekomendasi
+                                </span>
+                            </div>
+                        </div>
+
                         @if (count($competitions) > 0)
                             <div class="table-responsive">
                                 <table class="table table-bordered mb-0 align-middle">

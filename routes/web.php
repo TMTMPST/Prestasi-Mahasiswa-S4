@@ -130,7 +130,10 @@ Route::get('/dosen/dashboard', [DosenController::class, 'dashboard'])->middlewar
 
         // Recommendation
         Route::get('/recommendation/form', [RecommendationController::class, 'showForm'])->name('mahasiswa.recomendation.form');
+        Route::post('/recommendation/step1', [RecommendationController::class, 'processStep1'])->name('mahasiswa.recomendation.step1');
+        Route::get('/recommendation/criteria', [RecommendationController::class, 'showCriteria'])->name('mahasiswa.recomendation.criteria');
         Route::post('/recommendation/process', [RecommendationController::class, 'processForm'])->name('mahasiswa.recomendation.process');
+        Route::get('/recommendation/result', [RecommendationController::class, 'showResult'])->name('mahasiswa.recomendation.result');
         Route::get('/recommendation/trace', [RecommendationController::class, 'showTrace'])->name('mahasiswa.recomendation.trace');
 
         // profile

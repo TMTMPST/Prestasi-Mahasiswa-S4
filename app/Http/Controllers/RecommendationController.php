@@ -44,6 +44,61 @@ class RecommendationController extends Controller
         return view('mahasiswa.Recommendation.form', compact('jenisList', 'tingkatList', 'mahasiswa', 'tingkatPenyelenggaraList'));
     }
 
+    public function processStep1(Request $request)
+    {
+        // Check if mahasiswa is logged in via session
+        if (Session::get('level') !== 'MHS') {
+            return redirect()->route('login')->with('error', 'Silakan login sebagai mahasiswa terlebih dahulu');
+        }
+
+        // Validate step 1 input
+        $request->validate([
+            'selected_jenis' => 'array',
+            'tingkat_scores' => 'array|min:1',
+        ]);
+
+        // Store step 1 data in session
+        session([
+            'step1_data' => [
+                'selected_jenis' => $request->input('selected_jenis', []),
+                'tingkat_scores' => $request->input('tingkat_scores', [])
+            ]
+        ]);
+
+        return redirect()->route('mahasiswa.recomendation.criteria');
+    }
+
+    public function showCriteria()
+    {
+        // Check if mahasiswa is logged in via session
+        if (Session::get('level') !== 'MHS') {
+            return redirect()->route('login')->with('error', 'Silakan login sebagai mahasiswa terlebih dahulu');
+        }
+
+        // Check if step 1 data exists
+        if (!session('step1_data')) {
+            return redirect()->route('mahasiswa.recomendation.form')->with('error', 'Silakan lengkapi step 1 terlebih dahulu');
+        }
+
+        return view('mahasiswa.Recommendation.criteria');
+    }
+
+    public function showResult()
+    {
+        // Check if mahasiswa is logged in via session
+        if (Session::get('level') !== 'MHS') {
+            return redirect()->route('login')->with('error', 'Silakan login sebagai mahasiswa terlebih dahulu');
+        }
+
+        $rankedCompetitions = session('ranked_competitions', []);
+        
+        if (empty($rankedCompetitions)) {
+            return redirect()->route('mahasiswa.recomendation.form')->with('error', 'Tidak ada data rekomendasi. Silakan mulai dari awal.');
+        }
+
+        return view('mahasiswa.Recommendation.index', ['competitions' => $rankedCompetitions]);
+    }
+
     public function processForm(Request $request)
     {
         // Check if mahasiswa is logged in via session
@@ -55,16 +110,12 @@ class RecommendationController extends Controller
         $request->validate([
             'selected_jenis' => 'array',
             'tingkat_scores' => 'array|min:1',
-            'tingkat_penyelenggara_scores' => 'array|min:1',
             'criteria_ranks' => 'array|size:5',
-            'manual_weights' => 'sometimes|array|size:5',
         ]);
 
         $selectedJenis = $request->input('selected_jenis', []);
-        $tingkatScores = $request->input('tingkat_scores');
-        $tingkatPenyelenggaraScores = $request->input('tingkat_penyelenggara_scores');
+        $tingkatScores = $request->input('tingkat_scores', []);
         $criteriaRanks = $request->input('criteria_ranks');
-        $manualWeights = $request->input('manual_weights');
 
         // Get mahasiswa's jenis preferences from keahlian relationship
         $sessionUser = Session::get('user');
@@ -74,6 +125,9 @@ class RecommendationController extends Controller
         $mahasiswaJenisIds = [];
         if ($mahasiswa && $mahasiswa->keahlian->isNotEmpty()) {
             $mahasiswaJenisIds = $mahasiswa->keahlian->pluck('id_jenis')->toArray();
+        } else {
+            // Use selected jenis from form if no keahlian in profile
+            $mahasiswaJenisIds = $selectedJenis;
         }
 
         // Ensure unique ranks
@@ -81,28 +135,15 @@ class RecommendationController extends Controller
             return redirect()->back()->withErrors(['msg' => 'Semua ranking kriteria harus unik']);
         }
 
-        // Calculate weights - either manual or ROC
-        if ($manualWeights && array_sum($manualWeights) > 0) {
-            // Use manual weights and normalize them to sum to 1
-            $totalWeight = array_sum($manualWeights);
-            $criteriaWeights = [
-                'jenis' => $manualWeights['jenis'] / $totalWeight,
-                'tingkat_penyelenggara' => $manualWeights['tingkat_penyelenggara'] / $totalWeight,
-                'biaya' => $manualWeights['biaya'] / $totalWeight,
-                'hadiah' => $manualWeights['hadiah'] / $totalWeight,
-                'tingkat' => $manualWeights['tingkat'] / $totalWeight,
-            ];
-        } else {
-            // Calculate ROC weights
-            $weights = $this->calculateROCWeights(5);
-            $criteriaWeights = [
-                'jenis' => $weights[$criteriaRanks['jenis'] - 1],
-                'tingkat_penyelenggara' => $weights[$criteriaRanks['tingkat_penyelenggara'] - 1],
-                'biaya' => $weights[$criteriaRanks['biaya'] - 1],
-                'hadiah' => $weights[$criteriaRanks['hadiah'] - 1],
-                'tingkat' => $weights[$criteriaRanks['tingkat'] - 1],
-            ];
-        }
+        // Calculate ROC weights
+        $weights = $this->calculateROCWeights(5);
+        $criteriaWeights = [
+            'jenis' => $weights[$criteriaRanks['jenis'] - 1],
+            'tingkat_penyelenggara' => $weights[$criteriaRanks['tingkat_penyelenggara'] - 1],
+            'biaya' => $weights[$criteriaRanks['biaya'] - 1],
+            'hadiah' => $weights[$criteriaRanks['hadiah'] - 1],
+            'tingkat' => $weights[$criteriaRanks['tingkat'] - 1],
+        ];
 
         // Get competitions
         $competitions = DataLomba::all();
@@ -111,14 +152,10 @@ class RecommendationController extends Controller
         foreach ($competitions as $comp) {
             // Check if tingkat exists in tingkatScores array
             $tingkatScore = isset($tingkatScores[$comp->tingkat]) ? $tingkatScores[$comp->tingkat] : 1;
-            
-            // Get tingkat penyelenggara score from user input
-            $tingkatPenyelenggaraScore = isset($tingkatPenyelenggaraScores[$comp->tingkat_penyelenggara]) 
-                ? $tingkatPenyelenggaraScores[$comp->tingkat_penyelenggara] : 1;
 
             $scores = [
                 'jenis' => (in_array($comp->jenis, $mahasiswaJenisIds)) ? 1 : 0,
-                'tingkat_penyelenggara' => $tingkatPenyelenggaraScore,
+                'tingkat_penyelenggara' => $this->categorizeTingkatPenyelenggara($comp->tingkat_penyelenggara),
                 'biaya' => $this->categorizeBiaya($comp->biaya),
                 'hadiah' => $this->categorizeHadiah($comp->hadiah),
                 'tingkat' => $tingkatScore,
@@ -138,7 +175,10 @@ class RecommendationController extends Controller
             'calculation_steps' => $calculationSteps
         ]);
 
-        return view('mahasiswa.Recommendation.index', ['competitions' => $rankedCompetitions]);
+        // Clear step1 data
+        session()->forget('step1_data');
+
+        return redirect()->route('mahasiswa.recomendation.result');
     }
 
     public function showTrace()
@@ -195,6 +235,16 @@ class RecommendationController extends Controller
         if ($value <= 10000000)
             return 4;
         return 5;
+    }
+
+    private function categorizeTingkatPenyelenggara($tingkat)
+    {
+        $tingkat = strtolower($tingkat);
+        if (strpos($tingkat, 'internasional') !== false) return 5;
+        if (strpos($tingkat, 'nasional') !== false) return 4;
+        if (strpos($tingkat, 'regional') !== false) return 3;
+        if (strpos($tingkat, 'provinsi') !== false) return 2;
+        return 1; // Default for local/other
     }
 
     private function prometheeRankingDetailed($competitions, $weights)
