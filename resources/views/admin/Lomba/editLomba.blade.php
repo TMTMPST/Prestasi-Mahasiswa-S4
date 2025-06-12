@@ -137,21 +137,6 @@
                                     value="{{ $lomba->tgl_ditutup }}" required>
                             </div>
                         </div>
-                        <div class="col-md-6">
-                            <!-- Verifikasi -->
-                            <div class="mb-3">
-                                <label for="verifikasi" class="form-label">Verifikasi</label>
-                                <select class="form-select" id="verifikasi" name="verifikasi" required>
-                                    <option value="">Pilih Status Verifikasi</option>
-                                    <option value="Accepted"
-                                        @if ($lomba->verifikasi == 'Accepted') selected @endif>Accepted</option>
-                                    <option value="Rejected"
-                                        @if ($lomba->verifikasi == 'Rejected') selected @endif>Rejected</option>
-                                    <option value="Pending"
-                                        @if ($lomba->verifikasi == 'Pending') selected @endif>Pending</option>
-                                </select>
-                            </div>
-                        </div>
                     </div>
                     <div class="d-flex justify-content-between">
                         <a href="javascript:history.back()" class="btn btn-secondary">Kembali</a>

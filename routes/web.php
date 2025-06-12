@@ -67,6 +67,7 @@ Route::get('/dosen/dashboard', [DosenController::class, 'dashboard'])->middlewar
             Route::post('/store', [AdminController::class, 'storeLomba'])->name('admin.lomba.store');
             Route::get('/edit/{id}', [AdminController::class, 'editLomba'])->name('admin.lomba.edit');
             Route::put('/update/{id}', [AdminController::class, 'updateLomba'])->name('admin.lomba.update');
+            Route::put('/update-status/{id}', [AdminController::class, 'updateStatusLomba'])->name('admin.lomba.update_status');
             Route::delete('/delete/{id}', [AdminController::class, 'deleteLomba'])->name('admin.lomba.delete');
         });
 

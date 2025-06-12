@@ -13,49 +13,66 @@
         --light-gray: #f8f9fa;
         --font-main: 'Poppins', Arial, sans-serif;
     }
-    body, .modal-body, .modal-header, .modal-footer, .list-group-item, .btn {
+
+    body,
+    .modal-body,
+    .modal-header,
+    .modal-footer,
+    .list-group-item,
+    .btn {
         font-family: var(--font-main);
     }
+
     .modal-header {
         background: var(--primary);
         color: var(--light);
         border-bottom: 2px solid var(--secondary);
     }
+
     .modal-title {
         color: var(--light-gray);
     }
+
     .btn-close {
         filter: invert(1);
     }
+
     .modal-body {
         background: var(--light-gray);
     }
+
     .list-group-item {
         background: var(--light);
         border-color: var(--accent3);
         color: var(--dark);
     }
+
     .list-group-item strong {
         color: var(--primary);
         min-width: 180px;
         display: inline-block;
         font-weight: 600;
     }
+
     a {
         color: var(--accent1);
     }
+
     a:hover {
         color: var(--accent2);
     }
+
     .modal-footer {
         background: var(--light-gray);
         border-top: 2px solid var(--secondary);
     }
+
     .btn-secondary {
         background: var(--secondary);
         color: var(--primary);
         border: none;
     }
+
     .btn-secondary:hover {
         background: var(--accent2);
         color: var(--primary);
@@ -88,7 +105,8 @@
             <a href="{{ $lomba->link_lomba }}" target="_blank">{{ $lomba->link_lomba }}</a>
         </li>
         <li class="list-group-item">
-            <strong>Biaya</strong>: {{ $lomba->biaya == 0 ? 'Gratis' : 'Rp' . number_format($lomba->biaya, 0, ',', '.') }}
+            <strong>Biaya</strong>:
+            {{ $lomba->biaya == 0 ? 'Gratis' : 'Rp' . number_format($lomba->biaya, 0, ',', '.') }}
         </li>
         <li class="list-group-item">
             <strong>Hadiah</strong>: {{ $lomba->hadiah }}
@@ -96,10 +114,38 @@
         <li class="list-group-item">
             <strong>Tingkat Penyelenggara</strong>: {{ $lomba->tingkat_penyelenggara }}
         </li>
-        @if(!empty($lomba->file_lomba))
+        @if (!empty($lomba->file_lomba))
             <li class="list-group-item">
                 <strong>File</strong>:
-                <a href="{{ asset('storage/'.$lomba->file_lomba) }}" target="_blank">Download</a>
+                <a href="{{ asset('storage/' . $lomba->file_lomba) }}" target="_blank">Download</a>
+            </li>
+        @endif
+        @if ($authLevel == 'ADM')
+            <li class="list-group-item">
+                <strong>Status</strong>:
+                @if ($lomba->verifikasi == 'Pending')
+                    <!-- Tombol Accept dan Reject jika status Pending -->
+                    <form action="{{ route('admin.lomba.update_status', $lomba->id_lomba) }}" method="POST"
+                        style="display: inline;">
+                        @csrf
+                        @method('PUT')
+                        <input type="hidden" name="verifikasi" value="Accepted">
+                        <button type="submit" class="btn btn-success">Accept</button>
+                    </form>
+
+                    <form action="{{ route('admin.lomba.update_status', $lomba->id_lomba) }}" method="POST"
+                        style="display: inline;">
+                        @csrf
+                        @method('PUT')
+                        <input type="hidden" name="verifikasi" value="Rejected">
+                        <button type="submit" class="btn btn-sm btn-danger">Reject</button>
+                    </form>
+                @else
+                    <!-- Menampilkan nilai status jika bukan Pending -->
+                    <span class="badge {{ $lomba->verifikasi == 'Accepted' ? 'bg-success' : 'bg-danger text-dark' }}">
+                        {{ $lomba->verifikasi }}
+                    </span>
+                @endif
             </li>
         @endif
     </ul>

@@ -318,6 +318,22 @@ class AdminController extends Controller
         return redirect()->route('admin.lomba.index')->with('success', 'Lomba berhasil diperbarui.');
     }
 
+    public function updateStatusLomba(Request $request, $id)
+    {
+        // Validasi input
+        $request->validate([
+            'verifikasi' => 'required|in:Pending,Accepted,Rejected',
+        ]);
+
+        // Update status verifikasi lomba
+        $lomba = DataLomba::findOrFail($id);
+        $lomba->verifikasi = $request->input('verifikasi');
+        $lomba->save();
+
+        // Redirect ke halaman lomba dengan pesan sukses
+        return redirect()->route('admin.lomba.index')->with('success', 'Status lomba berhasil diperbarui.');
+    }
+
     public function deleteLomba($id)
     {
         // Hapus data lomba berdasarkan ID
