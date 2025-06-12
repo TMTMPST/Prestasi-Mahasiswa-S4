@@ -186,6 +186,25 @@ class AdminController extends Controller
         return view('admin.Pengguna.index', compact('pengguna'));
     }
 
+    public function showPeriodeMahasiswa(Request $request)
+    {
+        $angkatan = $request->input('angkatan');
+        // Ambil daftar angkatan untuk dropdown filter
+        $filter = Mahasiswa::select('angkatan')
+            ->distinct()
+            ->orderBy('angkatan', 'DESC')
+            ->get();
+        // Jika ada filter angkatan, ambil data mahasiswa berdasarkan angkatan
+        if ($angkatan) {
+            $mahasiswa = Mahasiswa::where('angkatan', $angkatan)->get();
+        } else {
+            // Jika tidak ada filter, ambil semua data mahasiswa
+            $mahasiswa = Mahasiswa::all();
+        }
+        // Kirim data ke view periode mahasiswa
+        return view('admin.Periode.index', compact('mahasiswa', 'filter'));
+    }
+
     public function createPengguna()
     {
         // Ambil semua level untuk dropdown

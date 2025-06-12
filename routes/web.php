@@ -60,6 +60,9 @@ Route::get('/dosen/dashboard', [DosenController::class, 'dashboard'])->middlewar
             Route::delete('/delete/{id}', [AdminController::class, 'deletePengguna'])->name('admin.pengguna.delete');
         });
 
+        // Manajemen Periode Mahasiswa
+        Route::get('/manajemen-periode', [AdminController::class, 'showPeriodeMahasiswa'])->name('admin.periode_mahasiswa.index');
+
         // Manajemen Lomba
         Route::group(['prefix' => 'manajemen-lomba'], function () {
             Route::get('/', [AdminController::class, 'showLomba'])->name('admin.lomba.index');
