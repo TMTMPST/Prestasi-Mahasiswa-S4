@@ -30,6 +30,7 @@ class DataLomba extends Model
     'hadiah',
     'tgl_dibuka',
     'tgl_ditutup',
+    'verifikasi',
 ];
 
 

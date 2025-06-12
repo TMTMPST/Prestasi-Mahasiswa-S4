@@ -307,6 +307,7 @@ class AdminController extends Controller
             'hadiah' => 'string|max:255|nullable',
             'tgl_dibuka' => 'required|date',
             'tgl_ditutup' => 'required|date|after_or_equal:tgl_dibuka',
+            'verifikasi' => 'required|in:Pending,Accepted,Rejected',
         ]);
 
         // Update data lomba

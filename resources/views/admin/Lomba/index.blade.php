@@ -130,7 +130,7 @@
                             </td>
                             <td>{{ $lomba->hadiah }}</td>
                             <td>
-                                <span class="badge {{ $lomba->verifikasi == 'Terverifikasi' ? 'bg-success' : 'bg-warning text-dark' }}">
+                                <span class="badge {{ $lomba->verifikasi == 'Accepted' ? 'bg-success' : 'bg-warning text-dark' }}">
                                     {{ $lomba->verifikasi }}
                                 </span>
                             </td>
