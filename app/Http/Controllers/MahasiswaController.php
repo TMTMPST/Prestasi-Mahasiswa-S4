@@ -10,6 +10,7 @@ use App\Models\Dosen;
 use App\Models\Mahasiswa;
 use App\Models\Jenis;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\DB;
 
 class MahasiswaController extends Controller
 {
@@ -21,8 +22,86 @@ class MahasiswaController extends Controller
         // Ambil semua data mahasiswa, urutkan berdasarkan poin tertinggi
         $mahasiswa = Mahasiswa::orderByDesc('poin_presma')->get();
 
-        // Kirim data ke view dashboard dosen
-        return view('mahasiswa.dashboard', compact('lombas', 'mahasiswa'));
+        // Get statistics data for current student
+        $user = Session::get('user');
+        $currentMahasiswa = null;
+        $totalPrestasi = 0;
+        $prestasiVerified = 0;
+        $prestasiPending = 0;
+        $prestasiRejected = 0;
+        $prestasiByTingkat = collect();
+        $prestasiByJenis = collect();
+        $prestasiByPeringkat = collect();
+        $rankingPosition = 0;
+        $totalMahasiswaCount = 0;
+        $prestasiTerbaru = collect();
+
+        if ($user && Session::get('level') === 'MHS') {
+            $currentMahasiswa = Mahasiswa::where('nim', $user->nim)->with('keahlian')->first();
+            
+            if ($currentMahasiswa) {
+                // Total prestasi mahasiswa
+                $totalPrestasi = DataPrestasi::where('nim', $user->nim)->count();
+
+                // Total prestasi berdasarkan status verifikasi
+                $prestasiVerified = DataPrestasi::where('nim', $user->nim)
+                    ->where('verifikasi', 'Accepted')->count();
+                $prestasiPending = DataPrestasi::where('nim', $user->nim)
+                    ->where('verifikasi', 'Pending')->count();
+                $prestasiRejected = DataPrestasi::where('nim', $user->nim)
+                    ->where('verifikasi', 'Rejected')->count();
+
+                // Prestasi berdasarkan tingkat lomba
+                $prestasiByTingkat = DataPrestasi::where('nim', $user->nim)
+                    ->join('data_lomba', 'data_prestasi.id_lomba', '=', 'data_lomba.id_lomba')
+                    ->join('tingkat', 'data_lomba.tingkat', '=', 'tingkat.id_tingkat')
+                    ->select('tingkat.nama_tingkat', DB::raw('count(*) as total'))
+                    ->groupBy('tingkat.nama_tingkat')
+                    ->get();
+
+                // Prestasi berdasarkan jenis lomba
+                $prestasiByJenis = DataPrestasi::where('nim', $user->nim)
+                    ->join('data_lomba', 'data_prestasi.id_lomba', '=', 'data_lomba.id_lomba')
+                    ->join('jenis', 'data_lomba.jenis', '=', 'jenis.id_jenis')
+                    ->select('jenis.nama_jenis', DB::raw('count(*) as total'))
+                    ->groupBy('jenis.nama_jenis')
+                    ->get();
+
+                // Prestasi berdasarkan peringkat
+                $prestasiByPeringkat = DataPrestasi::where('nim', $user->nim)
+                    ->select('peringkat', DB::raw('count(*) as total'))
+                    ->groupBy('peringkat')
+                    ->get();
+
+                // Ranking mahasiswa
+                $rankingPosition = Mahasiswa::where('poin_presma', '>', $currentMahasiswa->poin_presma)->count() + 1;
+                $totalMahasiswaCount = Mahasiswa::count();
+
+                // Prestasi terbaru (3 terakhir untuk dashboard)
+                $prestasiTerbaru = DataPrestasi::where('nim', $user->nim)
+                    ->with(['dataLomba.tingkatRelasi', 'dataLomba.jenisRelasi'])
+                    ->orderBy('created_at', 'desc')
+                    ->limit(3)
+                    ->get();
+            }
+        }
+
+        // Kirim data ke view dashboard mahasiswa
+        return view('mahasiswa.dashboard', compact(
+            'lombas', 
+            'mahasiswa',
+            'currentMahasiswa',
+            'totalPrestasi',
+            'prestasiVerified',
+            'prestasiPending',
+            'prestasiRejected',
+            'prestasiByTingkat',
+            'prestasiByJenis',
+            'prestasiByPeringkat',
+            'rankingPosition',
+            'totalMahasiswaCount',
+            'prestasiTerbaru'
+        ));
     }
 
     // PRESTASIII

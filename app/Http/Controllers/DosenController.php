@@ -9,7 +9,9 @@ use App\Models\Tingkat;
 use App\Models\Jenis;
 use App\Models\Dosen;
 use App\Models\Bimbingan;
+use App\Models\DataPrestasi;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class DosenController extends Controller
 {
@@ -17,13 +19,91 @@ class DosenController extends Controller
     {
         $sessionUser = session('user');
         $dosen = Dosen::where('nip', $sessionUser->nip)->first();
+        
+        // Get competitions filtered by dosen's field of interest
         $lombas = DataLomba::with(['tingkatRelasi', 'jenisRelasi'])
             ->when($dosen && $dosen->bidangMinat, function ($query) use ($dosen) {
                 $query->where('jenis', $dosen->bidangMinat);
             })
             ->get();
+        
         $mahasiswa = Mahasiswa::orderByDesc('poin_presma')->get();
-        return view('dosen.dashboard', compact('lombas', 'mahasiswa'));
+
+        // Get statistics data for dosen
+        $totalMahasiswaBimbingan = 0;
+        $totalBimbinganPending = 0;
+        $totalBimbinganAccepted = 0;
+        $totalPrestasiMahasiswa = 0;
+        $bimbinganByStatus = collect();
+        $mahasiswaTerbimbingan = collect();
+        $trendBimbingan = collect();
+
+        if ($dosen) {
+            // Total mahasiswa yang dibimbing (accepted)
+            $totalMahasiswaBimbingan = Bimbingan::where('nip', $dosen->nip)
+                ->where('status', 'Accepted')
+                ->distinct('nim')
+                ->count('nim');
+
+            // Total bimbingan pending dan accepted
+            $totalBimbinganPending = Bimbingan::where('nip', $dosen->nip)
+                ->where('status', 'Pending')->count();
+            $totalBimbinganAccepted = Bimbingan::where('nip', $dosen->nip)
+                ->where('status', 'Accepted')->count();
+
+            // Total prestasi dari mahasiswa yang dibimbing
+            $mahasiswaDibimbing = Bimbingan::where('nip', $dosen->nip)
+                ->where('status', 'Accepted')
+                ->pluck('nim');
+            
+            $totalPrestasiMahasiswa = DataPrestasi::whereIn('nim', $mahasiswaDibimbing)->count();
+
+            // Bimbingan berdasarkan status
+            $bimbinganByStatus = Bimbingan::where('nip', $dosen->nip)
+                ->select('status', DB::raw('count(*) as total'))
+                ->groupBy('status')
+                ->get();
+
+            // Mahasiswa yang request bimbingan (pending)
+            $bimbinganRequests = Bimbingan::where('nip', $dosen->nip)
+                ->where('status', 'Pending')
+                ->with(['mahasiswa', 'lomba'])
+                ->orderBy('created_at', 'desc')
+                ->limit(5)
+                ->get();
+
+            // Mahasiswa terbimbingan dengan prestasi terbaru - using direct query instead of relationship
+            $mahasiswaTerbimbingan = Mahasiswa::whereIn('mahasiswa.nim', $mahasiswaDibimbing)
+                ->leftJoin('data_prestasi', 'mahasiswa.nim', '=', 'data_prestasi.nim')
+                ->select('mahasiswa.*', DB::raw('COUNT(data_prestasi.nim) as total_prestasi'))
+                ->groupBy('mahasiswa.nim', 'mahasiswa.nama', 'mahasiswa.angkatan', 'mahasiswa.password', 'mahasiswa.prodi', 'mahasiswa.dosen_nip', 'mahasiswa.level', 'mahasiswa.poin_presma', 'mahasiswa.prestasi_tertinggi', 'mahasiswa.created_at', 'mahasiswa.updated_at')
+                ->orderByDesc('total_prestasi')
+                ->limit(5)
+                ->get();
+
+            // Trend bimbingan per bulan (6 bulan terakhir)
+            $trendBimbingan = Bimbingan::where('nip', $dosen->nip)
+                ->where('created_at', '>=', now()->subMonths(6))
+                ->selectRaw('MONTH(created_at) as bulan, YEAR(created_at) as tahun, COUNT(*) as total')
+                ->groupBy('tahun', 'bulan')
+                ->orderBy('tahun', 'desc')
+                ->orderBy('bulan', 'desc')
+                ->get();
+        }
+
+        return view('dosen.dashboard', compact(
+            'lombas', 
+            'mahasiswa',
+            'dosen',
+            'totalMahasiswaBimbingan',
+            'totalBimbinganPending',
+            'totalBimbinganAccepted',
+            'totalPrestasiMahasiswa',
+            'bimbinganByStatus',
+            'bimbinganRequests',
+            'mahasiswaTerbimbingan',
+            'trendBimbingan'
+        ));
     }
 
     // LOMBA

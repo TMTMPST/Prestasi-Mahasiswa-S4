@@ -2,6 +2,7 @@
 
 @section('content')
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
     <style>
         :root {
@@ -272,6 +273,55 @@
             scroll-behavior: smooth;
         }
 
+        .stats-card {
+            border-left: 6px solid var(--secondary);
+            border-radius: 18px;
+            box-shadow: 0 4px 24px rgba(12, 30, 71, 0.07);
+            background: var(--light);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .stats-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 35px rgba(12, 30, 71, 0.15);
+        }
+
+        .stats-number {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .stats-label {
+            font-size: 0.8rem;
+            color: var(--gray);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .chart-container {
+            position: relative;
+            height: 250px;
+            background: var(--light);
+            border-radius: 18px;
+            padding: 15px;
+            box-shadow: 0 4px 24px rgba(12, 30, 71, 0.07);
+        }
+
+        .mahasiswa-item {
+            border-left: 4px solid var(--accent1);
+            background: var(--light);
+            border-radius: 8px;
+            padding: 0.75rem;
+            margin-bottom: 0.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .mahasiswa-item:hover {
+            transform: translateX(5px);
+            box-shadow: 0 4px 15px rgba(242, 100, 48, 0.15);
+        }
+
         @media (max-width: 991.98px) {
             .lomba-card {
                 min-width: 220px;
@@ -338,6 +388,157 @@
                 </div>
             </div>
         </div>
+
+        @if($dosen)
+        {{-- Statistics Section --}}
+        <div class="row mb-4">
+            <div class="col-12">
+                <div class="card dashboard-card shadow-sm">
+                    <div class="card-header bg-maroon text-white d-flex align-items-center">
+                        <i class="bi bi-graph-up me-2"></i> Statistik Bimbingan & Prestasi
+                    </div>
+                    <div class="card-body">
+                        {{-- Stats Cards --}}
+                        <div class="row mb-4">
+                            <div class="col-md-3 mb-3">
+                                <div class="card stats-card h-100">
+                                    <div class="card-body text-center">
+                                        <i class="bi bi-people-fill text-primary mb-2" style="font-size: 1.5rem;"></i>
+                                        <div class="stats-number">{{ $totalMahasiswaBimbingan }}</div>
+                                        <div class="stats-label">Mahasiswa Bimbingan</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3 mb-3">
+                                <div class="card stats-card h-100">
+                                    <div class="card-body text-center">
+                                        <i class="bi bi-check-circle-fill text-success mb-2" style="font-size: 1.5rem;"></i>
+                                        <div class="stats-number">{{ $totalBimbinganAccepted }}</div>
+                                        <div class="stats-label">Bimbingan Diterima</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3 mb-3">
+                                <div class="card stats-card h-100">
+                                    <div class="card-body text-center">
+                                        <i class="bi bi-clock-fill text-warning mb-2" style="font-size: 1.5rem;"></i>
+                                        <div class="stats-number">{{ $totalBimbinganPending }}</div>
+                                        <div class="stats-label">Bimbingan Pending</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3 mb-3">
+                                <div class="card stats-card h-100">
+                                    <div class="card-body text-center">
+                                        <i class="bi bi-trophy-fill mb-2" style="font-size: 1.5rem; color: var(--secondary);"></i>
+                                        <div class="stats-number">{{ $totalPrestasiMahasiswa }}</div>
+                                        <div class="stats-label">Total Prestasi Mahasiswa</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        {{-- Charts and Students --}}
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <div class="card stats-card">
+                                    <div class="card-header bg-primary text-white">
+                                        <h6 class="mb-0"><i class="bi bi-person-plus me-2"></i>Request Bimbingan</h6>
+                                    </div>
+                                    <div class="card-body">
+                                        @forelse($bimbinganRequests as $request)
+                                            <div class="mahasiswa-item">
+                                                <div class="d-flex justify-content-between align-items-start">
+                                                    <div class="flex-grow-1">
+                                                        <h6 class="mb-1" style="font-size: 0.9rem;">{{ $request->nama_pengaju }}</h6>
+                                                        <p class="mb-1 text-muted" style="font-size: 0.8rem;">
+                                                            <i class="bi bi-person-badge me-1"></i>NIM: {{ $request->nim }}
+                                                        </p>
+                                                        <p class="mb-1 text-muted" style="font-size: 0.8rem;">
+                                                            <i class="bi bi-trophy me-1"></i>{{ $request->lomba->nama_lomba ?? 'Lomba tidak ditemukan' }}
+                                                        </p>
+                                                        <p class="mb-0 text-muted" style="font-size: 0.7rem;">
+                                                            {{ Str::limit($request->deskripsi_lomba, 50) }}
+                                                        </p>
+                                                    </div>
+                                                    <div class="d-flex flex-column gap-1">
+                                                        <form action="{{ route('dosen.acceptBimbingan', $request->nim) }}" method="POST" style="display: inline;">
+                                                            @csrf
+                                                            <button type="submit" class="btn btn-success btn-sm" style="font-size: 0.7rem;">
+                                                                <i class="bi bi-check-lg"></i>
+                                                            </button>
+                                                        </form>
+                                                        <form action="{{ route('dosen.rejectBimbingan', $request->nim) }}" method="POST" style="display: inline;">
+                                                            @csrf
+                                                            @method('DELETE')
+                                                            <button type="submit" class="btn btn-danger btn-sm" style="font-size: 0.7rem;" 
+                                                                onclick="return confirm('Yakin ingin menolak bimbingan ini?')">
+                                                                <i class="bi bi-x-lg"></i>
+                                                            </button>
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        @empty
+                                            <div class="text-center py-3">
+                                                <i class="bi bi-person-plus text-muted" style="font-size: 2rem;"></i>
+                                                <p class="text-muted mt-2 mb-0" style="font-size: 0.9rem;">Tidak ada request bimbingan</p>
+                                            </div>
+                                        @endforelse
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <div class="card stats-card">
+                                    <div class="card-header bg-primary text-white">
+                                        <h6 class="mb-0"><i class="bi bi-people me-2"></i>Top Mahasiswa Bimbingan</h6>
+                                    </div>
+                                    <div class="card-body">
+                                        @forelse($mahasiswaTerbimbingan as $mhs)
+                                            <div class="mahasiswa-item">
+                                                <div class="d-flex justify-content-between align-items-center">
+                                                    <div>
+                                                        <h6 class="mb-1" style="font-size: 0.9rem;">{{ $mhs->nama }}</h6>
+                                                        <span class="text-muted" style="font-size: 0.8rem;">
+                                                            <i class="bi bi-person-badge me-1"></i>{{ $mhs->nim }} - {{ $mhs->prodi }}
+                                                        </span>
+                                                    </div>
+                                                    <span class="badge bg-success" style="font-size: 0.7rem;">
+                                                        {{ $mhs->total_prestasi }} Prestasi
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        @empty
+                                            <div class="text-center py-3">
+                                                <i class="bi bi-people text-muted" style="font-size: 2rem;"></i>
+                                                <p class="text-muted mt-2 mb-0" style="font-size: 0.9rem;">Belum ada mahasiswa bimbingan</p>
+                                            </div>
+                                        @endforelse
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        {{-- Status Bimbingan Chart --}}
+                        <div class="row">
+                            <div class="col-md-12 mb-3">
+                                <div class="card stats-card">
+                                    <div class="card-header bg-primary text-white">
+                                        <h6 class="mb-0"><i class="bi bi-bar-chart me-2"></i>Status Bimbingan</h6>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="chart-container">
+                                            <canvas id="statusChart"></canvas>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        @endif
 
         {{-- Rekomendasi Lomba --}}
         <div class="row mb-4">
@@ -594,5 +795,52 @@
                 });
             });
         });
+
+        // Chart.js configuration for dosen dashboard
+        @if($dosen && $bimbinganByStatus->count() > 0)
+        document.addEventListener('DOMContentLoaded', function() {
+            Chart.defaults.font.family = '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif';
+            Chart.defaults.color = '#6c757d';
+
+            const colors = ['#0c1e47', '#f7b71d', '#f26430', '#f9a11b', '#28a745', '#dc3545', '#17a2b8'];
+
+            // Status Chart
+            const statusData = @json($bimbinganByStatus);
+            if (statusData.length > 0) {
+                new Chart(document.getElementById('statusChart'), {
+                    type: 'bar',
+                    data: {
+                        labels: statusData.map(item => item.status),
+                        datasets: [{
+                            label: 'Jumlah Bimbingan',
+                            data: statusData.map(item => item.total),
+                            backgroundColor: colors[1],
+                            borderColor: colors[0],
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                display: false
+                            }
+                        },
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                ticks: {
+                                    stepSize: 1
+                                }
+                            }
+                        }
+                    }
+                });
+            } else {
+                document.getElementById('statusChart').parentElement.innerHTML = '<div class="text-center py-4"><i class="bi bi-bar-chart text-muted" style="font-size: 2rem;"></i><p class="text-muted mt-2 mb-0">Belum ada data</p></div>';
+            }
+        });
+        @endif
     </script>
 @endsection

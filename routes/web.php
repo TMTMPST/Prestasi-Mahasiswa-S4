@@ -129,6 +129,10 @@ Route::get('/dosen/dashboard', [DosenController::class, 'dashboard'])->middlewar
         // Verifikasi
         Route::get('/verifikasi/index', [MahasiswaController::class, 'verifikasi'])->name('mahasiswa.verifikasi.index');
 
+        // Statistik
+        Route::get('/statistik', [\App\Http\Controllers\StatistikController::class, 'index'])->name('mahasiswa.statistik.index');
+        Route::get('/statistik/chart-data', [\App\Http\Controllers\StatistikController::class, 'getChartData'])->name('mahasiswa.statistik.chart-data');
+
         // Recommendation
         Route::get('/recommendation/form', [RecommendationController::class, 'showForm'])->name('mahasiswa.recomendation.form');
         Route::post('/recommendation/step1', [RecommendationController::class, 'processStep1'])->name('mahasiswa.recomendation.step1');
@@ -141,3 +145,27 @@ Route::get('/dosen/dashboard', [DosenController::class, 'dashboard'])->middlewar
         Route::get('/profile/index', [MahasiswaController::class, 'profile'])->name('mahasiswa.profile.index');
         Route::get('/profile/update_profile/{nim}', [MahasiswaController::class, 'showUpdateProfile'])->name('mahasiswa.profile.update_profile');
         Route::put('/profile/update_profile/{nim}', [MahasiswaController::class, 'updateProfileAction'])->name('mahasiswa.profile.update_profile');
+
+    // Dosen Routes
+        // Dashboard
+        Route::get('/dashboard', [DosenController::class, 'dashboard'])->name('dosen.dashboard');
+        
+        // Bimbingan
+        Route::get('/bimbingan', [DosenController::class, 'Bimbingan'])->name('dosen.bimbingan.index');
+        Route::post('/bimbingan/accept/{nim}', [DosenController::class, 'acceptBimbingan'])->name('dosen.acceptBimbingan');
+        Route::delete('/bimbingan/reject/{nim}', [DosenController::class, 'rejectBimbingan'])->name('dosen.rejectBimbingan');
+        Route::get('/bimbingan/prestasi/{nim}', [DosenController::class, 'showPrestasiMhs'])->name('dosen.showPrestasiMhs');
+
+        // Lomba
+        Route::get('/lomba', [DosenController::class, 'infoLomba'])->name('dosen.lomba.index');
+        Route::get('/lomba/create', [DosenController::class, 'CreateInfoLomba'])->name('dosen.lomba.create');
+        Route::post('/lomba', [DosenController::class, 'storeInfoLomba'])->name('dosen.lomba.store');
+        Route::get('/lomba/{id}', [DosenController::class, 'showLomba'])->name('dosen.lomba.show');
+
+        // Presma
+        Route::get('/presma', [DosenController::class, 'Presma'])->name('dosen.presma.index');
+
+        // Profile
+        Route::get('/profile', [DosenController::class, 'profile'])->name('dosen.profile.index');
+        Route::get('/profile/{nip}/edit', [DosenController::class, 'showUpdateProfile'])->name('dosen.profile.edit');
+        Route::put('/profile/{nip}', [DosenController::class, 'updateProfileAction'])->name('dosen.profile.update');

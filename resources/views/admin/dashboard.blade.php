@@ -2,6 +2,7 @@
 
 @section('content')
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
     <style>
         :root {
@@ -241,6 +242,71 @@
         .slide-scroll {
             scroll-behavior: smooth;
         }
+
+    .stats-card {
+        border-left: 6px solid var(--secondary);
+        border-radius: 18px;
+        box-shadow: 0 4px 24px rgba(12,30,71,0.07);
+        background: var(--light);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .stats-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 35px rgba(12,30,71,0.15);
+    }
+
+    .stats-number {
+        font-size: 2rem;
+        font-weight: 700;
+        color: var(--primary);
+    }
+
+    .stats-label {
+        font-size: 0.8rem;
+        color: var(--gray);
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    .chart-container {
+        position: relative;
+        height: 250px;
+        background: var(--light);
+        border-radius: 18px;
+        padding: 15px;
+        box-shadow: 0 4px 24px rgba(12,30,71,0.07);
+    }
+
+    .prestasi-item {
+        border-left: 4px solid var(--accent1);
+        background: var(--light);
+        border-radius: 8px;
+        padding: 0.75rem;
+        margin-bottom: 0.5rem;
+        transition: all 0.3s ease;
+    }
+
+    .prestasi-item:hover {
+        transform: translateX(5px);
+        box-shadow: 0 4px 15px rgba(242,100,48,0.15);
+    }
+
+    .urgent-badge {
+        background: linear-gradient(135deg, #dc3545, #fd7e14);
+        color: white;
+        padding: 0.5rem 1rem;
+        border-radius: 50px;
+        font-weight: 600;
+        font-size: 0.9rem;
+        animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+        0% { transform: scale(1); }
+        50% { transform: scale(1.05); }
+        100% { transform: scale(1); }
+    }
     </style>
 
     <div class="container py-4">
@@ -266,6 +332,199 @@
                 </div>
             </div>
         </div>
+
+    {{-- Statistics Overview --}}
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card dashboard-card shadow-sm">
+                <div class="card-header bg-maroon text-white d-flex align-items-center justify-content-between">
+                    <div class="d-flex align-items-center">
+                        <i class="bi bi-graph-up me-2"></i>Statistik Sistem
+                    </div>
+                    @if($prestasiPendingVerifikasi > 0 || $lombaPendingVerifikasi > 0)
+                        <div class="urgent-badge">
+                            <i class="bi bi-exclamation-triangle me-1"></i>
+                            {{ $prestasiPendingVerifikasi + $lombaPendingVerifikasi }} Menunggu Verifikasi
+                        </div>
+                    @endif
+                </div>
+                <div class="card-body">
+                    {{-- Main Stats Cards --}}
+                    <div class="row mb-4">
+                        <div class="col-md-3 mb-3">
+                            <div class="card stats-card h-100">
+                                <div class="card-body text-center">
+                                    <i class="bi bi-people-fill text-primary mb-2" style="font-size: 1.5rem;"></i>
+                                    <div class="stats-number">{{ $totalMahasiswa }}</div>
+                                    <div class="stats-label">Total Mahasiswa</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <div class="card stats-card h-100">
+                                <div class="card-body text-center">
+                                    <i class="bi bi-person-workspace text-info mb-2" style="font-size: 1.5rem;"></i>
+                                    <div class="stats-number">{{ $totalDosen }}</div>
+                                    <div class="stats-label">Total Dosen</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <div class="card stats-card h-100">
+                                <div class="card-body text-center">
+                                    <i class="bi bi-trophy-fill text-warning mb-2" style="font-size: 1.5rem;"></i>
+                                    <div class="stats-number">{{ $totalLomba }}</div>
+                                    <div class="stats-label">Total Lomba</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <div class="card stats-card h-100">
+                                <div class="card-body text-center">
+                                    <i class="bi bi-award-fill mb-2" style="font-size: 1.5rem; color: var(--secondary);"></i>
+                                    <div class="stats-number">{{ $totalPrestasi }}</div>
+                                    <div class="stats-label">Total Prestasi</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    {{-- Verification Stats --}}
+                    <div class="row mb-4">
+                        <div class="col-md-4 mb-3">
+                            <div class="card stats-card h-100">
+                                <div class="card-body text-center">
+                                    <i class="bi bi-clock-fill text-warning mb-2" style="font-size: 1.2rem;"></i>
+                                    <div class="stats-number text-warning">{{ $prestasiPendingVerifikasi }}</div>
+                                    <div class="stats-label">Prestasi Pending</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <div class="card stats-card h-100">
+                                <div class="card-body text-center">
+                                    <i class="bi bi-check-circle-fill text-success mb-2" style="font-size: 1.2rem;"></i>
+                                    <div class="stats-number text-success">{{ $prestasiVerified }}</div>
+                                    <div class="stats-label">Prestasi Verified</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <div class="card stats-card h-100">
+                                <div class="card-body text-center">
+                                    <i class="bi bi-people-fill text-info mb-2" style="font-size: 1.2rem;"></i>
+                                    <div class="stats-number text-info">{{ $bimbinganAccepted }}</div>
+                                    <div class="stats-label">Bimbingan Aktif</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    {{-- Charts Section --}}
+                    <div class="row mb-4">
+                        <div class="col-md-6 mb-3">
+                            <div class="card stats-card">
+                                <div class="card-header bg-primary text-white">
+                                    <h6 class="mb-0"><i class="bi bi-pie-chart me-2"></i>Prestasi by Tingkat</h6>
+                                </div>
+                                <div class="card-body">
+                                    <div class="chart-container">
+                                        <canvas id="tingkatChart"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <div class="card stats-card">
+                                <div class="card-header bg-primary text-white">
+                                    <h6 class="mb-0"><i class="bi bi-bar-chart me-2"></i>Status Verifikasi</h6>
+                                </div>
+                                <div class="card-body">
+                                    <div class="chart-container">
+                                        <canvas id="verifikasiChart"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    {{-- Recent Activities --}}
+                    <div class="row">
+                        <div class="col-md-8 mb-3">
+                            <div class="card stats-card">
+                                <div class="card-header bg-primary text-white">
+                                    <h6 class="mb-0"><i class="bi bi-clock-history me-2"></i>Prestasi Perlu Verifikasi</h6>
+                                </div>
+                                <div class="card-body">
+                                    @forelse($prestasiTerbaruPending as $prestasi)
+                                        <div class="prestasi-item">
+                                            <div class="d-flex justify-content-between align-items-start">
+                                                <div class="flex-grow-1">
+                                                    <h6 class="mb-1" style="font-size: 0.9rem;">{{ $prestasi->nimMahasiswa->nama ?? 'Mahasiswa tidak ditemukan' }}</h6>
+                                                    <p class="mb-1 text-muted" style="font-size: 0.8rem;">
+                                                        <i class="bi bi-trophy me-1"></i>{{ $prestasi->dataLomba->nama_lomba ?? 'Lomba tidak ditemukan' }}
+                                                    </p>
+                                                    <p class="mb-0 text-muted" style="font-size: 0.8rem;">
+                                                        <i class="bi bi-award me-1"></i>{{ $prestasi->peringkat }} - 
+                                                        <i class="bi bi-calendar me-1"></i>{{ $prestasi->created_at ? $prestasi->created_at->format('d M Y') : 'Tanggal tidak tersedia' }}
+                                                    </p>
+                                                </div>
+                                                <div class="d-flex gap-1">
+                                                    <a href="{{ route('admin.verifikasi.index') }}" class="btn btn-primary btn-sm" style="font-size: 0.7rem;">
+                                                        <i class="bi bi-check-lg"></i>
+                                                    </a>
+                                                    <a href="{{ route('admin.presma.edit', $prestasi->id) }}" class="btn btn-outline-primary btn-sm" style="font-size: 0.7rem;">
+                                                        <i class="bi bi-eye"></i>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    @empty
+                                        <div class="text-center py-3">
+                                            <i class="bi bi-check-circle text-success" style="font-size: 2rem;"></i>
+                                            <p class="text-muted mt-2 mb-0" style="font-size: 0.9rem;">Semua prestasi sudah diverifikasi</p>
+                                        </div>
+                                    @endforelse
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <div class="card stats-card">
+                                <div class="card-header bg-primary text-white">
+                                    <h6 class="mb-0"><i class="bi bi-star me-2"></i>Top Mahasiswa</h6>
+                                </div>
+                                <div class="card-body">
+                                    @forelse($topMahasiswa as $index => $mhs)
+                                        <div class="prestasi-item">
+                                            <div class="d-flex justify-content-between align-items-center">
+                                                <div>
+                                                    <div class="d-flex align-items-center">
+                                                        <span class="badge bg-warning text-dark me-2">#{{ $index + 1 }}</span>
+                                                        <div>
+                                                            <h6 class="mb-0" style="font-size: 0.9rem;">{{ $mhs->nama }}</h6>
+                                                            <small class="text-muted">{{ $mhs->nim }}</small>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <span class="badge bg-success" style="font-size: 0.7rem;">
+                                                    {{ $mhs->total_prestasi }} Prestasi
+                                                </span>
+                                            </div>
+                                        </div>
+                                    @empty
+                                        <div class="text-center py-3">
+                                            <i class="bi bi-people text-muted" style="font-size: 2rem;"></i>
+                                            <p class="text-muted mt-2 mb-0" style="font-size: 0.9rem;">Belum ada data prestasi</p>
+                                        </div>
+                                    @endforelse
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
         {{-- Rekomendasi Lomba --}}
         <div class="row mb-4">
@@ -341,12 +600,12 @@
                                                             <p class="mb-2">
                                                                 <strong class="text-maroon">Mulai:</strong><br>
                                                                 <small
-                                                                    class="text-success">{{ \Carbon\Carbon::parse($lomba->tanggal_mulai)->format('d M Y') }}</small>
+                                                                    class="text-success">{{ $lomba->tgl_dibuka ? \Carbon\Carbon::parse($lomba->tgl_dibuka)->format('d M Y') : 'Tidak diset' }}</small>
                                                             </p>
                                                             <p class="mb-0">
                                                                 <strong class="text-maroon">Selesai:</strong><br>
                                                                 <small
-                                                                    class="text-danger">{{ \Carbon\Carbon::parse($lomba->tanggal_selesai)->format('d M Y') }}</small>
+                                                                    class="text-danger">{{ $lomba->tgl_ditutup ? \Carbon\Carbon::parse($lomba->tgl_ditutup)->format('d M Y') : 'Tidak diset' }}</small>
                                                             </p>
                                                         </div>
                                                     </div>
@@ -557,6 +816,87 @@
                 startX = 0;
             });
         }
+
+// Chart.js configuration for admin dashboard
+document.addEventListener('DOMContentLoaded', function() {
+    Chart.defaults.font.family = '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif';
+    Chart.defaults.color = '#6c757d';
+
+    const colors = ['#0c1e47', '#f7b71d', '#f26430', '#f9a11b', '#28a745', '#dc3545', '#17a2b8'];
+
+    // Tingkat Chart
+    const tingkatData = @json($prestasiByTingkat);
+    if (tingkatData.length > 0) {
+        new Chart(document.getElementById('tingkatChart'), {
+            type: 'doughnut',
+            data: {
+                labels: tingkatData.map(item => item.nama_tingkat),
+                datasets: [{
+                    data: tingkatData.map(item => item.total),
+                    backgroundColor: colors.slice(0, tingkatData.length),
+                    borderWidth: 2,
+                    borderColor: '#ffffff'
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                        labels: {
+                            padding: 15,
+                            usePointStyle: true,
+                            font: { size: 11 }
+                        }
+                    }
+                }
+            }
+        });
+    } else {
+        document.getElementById('tingkatChart').parentElement.innerHTML = '<div class="text-center py-4"><i class="bi bi-pie-chart text-muted" style="font-size: 2rem;"></i><p class="text-muted mt-2 mb-0">Belum ada data</p></div>';
+    }
+
+    // Verifikasi Chart
+    const verifikasiData = @json($prestasiByVerifikasi);
+    if (verifikasiData.length > 0) {
+        new Chart(document.getElementById('verifikasiChart'), {
+            type: 'bar',
+            data: {
+                labels: verifikasiData.map(item => item.verifikasi),
+                datasets: [{
+                    label: 'Jumlah Prestasi',
+                    data: verifikasiData.map(item => item.total),
+                    backgroundColor: verifikasiData.map(item => {
+                        switch(item.verifikasi) {
+                            case 'Accepted': return '#28a745';
+                            case 'Pending': return '#ffc107';
+                            case 'Rejected': return '#dc3545';
+                            default: return colors[0];
+                        }
+                    }),
+                    borderColor: colors[0],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { display: false }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: { stepSize: 1 }
+                    }
+                }
+            }
+        });
+    } else {
+        document.getElementById('verifikasiChart').parentElement.innerHTML = '<div class="text-center py-4"><i class="bi bi-bar-chart text-muted" style="font-size: 2rem;"></i><p class="text-muted mt-2 mb-0">Belum ada data</p></div>';
+    }
+});
 
         function attachDetailListeners() {
             document.querySelectorAll('.btn-detail-lomba').forEach(btn => {
