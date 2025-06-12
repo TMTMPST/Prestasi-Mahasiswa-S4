@@ -67,6 +67,7 @@
     <div class="card dashboard-card mb-4">
         <div class="card-header">
             <strong>Profil Mahasiswa</strong>
+            <strong>Profil Mahasiswa</strong>
         </div>
         <div class="card-body bg-white rounded-bottom" style="border-radius:0 0 18px 18px;">
             <table class="table table-borderless mb-0">
@@ -86,6 +87,10 @@
                 <tr>
                     <th class="text-maroon">Program Studi</th>
                     <td>{{ $mahasiswa->prodi }}</td>
+                </tr>
+                <tr>
+                    <th class="text-maroon">Email</th>
+                    <td>{{ $mahasiswa->email }}</td>
                 </tr>
                 <tr>
                     <th class="text-maroon">Poin Prestasi</th>

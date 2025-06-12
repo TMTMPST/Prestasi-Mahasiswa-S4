@@ -113,17 +113,21 @@
                     <input type="hidden" name="level" value="{{ old('level', $mahasiswa->level) }}">
                 </div>
                 <div class="mb-3">
-    <label for="keahlian" class="form-label">Keahlian</label>
-    <select class="form-control" id="keahlian" name="keahlian">
-        <option value="">-- Pilih Keahlian --</option>
-        @foreach($jenis_lomba as $jenis)
-            <option value="{{ $jenis->id_jenis }}"
-                {{ old('keahlian', optional($mahasiswa->keahlian->first())->id_jenis) == $jenis->id_jenis ? 'selected' : '' }}>
-                {{ $jenis->nama_jenis }}
-            </option>
-        @endforeach
-    </select>
-</div>
+                    <label for="email" class="form-label">Email</label>
+                    <input type="email" class="form-control" id="email" name="email" value="{{ old('email', $mahasiswa->email) }}" >
+                </div>
+                <div class="mb-3">
+                    <label for="keahlian" class="form-label">Keahlian</label>
+                    <select class="form-control" id="keahlian" name="keahlian">
+                        <option value="">-- Pilih Keahlian --</option>
+                        @foreach($jenis_lomba as $jenis)
+                            <option value="{{ $jenis->id_jenis }}"
+                                {{ old('keahlian', optional($mahasiswa->keahlian->first())->id_jenis) == $jenis->id_jenis ? 'selected' : '' }}>
+                                {{ $jenis->nama_jenis }}
+                            </option>
+                        @endforeach
+                    </select>
+                </div>
                 <button type="submit" class="btn btn-maroon me-2">Simpan Perubahan</button>
                 <a href="{{ route('mahasiswa.profile.index') }}" class="btn btn-outline-maroon">Batal</a>
             </form>

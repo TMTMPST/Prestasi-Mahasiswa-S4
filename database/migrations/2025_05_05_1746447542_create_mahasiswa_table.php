@@ -18,6 +18,7 @@ class CreateMahasiswaTable extends Migration
             $table->char('level', 3)->default('MHS');
             $table->integer('poin_presma')->default(0);
             $table->string('prestasi_tertinggi')->nullable();
+            $table->string('email', 100)->nullable(); // tambahkan kolom email
             $table->timestamps();
 
             // Foreign key constraints

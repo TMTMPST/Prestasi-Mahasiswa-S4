@@ -383,12 +383,17 @@ class MahasiswaController extends Controller
     {
         $request->validate([
             'nama' => 'required|string|max:255',
-            'prodi' => 'required|string|max:255',
-            'prestasi_tertinggi' => 'nullable|string|max:255',
+            'email' => 'nullable|string|max:255',
+            'keahlian' => 'nullable|string|max:255',
         ]);
 
         $mahasiswa = Mahasiswa::where('nim', $nim)->firstOrFail();
-        $mahasiswa->update($request->only(['nama', 'prodi', 'prestasi_tertinggi']));
+        $mahasiswa->update($request->only(['nama', 'email']));
+
+        DB::table('keahlian_mahasiswa')->updateOrInsert(
+            ['nim' => $nim], // Kondisi pencarian
+            ['id_jenis' => $request->keahlian, 'updated_at' => now()] // Data yang diupdate/insert
+        );
 
         return redirect()->route('mahasiswa.profile.index')->with('success', 'Profil berhasil diperbarui.');
     }

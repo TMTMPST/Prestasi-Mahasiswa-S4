@@ -148,7 +148,12 @@
                                     <td>{{ $lomba->hadiah }}</td>
                                     <td>
                                         <span
-                                            class="badge {{ $lomba->verifikasi == 'Accepted' ? 'bg-success' : 'bg-warning text-dark' }}">
+                                            class="badge 
+                                            @if ($lomba->verifikasi == 'Accepted') bg-success
+                                            @elseif($lomba->verifikasi == 'Pending')
+                                                bg-warning text-dark
+                                            @elseif($lomba->verifikasi == 'Rejected')
+                                                bg-danger @endif">
                                             {{ $lomba->verifikasi }}
                                         </span>
                                     </td>
