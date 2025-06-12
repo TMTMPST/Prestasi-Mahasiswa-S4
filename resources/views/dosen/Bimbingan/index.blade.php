@@ -239,31 +239,37 @@
     </div>
 
     {{-- Modal --}}
-    <div class="modal fade" id="bimbinganModal" tabindex="-1" aria-labelledby="bimbinganModalLabel" aria-hidden="true">
+     <div class="modal fade" id="bimbinganModal" tabindex="-1" aria-labelledby="bimbinganModalLabel" aria-hidden="true">
         <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
+            <div class="modal-content" style="border-radius: 18px; box-shadow: 0 4px 24px rgba(12,30,71,0.15); border: none;">
+                <div class="modal-header" style="background: linear-gradient(90deg, var(--primary) 100%); color: var(--light); border-radius: 18px 18px 0 0; border-bottom: none;">
                     <h5 class="modal-title" id="bimbinganModalLabel">Detail Bimbingan</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" style="filter: invert(1); opacity: 0.8;"></button>
                 </div>
-                <div class="modal-body">
-                    <div class="mb-2">
-                        <strong>Nama Mahasiswa:</strong> <span id="modal-nama"></span>
+                <div class="modal-body" style="background: var(--light); color: var(--dark); border-radius: 0 0 18px 18px; font-size: 1rem;">
+                    <div class="row mb-2">
+                        <div class="col-5 fw-semibold">Nama Mahasiswa</div>
+                        <div class="col-7">: <span id="modal-nama"></span></div>
                     </div>
-                    <div class="mb-2">
-                        <strong>NIM:</strong> <span id="modal-nim"></span>
+                    <div class="row mb-2">
+                        <div class="col-5 fw-semibold">NIM</div>
+                        <div class="col-7">: <span id="modal-nim"></span></div>
                     </div>
-                    <div class="mb-2">
-                        <strong>Nama Lomba:</strong> <span id="modal-lomba"></span>
+                    <div class="row mb-2">
+                        <div class="col-5 fw-semibold">Nama Lomba</div>
+                        <div class="col-7">: <span id="modal-lomba"></span></div>
                     </div>
-                    <div class="mb-2">
-                        <strong>Deskripsi Lomba:</strong> <span id="modal-deskripsi"></span>
+                    <div class="row mb-2">
+                        <div class="col-5 fw-semibold">Deskripsi Lomba</div>
+                        <div class="col-7">: <span id="modal-deskripsi"></span></div>
                     </div>
-                    <div class="mb-2">
-                        <strong>Nama Dosen Pembimbing:</strong> <span id="modal-dosen"></span>
+                    <div class="row mb-2">
+                        <div class="col-5 fw-semibold">Nama Dosen Pembimbing</div>
+                        <div class="col-7">: <span id="modal-dosen"></span></div>
                     </div>
-                    <div class="mb-2">
-                        <strong>Status:</strong> <span id="modal-status"></span>
+                    <div class="row mb-2">
+                        <div class="col-5 fw-semibold">Status</div>
+                        <div class="col-7">: <span id="modal-status"></span></div>
                     </div>
                 </div>
             </div>
