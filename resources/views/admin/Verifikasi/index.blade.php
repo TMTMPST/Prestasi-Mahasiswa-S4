@@ -147,13 +147,76 @@
             scrollbar-width: none;
             -ms-overflow-style: none;
         }
+
+        /* Styling for popup */
+        #imagePopup {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7); /* Semi-transparent background */
+            display: none; /* Initially hidden */
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            cursor: pointer; /* Make the whole area clickable */
+        }
+
+        #popupImage {
+            max-width: 90%;
+            max-height: 90%;
+            cursor: default; /* Make sure image itself is not clickable */
+        }
+
+        #pdfPopup {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            /* Semi-transparent background */
+            display: none;
+            /* Popup dimulai dalam keadaan tersembunyi */
+            justify-content: center;
+            align-items: center;
+            z-index: 9998;
+            /* Memastikan popup berada di atas elemen lainnya */
+            cursor: pointer;
+            /* Membuat seluruh area popup dapat diklik */
+        }
+
+        /* Styling iframe PDF */
+        #popupPdf {
+            max-width: 90%;
+            max-height: 90%;
+            cursor: default;
+            /* Menjaga gambar PDF tidak dapat diklik */
+        }
+
+        /* Close button styling */
+        #closePopup {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: none;
+            border: none;
+            font-size: 30px;
+            color: var(--light);
+            cursor: pointer;
+        }
+
+        #closePopup:hover {
+            color: var(--primary);
+        }
     </style>
 
     <div class="container">
         <br>
         <div class="card dashboard-card shadow-sm">
             <div class="card-header ranking-header d-flex align-items-center" style="font-size:1.2rem;">
-                <strong>Verifikasi Prestasi </strong>
+                <i class="nav-icon cil-check"></i> <strong>Verifikasi Prestasi </strong>
             </div>
             <div class="card-body">
                 <table class="table table-striped table-bordered mb-0 align-middle">
@@ -175,30 +238,30 @@
                                 <td>{{ $verifikasi->dataLomba->nama_lomba }}</td>
                                 <td class="ellipsis-cell">
                                     @if ($verifikasi->sertif)
-                                        <a href="{{ asset('storage/' . $verifikasi->sertif) }}" target="_blank"
-                                            class="text-decoration-none">
+                                        <span onclick="showPopupPdf('{{ asset('storage/' . $verifikasi->sertif) }}')"
+                                            style="cursor:pointer;">
                                             <i class="bi bi-file-earmark-text"></i> Lihat
-                                        </a>
+                                        </span>
                                     @else
                                         <span class="text-muted">-</span>
                                     @endif
                                 </td>
                                 <td class="ellipsis-cell">
                                     @if ($verifikasi->foto_bukti)
-                                        <a href="{{ asset('storage/' . $verifikasi->foto_bukti) }}" target="_blank"
-                                            class="text-decoration-none">
+                                        <span onclick="showPopupImg('{{ asset('storage/' . $verifikasi->foto_bukti) }}')"
+                                            style="cursor:pointer;">
                                             <i class="bi bi-image"></i> Lihat
-                                        </a>
+                                        </span>
                                     @else
                                         <span class="text-muted">-</span>
                                     @endif
                                 </td>
                                 <td class="ellipsis-cell">
                                     @if ($verifikasi->poster_lomba)
-                                        <a href="{{ asset('storage/' . $verifikasi->poster_lomba) }}" target="_blank"
-                                            class="text-decoration-none">
+                                        <span onclick="showPopupImg('{{ asset('storage/' . $verifikasi->poster_lomba) }}')"
+                                            style="cursor:pointer;">
                                             <i class="bi bi-image"></i> Lihat
-                                        </a>
+                                        </span>
                                     @else
                                         <span class="text-muted">-</span>
                                     @endif
@@ -234,4 +297,44 @@
             </div>
         </div>
     </div>
+
+    <!-- Popup Image -->
+    <!-- Click anywhere on the popup to close it -->
+    <div id="imagePopup" onclick="hidePopupImg()"> <!-- Close the popup when clicking outside image -->
+        <button id="closePopup" class="btn-close btn-close-white" aria-label="Close" onclick="hidePopupImg()"></button> <!-- Bootstrap close button -->
+        <img id="popupImage" src="" alt="Popup Image">
+    </div>
+
+    <!-- Popup PDF -->
+    <div id="pdfPopup" onclick="hidePopupPdf()">
+        <button id="closePopup" class="btn-close btn-close-white" aria-label="Close" onclick="hidePopupPdf()"></button>
+        <iframe id="popupPdf" src="" width="80%" height="90%" style="border: none;"></iframe>
+    </div>
+
+    <script>
+        function showPopupImg(imageSrc) {
+            const popup = document.getElementById('imagePopup');
+            const popupImage = document.getElementById('popupImage');
+            popupImage.src = imageSrc;
+            popup.style.display = 'flex';
+        }
+
+        // Function to hide popup
+        function hidePopupImg() {
+            const popup = document.getElementById('imagePopup');
+            popup.style.display = 'none';
+        }
+
+        function showPopupPdf(pdfSrc) {
+            const popup = document.getElementById('pdfPopup');
+            const popupPdf = document.getElementById('popupPdf');
+            popupPdf.src = pdfSrc;
+            popup.style.display = 'flex';
+        }
+
+        function hidePopupPdf() {
+            const popup = document.getElementById('pdfPopup');
+            popup.style.display = 'none';
+        }
+    </script>
 @endsection
