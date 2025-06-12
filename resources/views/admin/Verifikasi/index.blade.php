@@ -117,6 +117,19 @@
             padding: 0.5em 1em;
         }
 
+        .badge-sm {
+            font-size: 0.9rem;
+            /* Menyesuaikan ukuran font */
+            padding: 0.5rem 1rem;
+            /* Menyesuaikan padding */
+        }
+        .badge {
+            font-weight: 500;
+            /* Menjaga konsistensi berat font */
+            border-radius: 8px;
+            /* Menyesuaikan radius border */
+        }
+
         .avatar-initial {
             display: inline-block;
             width: 30px;
@@ -219,7 +232,7 @@
                 <i class="nav-icon cil-check"></i> <strong>Verifikasi Prestasi </strong>
             </div>
             <div class="card-body">
-                <table class="table table-striped table-bordered mb-0 align-middle">
+                <table class="table table-striped table-bordered mb-0 align-middle text-center">
                     <thead>
                         <tr>
                             <th>Peringkat</th>
@@ -266,7 +279,13 @@
                                         <span class="text-muted">-</span>
                                     @endif
                                 </td>
-                                <td>{{ $verifikasi->verifikasi }}</td>
+                                <td>@if (strtolower($verifikasi->verifikasi) == 'accepted')
+                                        <span class="badge bg-success badge-sm">Accepted</span>
+                                    @elseif(strtolower($verifikasi->verifikasi) == 'pending')
+                                        <span class="badge bg-primary badge-sm">Pending</span>
+                                    @else
+                                        <span class="badge bg-danger badge-sm">{{ $verifikasi->verifikasi }}</span>
+                                    @endif</td>
                                 <td>
                                     <!-- Tombol Accept -->
                                     <form action="{{ route('admin.verifikasi.update', $verifikasi->id) }}" method="POST"

@@ -147,6 +147,19 @@
             font-size: 0.95em;
         }
 
+        .badge-sm {
+            font-size: 0.9rem;
+            /* Menyesuaikan ukuran font */
+            padding: 0.5rem 1rem;
+            /* Menyesuaikan padding */
+        }
+        .badge {
+            font-weight: 500;
+            /* Menjaga konsistensi berat font */
+            border-radius: 8px;
+            /* Menyesuaikan radius border */
+        }
+
         .table-striped>tbody>tr:nth-of-type(odd) {
             background-color: var(--light-gray);
         }
@@ -244,7 +257,8 @@
             font-size: 30px;
             color: var(--light);
             cursor: pointer;
-            z-index: 9999; /* Ensure close button is above everything */
+            z-index: 9999;
+            /* Ensure close button is above everything */
         }
 
         #closePopup:hover {
@@ -323,11 +337,11 @@
                                 </td>
                                 <td>
                                     @if (strtolower($presma->verifikasi) == 'accepted')
-                                        <span class="badge bg-success">Accepted</span>
+                                        <span class="badge bg-success badge-sm">Accepted</span>
                                     @elseif(strtolower($presma->verifikasi) == 'pending')
-                                        <span class="badge bg-pending">Pending</span>
+                                        <span class="badge bg-primary badge-sm">Pending</span>
                                     @else
-                                        <span class="badge bg-primary">{{ $presma->verifikasi }}</span>
+                                        <span class="badge bg-danger badge-sm">{{ $presma->verifikasi }}</span>
                                     @endif
                                 </td>
                                 <td>
