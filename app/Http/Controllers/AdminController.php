@@ -11,8 +11,10 @@ use App\Models\Dosen;
 use App\Models\Jenis;
 use App\Models\Level;
 use App\Models\Tingkat;
+use App\Models\Bimbingan;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\DB;
 
 class AdminController extends Controller
 {
@@ -24,8 +26,105 @@ class AdminController extends Controller
         // Ambil semua data mahasiswa, urutkan berdasarkan poin tertinggi
         $mahasiswa = Mahasiswa::orderByDesc('poin_presma')->get();
 
-        // Kirim data ke view dashboard dosen
-        return view('admin.dashboard', compact('lombas', 'mahasiswa'));
+        // Get comprehensive statistics for admin
+        $totalMahasiswa = Mahasiswa::count();
+        $totalDosen = Dosen::count();
+        $totalLomba = DataLomba::count();
+        $totalPrestasi = DataPrestasi::count();
+
+        // Prestasi yang perlu verifikasi
+        $prestasiPendingVerifikasi = DataPrestasi::where('verifikasi', 'Pending')->count();
+        $prestasiVerified = DataPrestasi::where('verifikasi', 'Accepted')->count();
+        $prestasiRejected = DataPrestasi::where('verifikasi', 'Rejected')->count();
+
+        // Lomba yang perlu verifikasi
+        $lombaPendingVerifikasi = DataLomba::where('verifikasi', 'Pending')->count();
+        $lombaVerified = DataLomba::where('verifikasi', 'Accepted')->count();
+
+        // Bimbingan statistics
+        $totalBimbingan = Bimbingan::count();
+        $bimbinganPending = Bimbingan::where('status', 'Pending')->count();
+        $bimbinganAccepted = Bimbingan::where('status', 'Accepted')->count();
+
+        // Prestasi berdasarkan tingkat lomba
+        $prestasiByTingkat = DataPrestasi::join('data_lomba', 'data_prestasi.id_lomba', '=', 'data_lomba.id_lomba')
+            ->join('tingkat', 'data_lomba.tingkat', '=', 'tingkat.id_tingkat')
+            ->select('tingkat.nama_tingkat', DB::raw('count(*) as total'))
+            ->groupBy('tingkat.nama_tingkat')
+            ->get();
+
+        // Prestasi berdasarkan jenis lomba
+        $prestasiByJenis = DataPrestasi::join('data_lomba', 'data_prestasi.id_lomba', '=', 'data_lomba.id_lomba')
+            ->join('jenis', 'data_lomba.jenis', '=', 'jenis.id_jenis')
+            ->select('jenis.nama_jenis', DB::raw('count(*) as total'))
+            ->groupBy('jenis.nama_jenis')
+            ->get();
+
+        // Prestasi berdasarkan peringkat
+        $prestasiByPeringkat = DataPrestasi::select('peringkat', DB::raw('count(*) as total'))
+            ->groupBy('peringkat')
+            ->get();
+
+        // Prestasi berdasarkan status verifikasi
+        $prestasiByVerifikasi = DataPrestasi::select('verifikasi', DB::raw('count(*) as total'))
+            ->groupBy('verifikasi')
+            ->get();
+
+        // Top mahasiswa berdasarkan prestasi
+        $topMahasiswa = Mahasiswa::leftJoin('data_prestasi', 'mahasiswa.nim', '=', 'data_prestasi.nim')
+            ->select('mahasiswa.*', DB::raw('COUNT(data_prestasi.nim) as total_prestasi'))
+            ->groupBy('mahasiswa.nim', 'mahasiswa.nama', 'mahasiswa.angkatan', 'mahasiswa.password', 'mahasiswa.prodi', 'mahasiswa.dosen_nip', 'mahasiswa.level', 'mahasiswa.poin_presma', 'mahasiswa.prestasi_tertinggi', 'mahasiswa.created_at', 'mahasiswa.updated_at')
+            ->orderByDesc('total_prestasi')
+            ->limit(5)
+            ->get();
+
+        // Prestasi terbaru yang perlu verifikasi
+        $prestasiTerbaruPending = DataPrestasi::where('verifikasi', 'Pending')
+            ->with(['dataLomba.tingkatRelasi', 'dataLomba.jenisRelasi', 'nimMahasiswa'])
+            ->orderBy('created_at', 'desc')
+            ->limit(5)
+            ->get();
+
+        // Trend registrasi per bulan (6 bulan terakhir)
+        $trendRegistrasi = Mahasiswa::where('created_at', '>=', now()->subMonths(6))
+            ->selectRaw('MONTH(created_at) as bulan, YEAR(created_at) as tahun, COUNT(*) as total')
+            ->groupBy('tahun', 'bulan')
+            ->orderBy('tahun', 'desc')
+            ->orderBy('bulan', 'desc')
+            ->get();
+
+        // User distribution
+        $userDistribution = [
+            ['level' => 'Mahasiswa', 'total' => $totalMahasiswa],
+            ['level' => 'Dosen', 'total' => $totalDosen],
+            ['level' => 'Admin', 'total' => Admin::count()]
+        ];
+
+        // Kirim data ke view dashboard admin
+        return view('admin.dashboard', compact(
+            'lombas', 
+            'mahasiswa',
+            'totalMahasiswa',
+            'totalDosen',
+            'totalLomba',
+            'totalPrestasi',
+            'prestasiPendingVerifikasi',
+            'prestasiVerified',
+            'prestasiRejected',
+            'lombaPendingVerifikasi',
+            'lombaVerified',
+            'totalBimbingan',
+            'bimbinganPending',
+            'bimbinganAccepted',
+            'prestasiByTingkat',
+            'prestasiByJenis',
+            'prestasiByPeringkat',
+            'prestasiByVerifikasi',
+            'topMahasiswa',
+            'prestasiTerbaruPending',
+            'trendRegistrasi',
+            'userDistribution'
+        ));
     }
 
     public function profile()
