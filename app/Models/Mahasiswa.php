@@ -25,6 +25,7 @@ class Mahasiswa extends Model
         'level',
         'prestasi_tertinggi',
         'poin_presma',
+        'email',
     ];
 
     public function level()
