@@ -143,38 +143,41 @@
 
         <div class="row row-cols-1 row-cols-md-3 g-4">
             @forelse ($lombas as $lomba)
-                <div class="col d-flex">
-                    <div class="card shadow-sm custom-card w-100">
-                        <div class="card-header custom-header">
-                            {{ $lomba->nama_lomba }}
-                        </div>
-                        <div class="card-body">
-                            <ul class="lomba-info-list">
-                                <li>
-                                    <strong>Tingkat</strong>
-                                    <span class="ms-2">: {{ $lomba->tingkatRelasi->nama_tingkat ?? '-' }}</span>
-                                </li>
-                                <li>
-                                    <strong>Jenis</strong>
-                                    <span class="ms-2">: {{ $lomba->jenisRelasi->nama_jenis ?? '-' }}</span>
-                                </li>
-                            </ul>
-                            <div class="card border-0 bg-light mt-auto">
-                                <div class="card-body p-2">
-                                    <div class="lomba-action-group">
-                                        <button type="button" class="btn custom-btn-primary btn-sm w-50 btn-detail-lomba"
-                                            data-id="{{ $lomba->id_lomba }}" data-bs-toggle="modal"
-                                            data-bs-target="#modalDetailLomba">
-                                            Detail
-                                        </button>
-                                        <a href="{{ $lomba->link_lomba }}" target="_blank"
-                                            class="btn custom-btn-success btn-sm w-50">Daftar</a>
+                @if ($lomba->verifikasi == 'Accepted')
+                    <div class="col d-flex">
+                        <div class="card shadow-sm custom-card w-100">
+                            <div class="card-header custom-header">
+                                {{ $lomba->nama_lomba }}
+                            </div>
+                            <div class="card-body">
+                                <ul class="lomba-info-list">
+                                    <li>
+                                        <strong>Tingkat</strong>
+                                        <span class="ms-2">: {{ $lomba->tingkatRelasi->nama_tingkat ?? '-' }}</span>
+                                    </li>
+                                    <li>
+                                        <strong>Jenis</strong>
+                                        <span class="ms-2">: {{ $lomba->jenisRelasi->nama_jenis ?? '-' }}</span>
+                                    </li>
+                                </ul>
+                                <div class="card border-0 bg-light mt-auto">
+                                    <div class="card-body p-2">
+                                        <div class="lomba-action-group">
+                                            <button type="button"
+                                                class="btn custom-btn-primary btn-sm w-50 btn-detail-lomba"
+                                                data-id="{{ $lomba->id_lomba }}" data-bs-toggle="modal"
+                                                data-bs-target="#modalDetailLomba">
+                                                Detail
+                                            </button>
+                                            <a href="{{ $lomba->link_lomba }}" target="_blank"
+                                                class="btn custom-btn-success btn-sm w-50">Daftar</a>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
+                @endif
             @empty
                 <div class="col">
                     <div class="alert alert-warning w-100" role="alert">
@@ -203,7 +206,8 @@
                 <div class="modal-content">
                     <div class="modal-header w-100 d-flex justify-content-center">
                         <h5 class="modal-title text-center w-100">Detail Lomba</h5>
-                        <button type="button" class="btn-close position-absolute end-0 me-3" data-bs-dismiss="modal" aria-label="Close"></button>
+                        <button type="button" class="btn-close position-absolute end-0 me-3" data-bs-dismiss="modal"
+                            aria-label="Close"></button>
                     </div>
                     <div class="modal-body" id="modalDetailLombaContent">
                         <!-- Konten detail lomba akan dimuat lewat AJAX -->
@@ -237,7 +241,7 @@
             // Attach event listeners after DOM is ready
             function attachDetailListeners() {
                 document.querySelectorAll('.btn-detail-lomba').forEach(btn => {
-                    btn.removeEventListener('click', btn._detailHandler || (()=>{}));
+                    btn.removeEventListener('click', btn._detailHandler || (() => {}));
                     btn._detailHandler = function() {
                         const id = this.getAttribute('data-id');
                         const modalContent = document.getElementById('modalDetailLombaContent');
@@ -261,4 +265,3 @@
         });
     </script>
 @endsection
-
