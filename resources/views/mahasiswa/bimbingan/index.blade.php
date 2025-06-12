@@ -71,7 +71,7 @@
     </style>
     <div class="container py-4">
         <a href="/bimbingan/tambah_bimbingan" class="btn btn-success mb-3">
-            <i class="bi bi-plus-circle me-1"></i>Tambah Bimbingan
+            <i class="bi bi-plus-circle me-1"></i>Ajukan Bimbingan
         </a>
         <div class="card dashboard-card shadow-sm">
             <div class="card-header bg-maroon">
@@ -86,6 +86,7 @@
                             <th>Nama Lomba</th>
                             <th>Nama Pengaju</th>
                             <th>Nama Dosen Pembimbing</th>
+                            <th>Deskripsi Lomba</th>
                             <th>Status</th>
                             <th>Aksi</th>
                         </tr>
@@ -97,6 +98,7 @@
                                 <td>{{ $bimb->lomba->nama_lomba }}</td>
                                 <td>{{ $bimb->nama_pengaju }}</td>
                                 <td>{{ $bimb->dosen->nama }}</td>
+                                <td>{{ $bimb->deskripsi_lomba }}</td>
                                 <td>{{ $bimb->status }}</td>
                                 <td>
                                     <form action="{{ route('mahasiswa.destroy_bimbingan', $bimb->id_bimbingan) }}"

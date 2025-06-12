@@ -75,8 +75,8 @@
                                 @foreach ($prestasi as $rank)
                                     <option value="{{ $rank->peringkat }}">{{ $rank->peringkat }}</option>
                                 
-                                <option value="Juara 2">Juara 2</option>
-                                <option value="Juara 3">Juara 3</option>
+                                {{-- <option value="Juara 2">Juara 2</option>
+                                <option value="Juara 3">Juara 3</option> --}}
                                 @endforeach
                             </select>
                         </div>

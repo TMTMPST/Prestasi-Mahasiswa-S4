@@ -104,11 +104,11 @@
             </a>
         </li>
 
-        <li class="nav-item">
+        {{-- <li class="nav-item">
                    <a class="nav-link" href="/verifikasi/index">
                 <i class="nav-icon cil-check"></i> Verifikasi Prestasi
             </a>
-        </li>
+        </li> --}}
     @endif
 </ul>
 

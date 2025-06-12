@@ -9,6 +9,7 @@ use App\Models\DataPrestasi;
 use App\Models\Dosen;
 use App\Models\Mahasiswa;
 use App\Models\Jenis;
+use Illuminate\Support\Facades\Session;
 
 class MahasiswaController extends Controller
 {
@@ -60,10 +61,17 @@ class MahasiswaController extends Controller
             'poster_lomba' => 'file|mimes:jpg,jpeg,png|max:2000',
         ]);
 
+        $user = Session::get('user');
+
+        if (!$user || Session::get('level') !== 'MHS') {
+            return redirect()->back()->withErrors(['unauthorized' => 'Anda tidak memiliki akses.']);
+        }
+
         $data = new DataPrestasi();
         $data->peringkat = $request->peringkat;
         $data->id_lomba = $request->id_lomba;
         $data->verifikasi = 'pending';
+        $data->nim = $user->nim; 
 
         if ($request->hasFile('sertif')) {
             $sertif = $request->file('sertif');
@@ -154,8 +162,14 @@ class MahasiswaController extends Controller
 
     public function bimbingan()
     {
-        $bimbingan = Bimbingan::select('id_bimbingan', 'id_lomba', 'nama_pengaju', 'nip', 'status')
+        $user = Session::get('user');
+        if (!$user || Session::get('level') !== 'MHS') {
+            return redirect()->back()->withErrors(['unauthorized' => 'Anda tidak memiliki akses.']);
+        }
+
+        $bimbingan = Bimbingan::select('id_bimbingan', 'id_lomba', 'nama_pengaju', 'nip','deskripsi_lomba', 'status')
             ->with('lomba', 'dosen')
+            ->where('nim', $user->nim)
             ->get();
         $lombas = DataLomba::with(['tingkatRelasi', 'jenisRelasi'])->get();
         $dosen = dosen::all();
@@ -167,35 +181,55 @@ class MahasiswaController extends Controller
 
     public function create_bimbingan()
     {
-        // Tampilkan halaman tambah_bimbingan
+        $user = session('user'); // Ambil user dari session
+
+        // Pastikan user ada dan level mahasiswa
+        if (!$user || session('level') !== 'MHS') {
+            return redirect()->back()->withErrors(['unauthorized' => 'Anda tidak memiliki akses.']);
+        }
+
+        $nim = $user->nim;
+
+        // Ambil data mahasiswa berdasarkan nim
+        $mahasiswas = Mahasiswa::where('nim', $nim)->first();
+
+        $bimbingan = Bimbingan::where('nim', $nim)->get();   
         $lombas = DataLomba::with(['tingkatRelasi', 'jenisRelasi'])->get();
         $dosen = dosen::all();
-        $mahasiswas = Mahasiswa::all();
+
         return view('mahasiswa.bimbingan.tambah_bimbingan', compact('lombas', 'dosen', 'mahasiswas'));
     }
 
     public function store_bimbingan(Request $request)
-{
-    $request->validate([
-        'id_lomba' => 'required',
-        'nim' => 'required',
-        'nip' => 'required',
-        'deskripsi_lomba' => 'required', 
-    ]);
+    {
+        $request->validate([
+            'id_lomba' => 'required',
+            'nip' => 'required',
+            'deskripsi_lomba' => 'required', 
+        ]);
 
-    $mahasiswa =Mahasiswa::where('nim', $request->nim)->first();
+        $user = Session::get('user');
 
-    $bimbingan = new Bimbingan();
-    $bimbingan->id_lomba = $request->id_lomba;
-    $bimbingan->nim = $request->nim;
-    $bimbingan->nama_pengaju = $mahasiswa ? $mahasiswa->nama : null;
-    $bimbingan->nip = $request->nip;
-    $bimbingan->deskripsi_lomba = $request->deskripsi_lomba; 
-    $bimbingan->status = 'Pending';
-    $bimbingan->save();
+        if (!$user || Session::get('level') !== 'MHS') {
+            return redirect()->back()->withErrors(['unauthorized' => 'Anda tidak memiliki akses.']);
+        }
 
-    return redirect()->route('mahasiswa.bimbingan.index')->with('success', 'Data bimbingan berhasil disimpan.');
-}
+        // Ambil data mahasiswa dari NIM yang sedang login
+        $mahasiswa = Mahasiswa::where('nim', $user->nim)->first();
+
+        $bimbingan = new Bimbingan();
+        $bimbingan->id_lomba = $request->id_lomba;
+        $bimbingan->nim = $user->nim;
+        $bimbingan->nama_pengaju = $mahasiswa ? $mahasiswa->nama : 'Tidak diketahui';
+        $bimbingan->nip = $request->nip;
+        $bimbingan->deskripsi_lomba = $request->deskripsi_lomba;
+        $bimbingan->status = 'Pending';
+
+        $bimbingan->save();
+
+        return redirect()->route('mahasiswa.bimbingan.index')->with('success', 'Data bimbingan berhasil disimpan.');
+    }
+
 
     public function edit_bimbingan($id)
     {
@@ -212,12 +246,14 @@ class MahasiswaController extends Controller
         $request->validate([
             'id_lomba' => 'required',
             'nim' => 'required',
+            'deskripsi_lomba' => 'required',
             'nip' => 'required',
         ]);
 
         $bimbingan = Bimbingan::findOrFail($id);
         $bimbingan->id_lomba = $request->id_lomba;
         $bimbingan->nama_pengaju = $request->nama_pengaju;
+        $bimbingan->deskripsi_lomba = $request->deskripsi_lomba;
         $bimbingan->nip = $request->nip;
 
         $bimbingan->save();

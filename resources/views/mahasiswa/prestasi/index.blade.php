@@ -121,15 +121,20 @@
                                 <td>{{ $pres->peringkat }}</td>
                                 <td>{{ $pres->dataLomba->nama_lomba }}</td>
                                 <td>
+                                <a href="{{ asset('storage/' . $pres->sertif) }}" target="_blank">
                                     <img src="{{ asset('storage/' . $pres->sertif) }}" alt="Sertifikat" width="100">
-                                </td>
-                                <td>
+                                </a>
+                            </td>
+                            <td>
+                                <a href="{{ asset('storage/' . $pres->foto_bukti) }}" target="_blank">
                                     <img src="{{ asset('storage/' . $pres->foto_bukti) }}" alt="Foto Bukti" width="100">
-                                </td>
-                                <td>
-                                    <img src="{{ asset('storage/' . $pres->poster_lomba) }}" alt="Poster Lomba"
-                                        width="100">
-                                </td>
+                                </a>
+                            </td>
+                            <td>
+                                <a href="{{ asset('storage/' . $pres->poster_lomba) }}" target="_blank">
+                                    <img src="{{ asset('storage/' . $pres->poster_lomba) }}" alt="Poster Lomba" width="100">
+                                </a>
+                            </td>
                                 <td>{{ $pres->verifikasi }}</td>
                                 <td>
                                     <form action="{{ route('mahasiswa.destroy', $pres->id) }}" method="POST"

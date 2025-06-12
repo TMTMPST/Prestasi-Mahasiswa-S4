@@ -80,6 +80,11 @@
                         </div>
 
                         <div class="mb-3">
+                            <label for="deskripsi_lomba" class="form-label">Deskripsi Lomba</label>
+                            <textarea id="deskripsi_lomba" name="deskripsi_lomba" class="form-control" rows="3" required>{{ old('deskripsi_lomba', $bimbingan->deskripsi_lomba) }}</textarea>
+                        </div>
+
+                        <div class="mb-3">
                             <label for="nip" class="form-label">Nama Dosen Pembimbing</label>
                             <select id="nip" name="nip" class="form-select" required>
                                 <option value="">Pilih Dosen</option>

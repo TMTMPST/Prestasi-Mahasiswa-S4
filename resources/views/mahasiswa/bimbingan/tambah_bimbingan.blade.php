@@ -54,7 +54,7 @@
                 <div class="card dashboard-card shadow-sm">
                     <div class="card-header bg-maroon">
                         <i class="bi bi-plus-circle me-2"></i>
-                        <strong>Tambah Bimbingan</strong>
+                        <strong>Ajukan Bimbingan</strong>
                     </div>
                     <form action="{{ route('mahasiswa.store_bimbingan') }}" method="POST" class="p-4">
                         @csrf
@@ -70,12 +70,7 @@
 
                         <div class="mb-3">
                             <label for="nim" class="form-label">Nama Pengaju</label>
-                            <select class="form-select" id="nim" name="nim" required>
-                                <option value="">Pilih Mahasiswa</option>
-                                @foreach ($mahasiswas as $mhs)
-                                    <option value="{{ $mhs->nim }}">{{ $mhs->nama }} ({{ $mhs->nim }})</option>
-                                @endforeach
-                            </select>
+                            <input class="form-control" type="text" name="nama" value="{{ session('user')->nama }}" readonly>
                         </div>
                         <div class="mb-3">
                             <label for="deskripsi_lomba" class="form-label">Deskripsi Lomba</label>
