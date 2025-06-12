@@ -148,7 +148,7 @@
             -ms-overflow-style: none;
         }
     </style>
-    
+
     <div class="container">
         <br>
         <div class="card dashboard-card shadow-sm">
@@ -173,9 +173,36 @@
                             <tr>
                                 <td>{{ $verifikasi->peringkat }}</td>
                                 <td>{{ $verifikasi->dataLomba->nama_lomba }}</td>
-                                <td>{{ $verifikasi->sertif }}</td>
-                                <td>{{ $verifikasi->foto_bukti }}</td>
-                                <td>{{ $verifikasi->poster_lomba }}</td>
+                                <td class="ellipsis-cell">
+                                    @if ($verifikasi->sertif)
+                                        <a href="{{ asset('storage/' . $verifikasi->sertif) }}" target="_blank"
+                                            class="text-decoration-none">
+                                            <i class="bi bi-file-earmark-text"></i> Lihat
+                                        </a>
+                                    @else
+                                        <span class="text-muted">-</span>
+                                    @endif
+                                </td>
+                                <td class="ellipsis-cell">
+                                    @if ($verifikasi->foto_bukti)
+                                        <a href="{{ asset('storage/' . $verifikasi->foto_bukti) }}" target="_blank"
+                                            class="text-decoration-none">
+                                            <i class="bi bi-image"></i> Lihat
+                                        </a>
+                                    @else
+                                        <span class="text-muted">-</span>
+                                    @endif
+                                </td>
+                                <td class="ellipsis-cell">
+                                    @if ($verifikasi->poster_lomba)
+                                        <a href="{{ asset('storage/' . $verifikasi->poster_lomba) }}" target="_blank"
+                                            class="text-decoration-none">
+                                            <i class="bi bi-image"></i> Lihat
+                                        </a>
+                                    @else
+                                        <span class="text-muted">-</span>
+                                    @endif
+                                </td>
                                 <td>{{ $verifikasi->verifikasi }}</td>
                                 <td>
                                     <!-- Tombol Accept -->
