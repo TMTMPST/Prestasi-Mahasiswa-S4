@@ -210,9 +210,11 @@ class AdminController extends Controller
     {
         // Ambil semua level untuk dropdown
         $levels = Level::all();
+        // Ambil semua program studi untuk dropdown
+        $prodi = ProgramStudi::all();
 
         // Tampilkan halaman tambah pengguna
-        return view('admin.Pengguna.tambahPengguna', compact('levels'));
+        return view('admin.Pengguna.tambahPengguna', compact('levels', 'prodi'));
     }
     public function storePengguna(Request $request)
     {
@@ -290,10 +292,14 @@ class AdminController extends Controller
 
         // Ambil semua level untuk dropdown
         $levels = Level::all();
+        $prodi = ProgramStudi::all();
+
+        $selectedProdi = $pengguna->prodi ?? '';
 
         // Tampilkan halaman edit pengguna
-        return view('admin.Pengguna.editPengguna', compact('pengguna', 'levels'));
+        return view('admin.Pengguna.editPengguna', compact('pengguna', 'levels', 'prodi', 'selectedProdi'));
     }
+
     public function updatePengguna(Request $request, $id)
     {
         // Validasi input

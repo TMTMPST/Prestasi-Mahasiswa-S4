@@ -33,7 +33,8 @@
             color: var(--light);
         }
 
-        .btn-success, .btn-secondary {
+        .btn-success,
+        .btn-secondary {
             border-radius: 8px;
             font-weight: 500;
         }
@@ -43,12 +44,14 @@
             color: var(--primary);
         }
 
-        .form-control, .form-select {
+        .form-control,
+        .form-select {
             border-radius: 8px;
             border-color: var(--primary);
         }
 
-        .form-control:focus, .form-select:focus {
+        .form-control:focus,
+        .form-select:focus {
             border-color: var(--secondary);
             box-shadow: 0 0 0 0.2rem rgba(247, 183, 29, 0.25);
         }
@@ -65,7 +68,8 @@
                         <i class="bi bi-person-lines-fill me-2"></i>
                         Edit Data Pengguna
                     </div>
-                    <form action="{{ route('admin.pengguna.update', $pengguna->nim ?? ($pengguna->nip ?? $pengguna->username)) }}"
+                    <form
+                        action="{{ route('admin.pengguna.update', $pengguna->nim ?? ($pengguna->nip ?? $pengguna->username)) }}"
                         method="POST" class="p-4">
                         @csrf
                         @method('PUT')
@@ -83,8 +87,8 @@
                         <!-- Nama Input -->
                         <div class="mb-3">
                             <label for="nama" class="form-label">Nama</label>
-                            <input type="text" name="nama" id="nama" class="form-control" value="{{ $pengguna->nama }}"
-                                required>
+                            <input type="text" name="nama" id="nama" class="form-control"
+                                value="{{ $pengguna->nama }}" required>
                         </div>
 
                         <!-- NIM / NIP / Username Input -->
@@ -119,8 +123,15 @@
 
                         <div class="mb-3" id="prodiField" style="display: none;">
                             <label for="program_studi" class="form-label">Program Studi</label>
-                            <input class="form-control" type="text" id="prodi" name="prodi"
-                                value="{{ $pengguna->prodi }}" aria-label="default input example">
+                            <select class="form-select" id="prodi" name="prodi" aria-label="Default select example">
+                                <option selected>Pilih Program Studi</option>
+                                @foreach ($prodi as $prodis)
+                                    <option value="{{ $prodis->nama_prodi }}"
+                                        {{ old('prodi', $selectedProdi) == $prodis->nama_prodi ? 'selected' : '' }}>
+                                        {{ $prodis->kode_prodi }} -- {{ $prodis->nama_prodi }}
+                                    </option>
+                                @endforeach
+                            </select>
                         </div>
 
                         <a href="/manajemen-user" class="btn btn-secondary">Kembali</a>
