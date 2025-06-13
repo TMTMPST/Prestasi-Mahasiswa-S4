@@ -46,6 +46,12 @@
         </li>
 
         <li class="nav-item">
+            <a class="nav-link" href="/manajemen-prodi">
+                <i class="nav-icon cil-graduation"></i> Manajemen Program Studi
+            </a>
+        </li>
+
+        <li class="nav-item">
             <a class="nav-link" href="/manajemen-lomba">
                 <i class="nav-icon cil-star"></i> Manajemen Lomba
             </a>

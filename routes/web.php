@@ -76,6 +76,16 @@ Route::get('/dosen/dashboard', [DosenController::class, 'dashboard'])->middlewar
             Route::get('/export', [ExportController::class, 'lomba'])->name('lomba.export');
         });
 
+        // Manajemen Program Studi
+        Route::group(['prefix' => 'manajemen-prodi'], function () {
+            Route::get('/', [AdminController::class, 'showProgramStudi'])->name('admin.prodi.index');
+            Route::get('/create', [AdminController::class, 'createProgramStudi'])->name('admin.prodi.create');
+            Route::post('/store', [AdminController::class, 'storeProgramStudi'])->name('admin.prodi.store');
+            Route::get('/edit/{id}', [AdminController::class, 'editProgramStudi'])->name('admin.prodi.edit');
+            Route::put('/update/{id}', [AdminController::class, 'updateProgramStudi'])->name('admin.prodi.update');
+            Route::delete('/delete/{id}', [AdminController::class, 'deleteProgramStudi'])->name('admin.prodi.delete');
+        });
+
         // Manajemen Presma
         Route::group(['prefix' => 'manajemen-presma'], function () {
             Route::get('/', [AdminController::class, 'showPresma'])->name('admin.presma.index');

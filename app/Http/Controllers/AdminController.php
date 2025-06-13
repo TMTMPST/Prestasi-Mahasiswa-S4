@@ -12,6 +12,7 @@ use App\Models\Jenis;
 use App\Models\Level;
 use App\Models\Tingkat;
 use App\Models\Bimbingan;
+use App\Models\ProgramStudi;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\DB;
@@ -561,5 +562,67 @@ class AdminController extends Controller
 
         // Redirect ke halaman verifikasi dengan pesan sukses
         return redirect()->route('admin.verifikasi.index')->with('success', 'Status verifikasi berhasil diperbarui.');
+    }
+
+    // Program Studi Management
+    public function showProgramStudi()
+    {
+        $programStudi = ProgramStudi::orderBy('nama_prodi')->get();
+        return view('admin.ProgramStudi.index', compact('programStudi'));
+    }
+
+    public function createProgramStudi()
+    {
+        return view('admin.ProgramStudi.tambahProgramStudi');
+    }
+
+    public function storeProgramStudi(Request $request)
+    {
+        $request->validate([
+            'kode_prodi' => 'required|string|max:10|unique:program_studi,kode_prodi',
+            'nama_prodi' => 'required|string|max:100',
+            'jenjang' => 'required|string|max:20',
+            'fakultas' => 'required|string|max:100',
+            'status' => 'required|in:Aktif,Tidak Aktif',
+            'deskripsi' => 'nullable|string'
+        ]);
+
+        ProgramStudi::create($request->all());
+
+        return redirect()->route('admin.prodi.index')->with('success', 'Program Studi berhasil ditambahkan!');
+    }
+
+    public function editProgramStudi($id)
+    {
+        $programStudi = ProgramStudi::findOrFail($id);
+        return view('admin.ProgramStudi.editProgramStudi', compact('programStudi'));
+    }
+
+    public function updateProgramStudi(Request $request, $id)
+    {
+        $request->validate([
+            'kode_prodi' => 'required|string|max:10|unique:program_studi,kode_prodi,' . $id . ',id_prodi',
+            'nama_prodi' => 'required|string|max:100',
+            'jenjang' => 'required|string|max:20',
+            'fakultas' => 'required|string|max:100',
+            'status' => 'required|in:Aktif,Tidak Aktif',
+            'deskripsi' => 'nullable|string'
+        ]);
+
+        $programStudi = ProgramStudi::findOrFail($id);
+        $programStudi->update($request->all());
+
+        return redirect()->route('admin.prodi.index')->with('success', 'Program Studi berhasil diperbarui!');
+    }
+
+    public function deleteProgramStudi($id)
+    {
+        try {
+            $programStudi = ProgramStudi::findOrFail($id);
+            $programStudi->delete();
+            return redirect()->route('admin.prodi.index')->with('success', 'Program Studi berhasil dihapus!');
+        } catch (\Exception $e) {
+            return redirect()->route('admin.prodi.index')->with('error', 'Gagal menghapus Program Studi. Data masih digunakan di tabel lain.');
+        }
     }
 }
