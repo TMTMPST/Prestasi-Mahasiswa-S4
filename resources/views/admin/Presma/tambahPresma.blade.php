@@ -60,7 +60,7 @@
                         @csrf
                         <div class="mb-3">
                             <label for="mahasiswa" class="form-label">Mahasiswa</label>
-                            <select class="form-select" name="mahasiswa" id="mahasiswa" aria-label="Default select example">
+                            <select class="form-select" name="nim" id="mahasiswa" aria-label="Default select example">
                                 <option selected>Pilih Mahasiswa</option>
                                 @foreach ($mahasiswa as $mhs)
                                     <option value="{{ $mhs->nim }}">{{ $mhs->nim }} - {{ $mhs->nama }}</option>

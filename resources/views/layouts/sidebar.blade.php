@@ -47,7 +47,7 @@
 
         <li class="nav-item">
             <a class="nav-link" href="/manajemen-prodi">
-                <i class="nav-icon cil-graduation"></i> Manajemen Program Studi
+                <i class="nav-icon bi bi-mortarboard"></i> Manajemen Program Studi
             </a>
         </li>
 

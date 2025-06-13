@@ -103,7 +103,7 @@ class AdminController extends Controller
 
         // Kirim data ke view dashboard admin
         return view('admin.dashboard', compact(
-            'lombas', 
+            'lombas',
             'mahasiswa',
             'totalMahasiswa',
             'totalDosen',
@@ -501,8 +501,36 @@ class AdminController extends Controller
             'verifikasi' => 'required|in:Pending',
         ]);
 
+        // Persiapkan array untuk menyimpan data
+        $data = $request->all();
+
+        // Menyimpan sertifikat
+    if ($request->hasFile('sertif')) {
+        $sertif = $request->file('sertif');
+        $sertifName = $sertif->getClientOriginalName(); // Nama asli file
+        $sertif->storeAs('/', $sertifName);  // Simpan di folder 'public/sertifikats'
+        $data['sertif'] = $sertifName;
+    }
+
+    // Menyimpan foto bukti
+    if ($request->hasFile('foto_bukti')) {
+        $fotoBukti = $request->file('foto_bukti');
+        $fotoBuktiName = $fotoBukti->getClientOriginalName(); // Nama asli file
+        $fotoBukti->storeAs('/', $fotoBuktiName);  // Simpan di folder 'public/foto_buktis'
+        $data['foto_bukti'] = $fotoBuktiName;
+    }
+
+    // Menyimpan poster lomba
+    if ($request->hasFile('poster_lomba')) {
+        $posterLomba = $request->file('poster_lomba');
+        $posterLombaName = $posterLomba->getClientOriginalName(); // Nama asli file
+        $posterLomba->storeAs('/', $posterLombaName);  // Simpan di folder 'public/poster_lombas'
+        $data['poster_lomba'] = $posterLombaName;
+    }
+
+
         // Simpan data presma
-        DataPrestasi::create($request->all());
+        DataPrestasi::create($data);
 
         // Redirect ke halaman presma dengan pesan sukses
         return redirect()->route('admin.presma.index')->with('success', 'Presma berhasil ditambahkan.');
