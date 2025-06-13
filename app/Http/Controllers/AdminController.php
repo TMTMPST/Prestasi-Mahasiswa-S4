@@ -558,6 +558,8 @@ class AdminController extends Controller
         // Update status verifikasi
         $verifikasi = DataPrestasi::findOrFail($id);
         $verifikasi->verifikasi = $request->status;
+        $verifikasi->keterangan = $request->keterangan;
+        $verifikasi->updated_by = session('user')->username; // Set username admin yang mengupdate
         $verifikasi->save();
 
         // Redirect ke halaman verifikasi dengan pesan sukses

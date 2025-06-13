@@ -17,10 +17,13 @@ class CreateDataPrestasiTable extends Migration
             $table->string('foto_bukti', 255);
             $table->enum('verifikasi', ['Pending', 'Rejected', 'Accepted']);
             $table->string('poster_lomba', 255);
+            $table->text('keterangan')->nullable();
+            $table->string('updated_by')->nullable();
             $table->timestamps();
 
             $table->foreign('nim')->references('nim')->on('mahasiswa')->onDelete('cascade');
             $table->foreign('id_lomba')->references('id_lomba')->on('data_lomba');
+            $table->foreign('updated_by')->references('username')->on('admin')->onDelete('set null');
         });
     }
 

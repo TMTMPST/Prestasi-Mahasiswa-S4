@@ -2,7 +2,6 @@
 
 @section('content')
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-
     <style>
         :root {
             --primary: #0c1e47;
@@ -123,6 +122,7 @@
             padding: 0.5rem 1rem;
             /* Menyesuaikan padding */
         }
+
         .badge {
             font-weight: 500;
             /* Menjaga konsistensi berat font */
@@ -168,18 +168,22 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.7); /* Semi-transparent background */
-            display: none; /* Initially hidden */
+            background: rgba(0, 0, 0, 0.7);
+            /* Semi-transparent background */
+            display: none;
+            /* Initially hidden */
             justify-content: center;
             align-items: center;
             z-index: 9999;
-            cursor: pointer; /* Make the whole area clickable */
+            cursor: pointer;
+            /* Make the whole area clickable */
         }
 
         #popupImage {
             max-width: 90%;
             max-height: 90%;
-            cursor: default; /* Make sure image itself is not clickable */
+            cursor: default;
+            /* Make sure image itself is not clickable */
         }
 
         #pdfPopup {
@@ -222,6 +226,43 @@
 
         #closePopup:hover {
             color: var(--primary);
+        }
+
+        /* Popup styling */
+        #rejectionPopup {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            /* Semi-transparent background */
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            cursor: pointer;
+            /* Make the entire area clickable */
+        }
+
+        #rejectionForm {
+            background: var(--light);
+            padding: 20px;
+            border-radius: 8px;
+            max-width: 500px;
+            width: 100%;
+            text-align: center;
+        }
+
+        #closeRejectionPopup {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-size: 30px;
+            color: var(--primary);
+            background: none;
+            border: none;
+            cursor: pointer;
         }
     </style>
 
@@ -279,13 +320,15 @@
                                         <span class="text-muted">-</span>
                                     @endif
                                 </td>
-                                <td>@if (strtolower($verifikasi->verifikasi) == 'accepted')
+                                <td>
+                                    @if (strtolower($verifikasi->verifikasi) == 'accepted')
                                         <span class="badge bg-success badge-sm">Accepted</span>
                                     @elseif(strtolower($verifikasi->verifikasi) == 'pending')
                                         <span class="badge bg-primary badge-sm">Pending</span>
                                     @else
                                         <span class="badge bg-danger badge-sm">{{ $verifikasi->verifikasi }}</span>
-                                    @endif</td>
+                                    @endif
+                                </td>
                                 <td>
                                     <!-- Tombol Accept -->
                                     <form action="{{ route('admin.verifikasi.update', $verifikasi->id) }}" method="POST"
@@ -297,13 +340,17 @@
                                     </form>
 
                                     <!-- Tombol Reject -->
-                                    <form action="{{ route('admin.verifikasi.update', $verifikasi->id) }}" method="POST"
+                                    <button class="btn btn-sm btn-danger" onclick="showRejectionPopup({{ $verifikasi->id }}, '{{ $verifikasi->dataLomba->nama_lomba }}')">
+                                        Reject
+                                    </button>
+
+                                    {{-- <form action="{{ route('admin.verifikasi.update', $verifikasi->id) }}" method="POST"
                                         style="display: inline;">
                                         @csrf
                                         @method('PUT')
                                         <input type="hidden" name="status" value="Rejected">
                                         <button type="submit" class="btn btn-sm btn-danger">Reject</button>
-                                    </form>
+                                    </form> --}}
                                 </td>
                             </tr>
                         @empty
@@ -317,10 +364,26 @@
         </div>
     </div>
 
+    <!-- Rejection Popup -->
+    <div id="rejectionPopup">
+        <div id="rejectionForm">
+            <button id="closeRejectionPopup" class="btn btn-close-white" aria-label="Close" onclick="hideRejectionPopup()">×</button>
+            <h4 class="text-maroon">Keterangan Penolakan</h4>
+            <form id="rejectionFormContent" action="#" method="POST">
+                @csrf
+                @method('PUT')
+                <input type="hidden" name="status" value="Rejected">
+                <textarea name="keterangan" id="reason" rows="4" class="form-control" placeholder="Tuliskan alasan penolakan..." required></textarea>
+                <button type="submit" class="btn btn-primary mt-3">Submit</button>
+            </form>
+        </div>
+    </div>
+
     <!-- Popup Image -->
     <!-- Click anywhere on the popup to close it -->
     <div id="imagePopup" onclick="hidePopupImg()"> <!-- Close the popup when clicking outside image -->
-        <button id="closePopup" class="btn-close btn-close-white" aria-label="Close" onclick="hidePopupImg()"></button> <!-- Bootstrap close button -->
+        <button id="closePopup" class="btn-close btn-close-white" aria-label="Close" onclick="hidePopupImg()"></button>
+        <!-- Bootstrap close button -->
         <img id="popupImage" src="" alt="Popup Image">
     </div>
 
@@ -354,6 +417,21 @@
         function hidePopupPdf() {
             const popup = document.getElementById('pdfPopup');
             popup.style.display = 'none';
+        }
+
+        // Show the rejection popup for a specific verification entry
+        function showRejectionPopup(verifikasiId, lombaName) {
+            // Dynamically set form action and other values
+            const form = document.getElementById('rejectionFormContent');
+            form.action = `manajemen-verifikasi/${verifikasiId}/update`;
+
+            // Show the rejection popup
+            document.getElementById('rejectionPopup').style.display = 'flex';
+        }
+
+        // Hide the rejection popup
+        function hideRejectionPopup() {
+            document.getElementById('rejectionPopup').style.display = 'none';
         }
     </script>
 @endsection

@@ -108,7 +108,10 @@
                             <label for="poster_lomba" class="form-label">Poster Lomba</label>
                             <input class="form-control" type="file" id="poster_lomba" name="poster_lomba">
                         </div>
-
+                        <div class="mb-3">
+                            <label for="reason" class="form-label">Keterangan</label>
+                            <textarea name="keterangan" id="reason" rows="4" class="form-control" required>{{ $presma->keterangan }}</textarea>
+                        </div>
                         <input type="hidden" name="verifikasi" value="Pending">
 
                         <a href="javascript:history.back()" class="btn btn-secondary">Kembali</a>
