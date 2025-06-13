@@ -32,9 +32,7 @@ use App\Http\Controllers\RecommendationController;
 */
 
 // Show the welcome page
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', [App\Http\Controllers\WelcomeController::class, 'index'])->name('welcome');
 
 // Auth routes
 Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
