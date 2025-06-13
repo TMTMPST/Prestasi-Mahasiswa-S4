@@ -129,8 +129,8 @@
                             <select name="angkatan" class="form-select">
                                 <option value="">Pilih Angkatan</option>
                                 {{-- Loop angkatan yang ada, misalnya 2019, 2020, dll --}}
-                                @foreach($filter->pluck('angkatan')->unique() as $periode)
-                                    <option value="{{ $periode }}" 
+                                @foreach ($filter->pluck('angkatan')->unique() as $periode)
+                                    <option value="{{ $periode }}"
                                         {{ $periode == request()->angkatan ? 'selected' : '' }}>
                                         {{ $periode }}
                                     </option>
@@ -141,6 +141,11 @@
                             <button type="submit" class="btn btn-primary">Filter</button>
                             {{-- Tombol Reset --}}
                             <a href="{{ route('admin.periode_mahasiswa.index') }}" class="btn btn-secondary ms-2">Reset</a>
+                        </div>
+                        <div class="col-md-4 d-flex justify-content-end">
+                            <a href="{{ route('periode_mahasiswa.export', ['angkatan' => request()->angkatan]) }}" class="btn btn-success me-2">
+                                <i class="bi bi-file-earmark-excel"></i> Export to Excel
+                            </a>
                         </div>
                     </div>
                 </form>
@@ -170,9 +175,8 @@
                                 <td class="text-center">
                                     <a href="/manajemen-user/edit/{{ $item->nim }}"
                                         class="btn btn-primary btn-sm me-1"><i class="bi bi-pencil-square"></i> Edit</a>
-                                    <form
-                                        action="/manajemen-user/delete/{{ $item->nim }}"
-                                        method="POST" style="display:inline;"
+                                    <form action="/manajemen-user/delete/{{ $item->nim }}" method="POST"
+                                        style="display:inline;"
                                         onsubmit="return confirm('Apakah Anda yakin ingin menghapus Mahasiswa ini?')">
                                         @csrf
                                         @method('DELETE')
