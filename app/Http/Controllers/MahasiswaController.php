@@ -16,8 +16,29 @@ class MahasiswaController extends Controller
 {
     public function dashboard()
     {
-        // Ambil semua data lomba lengkap dengan relasi tingkat, kategori, dan jenis
-        $lombas = DataLomba::with(['tingkatRelasi', 'jenisRelasi'])->get();
+        $user = Session::get('user');
+    $currentMahasiswa = null;
+    $lombas = collect();
+
+    if ($user && Session::get('level') === 'MHS') {
+        // Ambil data mahasiswa beserta keahlian (bisa banyak)
+        $currentMahasiswa = Mahasiswa::where('nim', $user->nim)->with('keahlian')->first();
+
+        if ($currentMahasiswa && $currentMahasiswa->keahlian && $currentMahasiswa->keahlian->count() > 0) {
+            // Ambil semua id_jenis dari koleksi keahlian
+            $jenisIds = $currentMahasiswa->keahlian->pluck('id_jenis')->toArray();
+
+            $lombas = DataLomba::with(['tingkatRelasi', 'jenisRelasi'])
+                ->whereIn('jenis', $jenisIds)
+                ->where('verifikasi', 'Accepted')
+                ->get();
+        } else {
+            // Jika tidak ada keahlian, tampilkan semua lomba yang sudah Accepted
+            $lombas = DataLomba::with(['tingkatRelasi', 'jenisRelasi'])
+                ->where('verifikasi', 'Accepted')
+                ->get();
+        }
+    }
 
         // Ambil semua data mahasiswa, urutkan berdasarkan poin tertinggi
         $mahasiswa = Mahasiswa::orderByDesc('poin_presma')->get();

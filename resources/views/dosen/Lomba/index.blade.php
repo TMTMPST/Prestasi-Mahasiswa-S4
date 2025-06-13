@@ -140,52 +140,51 @@
                 + Tambah Lomba
             </button>
         </div>
-
-        <div class="row row-cols-1 row-cols-md-3 g-4">
-            @forelse ($lombas as $lomba)
-                @if ($lomba->verifikasi == 'Accepted')
-                    <div class="col d-flex">
-                        <div class="card shadow-sm custom-card w-100">
-                            <div class="card-header custom-header">
-                                {{ $lomba->nama_lomba }}
-                            </div>
-                            <div class="card-body">
-                                <ul class="lomba-info-list">
-                                    <li>
-                                        <strong>Tingkat</strong>
-                                        <span class="ms-2">: {{ $lomba->tingkatRelasi->nama_tingkat ?? '-' }}</span>
-                                    </li>
-                                    <li>
-                                        <strong>Jenis</strong>
-                                        <span class="ms-2">: {{ $lomba->jenisRelasi->nama_jenis ?? '-' }}</span>
-                                    </li>
-                                </ul>
-                                <div class="card border-0 bg-light mt-auto">
-                                    <div class="card-body p-2">
-                                        <div class="lomba-action-group">
-                                            <button type="button"
-                                                class="btn custom-btn-primary btn-sm w-50 btn-detail-lomba"
-                                                data-id="{{ $lomba->id_lomba }}" data-bs-toggle="modal"
-                                                data-bs-target="#modalDetailLomba">
-                                                Detail
-                                            </button>
-                                            <a href="{{ $lomba->link_lomba }}" target="_blank"
-                                                class="btn custom-btn-success btn-sm w-50">Daftar</a>
-                                        </div>
-                                    </div>
+<div class="row row-cols-1 row-cols-md-3 g-4">
+    @forelse ($lombas as $lomba)
+        @if ($lomba->verifikasi == 'Accepted')
+            <div class="col d-flex">
+                <div class="card shadow-sm custom-card w-100">
+                    <div class="card-header custom-header">
+                        {{ $lomba->nama_lomba }}
+                    </div>
+                    <div class="card-body">
+                        <ul class="lomba-info-list">
+                            <li>
+                                <strong>Tingkat</strong>
+                                <span class="ms-2">: {{ $lomba->tingkatRelasi->nama_tingkat ?? '-' }}</span>
+                            </li>
+                            <li>
+                                <strong>Jenis</strong>
+                                <span class="ms-2">: {{ $lomba->jenisRelasi->nama_jenis ?? '-' }}</span>
+                            </li>
+                        </ul>
+                        <div class="card border-0 bg-light mt-auto">
+                            <div class="card-body p-2">
+                                <div class="lomba-action-group">
+                                    <button type="button"
+                                        class="btn custom-btn-primary btn-sm w-50 btn-detail-lomba"
+                                        data-id="{{ $lomba->id_lomba }}" data-bs-toggle="modal"
+                                        data-bs-target="#modalDetailLomba">
+                                        Detail
+                                    </button>
+                                    <a href="{{ $lomba->link_lomba }}" target="_blank"
+                                        class="btn custom-btn-success btn-sm w-50">Daftar</a>
                                 </div>
                             </div>
                         </div>
                     </div>
-                @endif
-            @empty
-                <div class="col">
-                    <div class="alert alert-warning w-100" role="alert">
-                        Tidak ada informasi lomba tersedia.
-                    </div>
                 </div>
-            @endforelse
+            </div>
+        @endif
+    @empty
+        <div class="col">
+            <div class="alert alert-warning w-100" role="alert">
+                Tidak ada informasi lomba tersedia.
+            </div>
         </div>
+    @endforelse
+</div>
 
         <!-- Modal Tambah Lomba -->
         <div class="modal fade" id="modalTambahLomba" tabindex="-1" aria-hidden="true">

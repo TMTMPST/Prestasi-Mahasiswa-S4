@@ -318,28 +318,6 @@
     </style>
 
     <div class="container py-4">
-        {{-- Dashboard Card --}}
-        <div class="row justify-content-center mb-4">
-            <div class="col-md-12">
-                <div class="card dashboard-card shadow-sm">
-                    <div class="card-header bg-maroon text-white d-flex align-items-center" style="font-size:1.2rem;">
-                        <i class="bi bi-shield-check me-2"></i> Admin Dashboard
-                    </div>
-                    <div class="card-body">
-                        @if (session('status'))
-                            <div class="alert alert-success d-flex align-items-center mb-3" role="alert">
-                                <i class="bi bi-check-circle-fill me-2"></i>
-                                {{ session('status') }}
-                            </div>
-                        @endif
-                        <div class="d-flex justify-content-center align-items-center fs-5 text-maroon"
-                            style="font-weight:500;">
-                            <i class="bi bi-person-gear me-2"></i>Anda login sebagai Administrator!
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
 
         {{-- Statistics Overview --}}
         <div class="row mb-4">

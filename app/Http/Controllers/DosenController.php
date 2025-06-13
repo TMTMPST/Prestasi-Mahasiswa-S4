@@ -225,7 +225,7 @@ class DosenController extends Controller
     public function showUpdateProfile($nip)
     {
         $dosen = Dosen::where('nip', $nip)->firstOrFail();
-        $jeniss = \App\Models\Jenis::all();
+        $jeniss = Jenis::all();
         return view('dosen.Profile.update_profile', compact('dosen', 'jeniss'));
     }
 
