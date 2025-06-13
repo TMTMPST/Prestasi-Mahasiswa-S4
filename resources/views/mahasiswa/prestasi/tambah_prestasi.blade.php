@@ -72,12 +72,9 @@
                             <label for="peringkat" class="form-label">Peringkat</label>
                             <select class="form-select" name="peringkat" id="peringkat" aria-label="Default select example">
                                 <option selected>Masukkan Peringkat</option>
-                                @foreach ($prestasi as $rank)
-                                    <option value="{{ $rank->peringkat }}">{{ $rank->peringkat }}</option>
-                                
-                                {{-- <option value="Juara 2">Juara 2</option>
-                                <option value="Juara 3">Juara 3</option> --}}
-                                @endforeach
+                                <option value="Juara 1">Juara 1</option>
+                                <option value="Juara 2">Juara 2</option>
+                                <option value="Juara 3">Juara 3</option>
                             </select>
                         </div>
 
@@ -111,6 +108,15 @@
                         <a href="{{ route('mahasiswa.prestasi.index') }}" class="btn btn-secondary ms-2">
                             <i class="bi bi-x-circle me-1"></i>Batal
                         </a>
+                        @if ($errors->any())
+                            <div class="alert alert-danger mt-3">
+                                <ul class="mb-0">
+                                    @foreach ($errors->all() as $error)
+                                        <li>{{ $error }}</li>
+                                    @endforeach
+                                </ul>
+                            </div>
+                        @endif
                     </form>
                 </div>
             </div>
