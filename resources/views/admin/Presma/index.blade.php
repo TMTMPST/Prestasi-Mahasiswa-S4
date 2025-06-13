@@ -153,6 +153,7 @@
             padding: 0.5rem 1rem;
             /* Menyesuaikan padding */
         }
+
         .badge {
             font-weight: 500;
             /* Menjaga konsistensi berat font */
@@ -271,9 +272,14 @@
             <h3 class="mb-0 text-maroon">
                 <i class="bi bi-trophy-fill me-2"></i>Manajemen Prestasi Mahasiswa
             </h3>
-            <a href="/manajemen-presma/create" class="btn btn-maroon shadow-sm">
-                <i class="bi bi-plus-circle me-1"></i>Tambah Prestasi
-            </a>
+            <div class="d-flex justify-content-end">
+                <a href="{{ route('presma.export') }}" class="btn btn-success me-2">
+                    <i class="bi bi-file-earmark-excel"></i> Export to Excel
+                </a>
+                <a href="/manajemen-presma/create" class="btn btn-primary shadow-sm">
+                    <i class="bi bi-plus-circle me-1"></i>Tambah Prestasi
+                </a>
+            </div>
         </div>
         <div class="card dashboard-card shadow-sm">
             <div class="ranking-header">

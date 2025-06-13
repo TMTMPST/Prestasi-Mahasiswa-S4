@@ -16,6 +16,8 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DosenController;
 use App\Http\Controllers\MahasiswaController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\ExportController;
+use App\Http\Controllers\ExportPresmaController;
 use App\Http\Controllers\RecommendationController;
 
 /*
@@ -62,6 +64,7 @@ Route::get('/dosen/dashboard', [DosenController::class, 'dashboard'])->middlewar
 
         // Manajemen Periode Mahasiswa
         Route::get('/manajemen-periode', [AdminController::class, 'showPeriodeMahasiswa'])->name('admin.periode_mahasiswa.index');
+        Route::get('/manajemen-periode/export', [ExportController::class, 'mahasiswa'])->name('periode_mahasiswa.export');
 
         // Manajemen Lomba
         Route::group(['prefix' => 'manajemen-lomba'], function () {
@@ -72,6 +75,7 @@ Route::get('/dosen/dashboard', [DosenController::class, 'dashboard'])->middlewar
             Route::put('/update/{id}', [AdminController::class, 'updateLomba'])->name('admin.lomba.update');
             Route::put('/update-status/{id}', [AdminController::class, 'updateStatusLomba'])->name('admin.lomba.update_status');
             Route::delete('/delete/{id}', [AdminController::class, 'deleteLomba'])->name('admin.lomba.delete');
+            Route::get('/export', [ExportController::class, 'lomba'])->name('lomba.export');
         });
 
         // Manajemen Presma
@@ -82,6 +86,8 @@ Route::get('/dosen/dashboard', [DosenController::class, 'dashboard'])->middlewar
             Route::get('/edit/{id}', [AdminController::class, 'editPresma'])->name('admin.presma.edit');
             Route::put('/update/{id}', [AdminController::class, 'updatePresma'])->name('admin.presma.update');
             Route::delete('/delete/{id}', [AdminController::class, 'deletePresma'])->name('admin.presma.delete');
+            Route::get('/export', [ExportPresmaController::class, 'export'])->name('presma.export');
+            // Route::post('/import', [ExportPresmaController::class, 'import'])->name('presma.import');
         });
         
         Route::group(['prefix' => 'manajemen-verifikasi'], function () {
