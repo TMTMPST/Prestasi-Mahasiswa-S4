@@ -661,4 +661,40 @@ class AdminController extends Controller
             return redirect()->route('admin.prodi.index')->with('error', 'Gagal menghapus Program Studi. Data masih digunakan di tabel lain.');
         }
     }
+
+        // poin prestasi
+    public function updatePoinPresma()
+    {
+        $poinMapping = [
+            'internasional' => ['juara 1' => 100, 'juara 2' => 90, 'juara 3' => 80],
+            'nasional'      => ['juara 1' => 80,  'juara 2' => 70, 'juara 3' => 60],
+            'provinsi'      => ['juara 1' => 60,  'juara 2' => 50, 'juara 3' => 40],
+            'kota'          => ['juara 1' => 40,  'juara 2' => 30, 'juara 3' => 20],
+        ];
+
+        $mahasiswas = Mahasiswa::all();
+
+        foreach ($mahasiswas as $mahasiswa) {
+            $totalPoin = 0;
+
+            $prestasiAccepted = DataPrestasi::with('dataLomba.tingkatRelasi')
+                ->where('nim', $mahasiswa->nim)
+                ->where('verifikasi', 'Accepted')
+                ->get();
+
+            foreach ($prestasiAccepted as $item) {
+                $peringkat = strtolower($item->peringkat);
+                $tingkat = strtolower($item->dataLomba->tingkatRelasi->nama_tingkat ?? '');
+
+                $poin = $poinMapping[$tingkat][$peringkat] ?? 0;
+                $totalPoin += $poin;
+            }
+
+            $mahasiswa->poin_presma = $totalPoin;
+            $mahasiswa->save();
+        }
+
+        return response()->json(['status' => 'success', 'message' => 'Poin berhasil diperbarui!']);
+    }
+
 }

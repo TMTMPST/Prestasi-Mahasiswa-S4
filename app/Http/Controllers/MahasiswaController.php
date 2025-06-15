@@ -9,6 +9,7 @@ use App\Models\DataPrestasi;
 use App\Models\Dosen;
 use App\Models\Mahasiswa;
 use App\Models\Jenis;
+use App\Models\Tingkat;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\DB;
 
@@ -145,10 +146,10 @@ class MahasiswaController extends Controller
     {
         // Tampilkan halaman tambah_prestasi
         $lombas = DataLomba::with(['tingkatRelasi', 'jenisRelasi'])->get();
-
         $prestasi = DataPrestasi::select('peringkat')->get();
+        $tingkat = Tingkat::all();
 
-        return view('mahasiswa.prestasi.tambah_prestasi', compact('lombas', 'prestasi'));
+        return view('mahasiswa.prestasi.tambah_prestasi', compact('lombas', 'prestasi', 'tingkat'));
     }
 
     public function store_prestasi(Request $request)
@@ -170,7 +171,7 @@ class MahasiswaController extends Controller
         $data = new DataPrestasi();
         $data->peringkat = $request->peringkat;
         $data->id_lomba = $request->id_lomba;
-        $data->verifikasi = 'pending';
+$data->verifikasi = 'Accepted'; // Ubah dari 'pending' ke 'Accepted'
         $data->nim = $user->nim; 
 
         if ($request->hasFile('sertif')) {
@@ -205,8 +206,9 @@ class MahasiswaController extends Controller
         $prestasi = DataPrestasi::findOrFail($id); // BUKAN get()
         $lombas = DataLomba::with(['tingkatRelasi', 'jenisRelasi'])->get();
         $dosen = dosen::all();
+        $tingkat = Tingkat::all();
 
-        return view('mahasiswa.prestasi.edit_prestasi', compact('prestasi', 'lombas', 'dosen'));
+        return view('mahasiswa.prestasi.edit_prestasi', compact('prestasi', 'lombas', 'dosen', 'tingkat'));
     }
 
     public function update_prestasi(Request $request, $id)
